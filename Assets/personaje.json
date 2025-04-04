@@ -1,0 +1,142 @@
+{
+    "Dataos_personales": {
+        "Nombre": "String",
+        "Nivel": "Int, 2 digitos del 1 al 20",
+        "Raza": "String",
+        "Edad": "Int",
+        "Genero": "String",
+        "Altura": "Double",
+        "Peso": "Double",
+        "Ciudad": "String",
+        "Poder": "String"
+    },
+    "Stats": {
+        "Fuerza": "Int, maximo 2 digitos",
+        "Destreza": "Int, maximo 2 digitos",
+        "Constitucion": "Int, maximo 2 digitos",
+        "Sabiduria": "Int, maximo 2 digitos",
+        "Inteligencia": "Int, maximo 2 digitos",
+        "Espiritu": "Int, maximo 2 digitos"
+    },
+    "Datos_Combate": {
+        "PV": "Int, maximo 4 digitos",
+        "Reacciones": "",
+        "Iniciativa": "String",
+        "N_Acciones": "String",
+        "Velocidad": "String",
+        "Oportunidad": "String",
+        "Clas_DC": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Salvaciones": {
+            "Reflejos": {
+                "Stat_Scalar": "String",
+                "LV_Maestria": "Char"
+            },
+            "Fortitud": {
+                "Stat_Scalar": "String",
+                "LV_Maestria": "Char"
+            },
+            "Voluntad": {
+                "Stat_Scalar": "String",
+                "LV_Maestria": "Char"
+            }
+        },
+        "Pasivas": {
+            "Slot_1": "Text",
+            "Slot_2": "Text",
+            "Slot_3": "Text",
+            "Slot_4": "Text",
+            "Slot_Especiales": "Text"
+        }
+    },
+    "Momentos_Epicos": {
+        "Slot_1": "String",
+        "Slot_2": "String",
+        "Slot_3": "String",
+        "Slot_4": "String",
+        "Slot_5": "String",
+        "Slot_6": "String"
+    },
+    "Equipamiento_Activo": {
+        "Arma": "String",
+        "Complemento": "String",
+        "Armadura": "String",
+        "Amuleto": "String"
+    },
+    "Habilidad": {
+        "Atletismo": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Robo": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Sigilo": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Acrobacias": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Quimica": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Sociedad": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Naturaleza": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Percepcion": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Conocimiento_Poder": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Medicina": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Tecnologia": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Supervivencia": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Investigacion": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Trato_Animales": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Intimidacion": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Engaño": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Persuasion": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        },
+        "Actuacion": {
+            "Stat_Scalar": "String",
+            "LV_Maestria": "Char"
+        }
+    }
+}
