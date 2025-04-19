@@ -44,11 +44,31 @@
             }
         },
         "Pasivas": {
-            "Slot_1": "Text",
-            "Slot_2": "Text",
-            "Slot_3": "Text",
-            "Slot_4": "Text",
-            "Slot_Especiales": "Text"
+            "Slot_1": {
+                "Titulos": "String",
+                "Descripcion": "String",
+                "Activo": "boolean"
+            },
+            "Slot_2": {
+                "Titulos": "String",
+                "Descripcion": "String",
+                "Activo": "boolean"
+            },
+            "Slot_3": {
+                "Titulos": "String",
+                "Descripcion": "String",
+                "Activo": "boolean"
+            },
+            "Slot_4": {
+                "Titulos": "String",
+                "Descripcion": "String",
+                "Activo": "boolean"
+            },
+            "Slot_Especiales":  {
+                "Titulos": "String",
+                "Descripcion": "String",
+                "Activo": "boolean"
+            }
         }
     },
     "Momentos_Epicos": {

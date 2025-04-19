@@ -1,118 +1,177 @@
 {
-    "type": "object",
-    "properties": {
-      "Dataos_personales": {
-        "type": "object",
-        "properties": {
-          "Nombre": { "type": "string" },
-          "Nivel": { "type": "integer", "minimum": 1, "maximum": 20 },
-          "Raza": { "type": "string" },
-          "Edad": { "type": "integer" },
-          "Genero": { "type": "string" },
-          "Altura": { "type": "number" },
-          "Peso": { "type": "number" },
-          "Ciudad": { "type": "string" },
-          "Poder": { "type": "string" }
-        },
-        "required": ["Nombre", "Nivel", "Raza", "Edad", "Genero", "Altura", "Peso", "Ciudad", "Poder"]
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "object",
+      "properties": {
+        "$oid": { "type": "string" }
       },
-      "Stats": {
-        "type": "object",
-        "properties": {
-          "Fuerza": { "type": "integer", "maximum": 99 },
-          "Destreza": { "type": "integer", "maximum": 99 },
-          "Constitucion": { "type": "integer", "maximum": 99 },
-          "Sabiduria": { "type": "integer", "maximum": 99 },
-          "Inteligencia": { "type": "integer", "maximum": 99 },
-          "Espiritu": { "type": "integer", "maximum": 99 }
-        }
-      },
-      "Datos_Combate": {
-        "type": "object",
-        "properties": {
-          "PV": { "type": "integer", "maximum": 9999 },
-          "Reacciones": { "type": "string" },
-          "Iniciativa": { "type": "string" },
-          "N_Acciones": { "type": "string" },
-          "Velocidad": { "type": "string" },
-          "Oportunidad": { "type": "string" },
-          "Clas_DC": {
-            "type": "object",
-            "properties": {
-              "Stat_Scalar": { "type": "string" },
-              "LV_Maestria": { "type": "string", "maxLength": 1 }
-            }
-          },
-          "Salvaciones": {
-            "type": "object",
-            "properties": {
-              "Reflejos": {
-                "type": "object",
-                "properties": {
-                  "Stat_Scalar": { "type": "string" },
-                  "LV_Maestria": { "type": "string", "maxLength": 1 }
-                }
-              },
-              "Fortitud": {
-                "type": "object",
-                "properties": {
-                  "Stat_Scalar": { "type": "string" },
-                  "LV_Maestria": { "type": "string", "maxLength": 1 }
-                }
-              },
-              "Voluntad": {
-                "type": "object",
-                "properties": {
-                  "Stat_Scalar": { "type": "string" },
-                  "LV_Maestria": { "type": "string", "maxLength": 1 }
-                }
-              }
-            }
-          },
-          "Pasivas": {
-            "type": "object",
-            "properties": {
-              "Slot_1": { "type": "string" },
-              "Slot_2": { "type": "string" },
-              "Slot_3": { "type": "string" },
-              "Slot_4": { "type": "string" },
-              "Slot_Especiales": { "type": "string" }
-            }
-          }
-        }
-      },
-      "Momentos_Epicos": {
-        "type": "object",
-        "properties": {
-          "Slot_1": { "type": "string" },
-          "Slot_2": { "type": "string" },
-          "Slot_3": { "type": "string" },
-          "Slot_4": { "type": "string" },
-          "Slot_5": { "type": "string" },
-          "Slot_6": { "type": "string" }
-        }
-      },
-      "Equipamiento_Activo": {
-        "type": "object",
-        "properties": {
-          "Arma": { "type": "string" },
-          "Complemento": { "type": "string" },
-          "Armadura": { "type": "string" },
-          "Amuleto": { "type": "string" }
-        }
-      },
-      "Habilidad": {
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "type": "object",
-            "properties": {
-              "Stat_Scalar": { "type": "string" },
-              "LV_Maestria": { "type": "string", "maxLength": 1 }
-            }
-          }
-        }
-      }
+      "required": ["$oid"]
     },
-    "required": ["Dataos_personales", "Stats", "Datos_Combate", "Momentos_Epicos", "Equipamiento_Activo", "Habilidad"]
-}  
+    "Datos_personales": {
+      "type": "object",
+      "properties": {
+        "Nombre": { "type": "string" },
+        "Nivel": { "type": "integer" },
+        "Raza": { "type": "string" },
+        "Edad": { "type": "integer" },
+        "Genero": { "type": "string" },
+        "Altura": { "type": "number" },
+        "Peso": { "type": "number" },
+        "Ciudad": { "type": "string" },
+        "Poder": { "type": "string" }
+      },
+      "required": ["Nombre", "Nivel", "Raza", "Edad", "Genero", "Altura", "Peso", "Ciudad", "Poder"]
+    },
+    "Stats": {
+      "type": "object",
+      "properties": {
+        "Fuerza": { "type": "integer" },
+        "Destreza": { "type": "integer" },
+        "Constitucion": { "type": "integer" },
+        "Sabiduria": { "type": "integer" },
+        "Inteligencia": { "type": "integer" },
+        "Espiritu": { "type": "integer" }
+      },
+      "required": ["Fuerza", "Destreza", "Constitucion", "Sabiduria", "Inteligencia", "Espiritu"]
+    },
+    "Datos_Combate": {
+      "type": "object",
+      "properties": {
+        "PV": { "type": "integer" },
+        "Reacciones": { "type": "string" },
+        "Iniciativa": { "type": "string" },
+        "N_Acciones": { "type": "string" },
+        "Velocidad": { "type": "string" },
+        "Oportunidad": { "type": "string" },
+        "Clas_DC": {
+          "type": "object",
+          "properties": {
+            "Stat_Scalar": { "type": "string" },
+            "LV_Maestria": { "type": "string" }
+          },
+          "required": ["Stat_Scalar", "LV_Maestria"]
+        },
+        "Salvaciones": {
+          "type": "object",
+          "properties": {
+            "Reflejos": {
+              "type": "object",
+              "properties": {
+                "Stat_Scalar": { "type": "string" },
+                "LV_Maestria": { "type": "string" }
+              },
+              "required": ["Stat_Scalar", "LV_Maestria"]
+            },
+            "Fortitud": {
+              "type": "object",
+              "properties": {
+                "Stat_Scalar": { "type": "string" },
+                "LV_Maestria": { "type": "string" }
+              },
+              "required": ["Stat_Scalar", "LV_Maestria"]
+            },
+            "Voluntad": {
+              "type": "object",
+              "properties": {
+                "Stat_Scalar": { "type": "string" },
+                "LV_Maestria": { "type": "string" }
+              },
+              "required": ["Stat_Scalar", "LV_Maestria"]
+            }
+          },
+          "required": ["Reflejos", "Fortitud", "Voluntad"]
+        },
+        "Pasivas": {
+          "type": "object",
+          "properties": {
+            "Slot_1": {
+              "type": "object",
+              "properties": {
+                "Titulos": { "type": "string" },
+                "Descripcion": { "type": "string" },
+                "Activo": { "type": "boolean" }
+              },
+              "required": ["Titulos", "Descripcion", "Activo"]
+            },
+            "Slot_2": {
+              "type": "object",
+              "properties": {
+                "Titulos": { "type": "string" },
+                "Descripcion": { "type": "string" },
+                "Activo": { "type": "boolean" }
+              },
+              "required": ["Titulos", "Descripcion", "Activo"]
+            },
+            "Slot_3": {
+              "type": "object",
+              "properties": {
+                "Titulos": { "type": "string" },
+                "Descripcion": { "type": "string" },
+                "Activo": { "type": "boolean" }
+              },
+              "required": ["Titulos", "Descripcion", "Activo"]
+            },
+            "Slot_4": {
+              "type": "object",
+              "properties": {
+                "Titulos": { "type": "string" },
+                "Descripcion": { "type": "string" },
+                "Activo": { "type": "boolean" }
+              },
+              "required": ["Titulos", "Descripcion", "Activo"]
+            },
+            "Slot_Especiales": {
+              "type": "object",
+              "properties": {
+                "Titulos": { "type": "string" },
+                "Descripcion": { "type": "string" },
+                "Activo": { "type": "boolean" }
+              },
+              "required": ["Titulos", "Descripcion", "Activo"]
+            }
+          },
+          "required": ["Slot_1", "Slot_2", "Slot_3", "Slot_4", "Slot_Especiales"]
+        }
+      },
+      "required": ["PV", "Reacciones", "Iniciativa", "N_Acciones", "Velocidad", "Oportunidad", "Clas_DC", "Salvaciones", "Pasivas"]
+    },
+    "Momentos_Epicos": {
+      "type": "object",
+      "properties": {
+        "Slot_1": { "type": "string" },
+        "Slot_2": { "type": "string" },
+        "Slot_3": { "type": "string" },
+        "Slot_4": { "type": "string" },
+        "Slot_5": { "type": "string" },
+        "Slot_6": { "type": "string" }
+      },
+      "required": ["Slot_1", "Slot_2", "Slot_3", "Slot_4", "Slot_5", "Slot_6"]
+    },
+    "Equipamiento_Activo": {
+      "type": "object",
+      "properties": {
+        "Arma": { "type": "string" },
+        "Complemento": { "type": "string" },
+        "Armadura": { "type": "string" },
+        "Amuleto": { "type": "string" }
+      },
+      "required": ["Arma", "Complemento", "Armadura", "Amuleto"]
+    },
+    "Habilidad": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z_ñ]+$": {
+          "type": "object",
+          "properties": {
+            "Stat_Scalar": { "type": "string" },
+            "LV_Maestria": { "type": "string" }
+          },
+          "required": ["Stat_Scalar", "LV_Maestria"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["_id", "Datos_personales", "Stats", "Datos_Combate", "Momentos_Epicos", "Equipamiento_Activo", "Habilidad"]
+}

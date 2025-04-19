@@ -1,0 +1,163 @@
+{
+    "Datos_personales": {
+      "Nombre": "Zero",
+      "Nivel": 1,
+      "Raza": "Enano",
+      "Edad": 28,
+      "Genero": "Masculino",
+      "Altura": 1.34,
+      "Peso": 95.99,
+      "Ciudad": "Darv",
+      "Poder": "Ferromancia"
+    },
+    "Stats": {
+      "Fuerza": 0,
+      "Destreza": 2,
+      "Constitucion": 2,
+      "Sabiduria": 2,
+      "Inteligencia": 0,
+      "Espiritu": 0
+    },
+    "Datos_Combate": {
+      "PV": 30,
+      "Reacciones": "1",
+      "Iniciativa": "10",
+      "N_Acciones": "1",
+      "Velocidad": "2",
+      "Oportunidad": "1",
+      "Clas_DC": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "E"
+      },
+      "Salvaciones": {
+        "Reflejos": {
+          "Stat_Scalar": "Destreza",
+          "LV_Maestria": "E"
+        },
+        "Fortitud": {
+          "Stat_Scalar": "Constitucion",
+          "LV_Maestria": "F"
+        },
+        "Voluntad": {
+          "Stat_Scalar": "Espiritu",
+          "LV_Maestria": "E"
+        }
+      },
+      "Pasivas": {
+        "Slot_1": {
+          "Titulos": "Hard as Steel",
+          "Descripcion": "",
+          "Activo": true
+        },
+        "Slot_2": {
+          "Titulos": "-",
+          "Descripcion": "-",
+          "Activo": false
+        },
+        "Slot_3": {
+          "Titulos": "-",
+          "Descripcion": "-",
+          "Activo": false
+        },
+        "Slot_4": {
+          "Titulos": "-",
+          "Descripcion": "-",
+          "Activo": false
+        },
+        "Slot_Especiales": {
+          "Titulos": "-",
+          "Descripcion": "-",
+          "Activo": false
+        }
+      }
+    },
+    "Momentos_Epicos": {
+      "Slot_1": "ME001",
+      "Slot_2": "-",
+      "Slot_3": "-",
+      "Slot_4": "-",
+      "Slot_5": "-",
+      "Slot_6": "-"
+    },
+    "Equipamiento_Activo": {
+      "Arma": "WP001",
+      "Complemento": "CP001",
+      "Armadura": "AM001",
+      "Amuleto": "String"
+    },
+    "Habilidad": {
+      "Atletismo": {
+        "Stat_Scalar": "Fuerza",
+        "LV_Maestria": "F"
+      },
+      "Robo": {
+        "Stat_Scalar": "Destreza",
+        "LV_Maestria": "F"
+      },
+      "Sigilo": {
+        "Stat_Scalar": "Destreza",
+        "LV_Maestria": "F"
+      },
+      "Acrobacias": {
+        "Stat_Scalar": "Destreza",
+        "LV_Maestria": "F"
+      },
+      "Quimica": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "F"
+      },
+      "Sociedad": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "F"
+      },
+      "Naturaleza": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "F"
+      },
+      "Percepcion": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "F"
+      },
+      "Conocimiento_Poder": {
+        "Stat_Scalar": "Sabiduria",
+        "LV_Maestria": "F"
+      },
+      "Medicina": {
+        "Stat_Scalar": "Inteligencia",
+        "LV_Maestria": "F"
+      },
+      "Tecnologia": {
+        "Stat_Scalar": "Inteligencia",
+        "LV_Maestria": "F"
+      },
+      "Supervivencia": {
+        "Stat_Scalar": "Inteligencia",
+        "LV_Maestria": "F"
+      },
+      "Investigacion": {
+        "Stat_Scalar": "Inteligencia",
+        "LV_Maestria": "F"
+      },
+      "Trato_Animales": {
+        "Stat_Scalar": "Espiritu",
+        "LV_Maestria": "F"
+      },
+      "Intimidacion": {
+        "Stat_Scalar": "Espiritu",
+        "LV_Maestria": "F"
+      },
+      "Engaño": {
+        "Stat_Scalar": "Espiritu",
+        "LV_Maestria": "F"
+      },
+      "Persuasion": {
+        "Stat_Scalar": "Espiritu",
+        "LV_Maestria": "F"
+      },
+      "Actuacion": {
+        "Stat_Scalar": "Espiritu",
+        "LV_Maestria": "F"
+      }
+    }
+  }
+  
