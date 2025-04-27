@@ -15,12 +15,13 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './form-user.component.css'
 })
 export class FormUserComponent implements OnInit{
+  
   constructor(private formBuilder: FormBuilder){
-
+    
   }
 
   form!: FormGroup;
-
+  
   ngOnInit(): void{
     this.form = this.formBuilder.group({
       name: ['', {validators: [Validators.required]}]

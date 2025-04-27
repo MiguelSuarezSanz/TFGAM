@@ -1,7 +1,32 @@
 <form [formGroup]="form">
     <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input formControlName="name">
+        <mat-label>Nombre</mat-label>
+        <input type="text" matInput formControlName="nombre">
         <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email">
+        <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Fecha Nacimiento</mat-label>
+        <input type="date" matInput formControlName="fechaNacimiento">
+        <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password">
+        <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Imagen Perfil</mat-label>
+        <input type="file" matInput formControlName="perfil">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Privilegios</mat-label>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Bloqueado</mat-label>
     </mat-form-field>
 </form>
