@@ -1,4 +1,133 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { min-height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+app-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+body * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.8s ease-out;
+}
+a {
+    transition: 1s;
+    text-decoration: none;    
+    color: azure;
+    height: fit-content;
+}
+
+/* CLASSES COLORES */
+
+/* Background */
+.background-color-main {
+    background-color: #2A323D;
+    color: azure;
+}
+.background-color-darker {
+    background-color: #161A20;
+    color: azure;
+}
+.background-color-lighter {
+    background-color: #3E4A5A;
+    color: azure;
+}
+
+/* Font */
+.font-color-primary {
+    color: azure;
+}
+.font-color-secundary {
+    color: black;
+}
+.font-color-highlight-one {
+    color: #2896F5;
+}
+.font-color-highlight-two {
+    color: #FF3C3C;
+}
+
+/* Background Hover */
+.background-hover-one:hover {
+    box-shadow: inset 1000px 0 0 0 #2896F5;
+    color: azure;
+}
+
+.background-hover-two:hover {
+    box-shadow: inset 1000px 0 0 0 #FF3C3C;
+    color: azure;
+}
+
+/* Font Hover */
+.font-hover-one:hover {
+    color: #2896F5;
+}
+
+.font-hover-two:hover {
+    color: #FF3C3C;
+}
+
+/* Font Shadow */
+.font-shadow-dark {
+    text-shadow: 3px 3px 5px black;
+}
+
+.font-shadow-light {
+    text-shadow: 3px 3px 5px azure;
+}
+
+/* Font Shadow Hover */
+.font-shadow-hover-dark:hover {
+    text-shadow: 3px 3px 5px black;
+}
+
+.font-shadow-hover-light:hover  {
+    text-shadow: 3px 3px 5px azure;
+}
+
+.font-shadow-hover-one:hover {
+    text-shadow: 3px 3px 5px #2896F5;
+}
+
+.font-shadow-hover-two:hover  {
+    text-shadow: 3px 3px 5px #FF3C3C;
+}
+
+.font-shadow-hover-tree:hover  {
+    text-shadow: 5px 0 2px #FF3C3C, -5px 0 2px #2896F5;
+}
+
+/* Box Shadow */
+.box-shadow-dark {
+    box-shadow: 3px 3px 5px black;
+}
+
+.box-shadow-light {
+    box-shadow: 3px 3px 5px azure;
+}
+
+/* Box Shadow Hover */
+.box-shadow-hover-dark:hover {
+    box-shadow: 3px 3px 5px black;
+}
+
+.box-shadow-hover-light:hover  {
+    box-shadow: 3px 3px 5px azure;
+}
+
+.box-shadow-hover-one:hover {
+    box-shadow: 3px 3px 5px #2896F5;
+}
+
+.box-shadow-hover-two:hover  {
+    box-shadow: 3px 3px 5px #FF3C3C;
+}
+
+.box-shadow-hover-tree:hover  {
+    box-shadow: 5px 0 2px #FF3C3C, -5px 0 2px #2896F5;
+}
