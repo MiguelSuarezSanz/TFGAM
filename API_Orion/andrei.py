@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, EmailStr
+from typing import List, Optional
+from enum import Enum
+from datetime import date
 
 app = FastAPI()
 
@@ -11,42 +13,54 @@ user = "admin"
 password = "admin"
 database = "OrionDB"
 
-try:
 
-    conn = pymysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-        port=3306,
-        cursorclass=pymysql.cursors.DictCursor  
-    )
-    print("Conexión exitosa")
-except pymysql.MySQLError as e:
-    print(f"Error conectando a la base de datos: {e}")
-    exit(1)
+def get_db_connection():
+    try:
+        conn = pymysql.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database,
+            port=3306,
+            cursorclass=pymysql.cursors.DictCursor 
+        )
+        print("Conexión exitosa")
+        return conn
+    except pymysql.MySQLError as e:
+        print(f"Error conectando a la base de datos: {e}")
+        exit(1)
 
+
+class PrivilegiosEnum(str, Enum):
+    admin = "Admin"
+    user = "User"
+
+# Pydantic model for User
 class User(BaseModel):
-    id: int
-    name: str
-    email: str
-
-# Base de datos simulada
-fake_db: List[User] = []
+    Id: int
+    Nombre: str
+    Email: EmailStr
+    FechaNacimiento: date
+    Password: str
+    Privilegios: PrivilegiosEnum
+    Bloqueado: bool
+    Perfil: Optional[str]
 
 # GET: obtener todos los usuarios
 @app.get("/users", response_model=List[User])
-def get_users():
-    return fake_db
+async def get_users():
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM Usuarios")
+            rows = cursor.fetchall()
+            return [User(**row) for row in rows]
+    finally:
+        conn.close()
 
 # POST: crear un nuevo usuario
-@app.post("/users", response_model=User)
-def create_user(user: User):
-    # Verificar si ya existe el id
-    if any(u.id == user.id for u in fake_db):
-        raise HTTPException(status_code=400, detail="User ID already exists")
-    fake_db.append(user)
-    return user
+
+
 
 # PUT: actualizar un usuario existente
 @app.put("/users/{user_id}", response_model=User)
