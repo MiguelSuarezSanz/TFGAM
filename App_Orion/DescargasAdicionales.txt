@@ -5,3 +5,7 @@ npm install @sweetalert2/ngx-sweetalert2
 
 Mihaku
 
+npm uninstall ngx-bootstrap
+npm uninstall bootstrap
+
+npm install tailwindcss @tailwindcss/vite

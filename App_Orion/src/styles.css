@@ -1,3 +1,27 @@
+@import "tailwindcss";
+
+/* Importar Fuentes Custom */
+@font-face {
+    font-family: 'Audiowide';
+    src: url('../public/assets/fonts/Audiowide.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxanium';
+    src: url('../public/assets/fonts/Oxanium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpaceGrotesk';
+    src: url('../public/assets/fonts/SpaceGrotesk.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { min-height: 100%; }
@@ -7,19 +31,6 @@ app-root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-body * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-transition: all 0.2s ease-out;
-    transition: all 0.8s ease-out;
-}
-a {
-    transition: 1s;
-    text-decoration: none;    
-    color: azure;
-    height: fit-content;
 }
 
 /* CLASSES COLORES */
@@ -54,12 +65,12 @@ a {
 
 /* Background Hover */
 .background-hover-one:hover {
-    box-shadow: inset 1000px 0 0 0 #2896F5;
+    background-color: #2896F5;
     color: azure;
 }
 
 .background-hover-two:hover {
-    box-shadow: inset 1000px 0 0 0 #FF3C3C;
+    background-color: #FF3C3C;
     color: azure;
 }
 
@@ -130,4 +141,17 @@ a {
 
 .box-shadow-hover-tree:hover  {
     box-shadow: 5px 0 2px #FF3C3C, -5px 0 2px #2896F5;
+}
+
+/* Font Family */
+.font-family-tittle {
+    font-family: 'Audiowide', sans-serif;
+}
+
+.font-family-subtittle {
+    font-family: 'Oxanium', sans-serif;
+}
+
+.font-family-regular {
+    font-family: 'SpaceGrotesk', sans-serif;
 }
