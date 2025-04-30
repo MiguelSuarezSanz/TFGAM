@@ -1,27 +1,38 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { UserCreateDTO } from './user';
+import { UserCreateDTO, UserDTO } from './user';
 import { Observable } from 'rxjs';
-import { formatDate } from '../../utilidades/utilidades';
+import { formatDate } from '../utilidades/utilidades';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
+  
 
   constructor(private http: HttpClient) {
 
 
    }
 
-   private apiURL = environment.apiUrl + "users";
+   private apiURL = environment.apiURL + "users";
 
    public crear(user: UserCreateDTO): Observable<number> {
     const formData = this.BuildFormData(user);
 
-    return this.http.post<number>(this.apiURL, formData);
+    return this.http.post<number>(this.apiURL+"create", formData);
    }
+
+   public getAll(): Observable<HttpResponse<UserDTO[]>> {
+    return this.http.get<UserDTO[]>(this.apiURL, { observe: 'response' });
+  }
+
+
+  public borrar(id: number){
+    return this.http.delete(`${this.apiURL}/${id}`);
+  }
 
    private BuildFormData(user: UserCreateDTO): FormData{
     const formData = new FormData();

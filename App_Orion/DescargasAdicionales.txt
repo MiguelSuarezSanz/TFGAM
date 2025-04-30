@@ -1,0 +1,7 @@
+Andrei 
+
+npm install @sweetalert2/ngx-sweetalert2
+
+
+Mihaku
+
