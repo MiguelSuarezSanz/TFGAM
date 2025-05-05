@@ -4,7 +4,8 @@ import { UserDTO } from '../user';
 import { HttpResponse } from '@angular/common/http';
 import { MatTableModule} from "@angular/material/table";
 import { CommonModule} from '@angular/common';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../../utilidades/dialogo-confirmacion/dialogo-confirmacion.component';
 import { RouterLink } from '@angular/router';
 
 import { ListadoGenericoComponent } from '../../utilidades/listado-generico/listado-generico.component';
@@ -12,13 +13,13 @@ import { ListadoGenericoComponent } from '../../utilidades/listado-generico/list
 @Component({
   selector: 'app-index-users',
   standalone: true,
-  imports: [CommonModule, ListadoGenericoComponent,MatTableModule, SweetAlert2Module, RouterLink],
+  imports: [CommonModule, ListadoGenericoComponent,MatTableModule, RouterLink, MatDialogModule],
   templateUrl: './index-users.component.html',
   styleUrl: './index-users.component.css'
 })
 export class IndexUsersComponent implements OnInit{
 
-  constructor(private usersService: UsersService){}
+  constructor(private usersService: UsersService, private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.cargarRegistros();
@@ -40,6 +41,18 @@ export class IndexUsersComponent implements OnInit{
     .subscribe(() => {
       this.cargarRegistros();
     }, error => console.error(error))
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { message: '¿Estás seguro de que deseas borrar este registro?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Registro borrado');
+      }
+    });
   }
   
 }
