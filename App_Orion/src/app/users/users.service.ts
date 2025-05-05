@@ -29,6 +29,14 @@ export class UsersService {
     return this.http.get<UserDTO[]>(this.apiURL, { observe: 'response' });
   }
 
+  public getUser(id: number): Observable<UserDTO>{
+    return this.http.get<UserDTO>(`${this.apiURL}/${id}`);
+  }
+
+  public edit(id: number, user:UserCreateDTO){
+    const formData = this.BuildFormData(user);
+    return this.http.put(`${this.apiURL}/edit/${id}`, formData)
+  }
 
   public borrar(id: number){
     return this.http.delete(`${this.apiURL}/${id}`);

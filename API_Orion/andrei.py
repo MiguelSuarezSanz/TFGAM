@@ -58,9 +58,25 @@ async def get_users():
     finally:
         conn.close()
 
-# POST: crear un nuevo usuario
+# Get: Obtener usaurio por id
+@app.get("/users/{user_id}", response_model=User)
+async def get_user_id(user_id: int):
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            sql = "SELECT * FROM Usuarios WHERE Id = %s"
+            cursor.execute(sql, (user_id,))
+            row = cursor.fetchone()
 
+            if row is None:
+                raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
+            return User(**row)
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
+    finally:
+        conn.close()
 
 # PUT: actualizar un usuario existente
 @app.put("/users/{user_id}", response_model=User)
