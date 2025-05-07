@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form (submit)="onSubmit()" [formGroup]="form">
     <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input type="text" matInput formControlName="nombre">
@@ -11,7 +11,9 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Fecha Nacimiento</mat-label>
-        <input type="date" matInput formControlName="fechaNacimiento">
+        <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         <mat-error></mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">

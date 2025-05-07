@@ -9,6 +9,7 @@ export interface UserCreateDTO {
 }
 
 export interface UserDTO{
+    id: number,
     nombre: string,
     email: string,
     fechaNacimiento: Date,
