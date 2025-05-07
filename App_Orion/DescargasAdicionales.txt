@@ -9,3 +9,4 @@ npm uninstall ngx-bootstrap
 npm uninstall bootstrap
 
 npm install tailwindcss @tailwindcss/vite
+npm install flowbite
