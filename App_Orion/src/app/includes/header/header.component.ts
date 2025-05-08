@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  logo_orion = 'assets/images/logoOrion.png';
 }

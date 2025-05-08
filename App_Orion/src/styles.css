@@ -1,25 +1,56 @@
+@import "tailwindcss";
+
+/* Si usas Flowbite */
+@import 'flowbite';
+
+/* Importar Fuentes Custom */
+@font-face {
+    font-family: 'Audiowide';
+    src: url('../public/assets/fonts/Audiowide.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oxanium';
+    src: url('../public/assets/fonts/Oxanium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpaceGrotesk';
+    src: url('../public/assets/fonts/SpaceGrotesk.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { min-height: 100%; }
+html,
+body {
+    min-height: 100%;
+}
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+}
+
 app-root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
+app-character-index {
+    width: 100%;
+}
+
 body * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    transition: 1s;
     -webkit-transition: all 0.2s ease-out;
     transition: all 0.8s ease-out;
-}
-a {
-    transition: 1s;
-    text-decoration: none;    
-    color: azure;
-    height: fit-content;
 }
 
 /* CLASSES COLORES */
@@ -29,10 +60,12 @@ a {
     background-color: #2A323D;
     color: azure;
 }
+
 .background-color-darker {
     background-color: #161A20;
     color: azure;
 }
+
 .background-color-lighter {
     background-color: #3E4A5A;
     color: azure;
@@ -42,24 +75,27 @@ a {
 .font-color-primary {
     color: azure;
 }
+
 .font-color-secundary {
     color: black;
 }
+
 .font-color-highlight-one {
     color: #2896F5;
 }
+
 .font-color-highlight-two {
     color: #FF3C3C;
 }
 
 /* Background Hover */
 .background-hover-one:hover {
-    box-shadow: inset 1000px 0 0 0 #2896F5;
+    background-color: #2896F5;
     color: azure;
 }
 
 .background-hover-two:hover {
-    box-shadow: inset 1000px 0 0 0 #FF3C3C;
+    background-color: #FF3C3C;
     color: azure;
 }
 
@@ -74,31 +110,31 @@ a {
 
 /* Font Shadow */
 .font-shadow-dark {
-    text-shadow: 3px 3px 5px black;
+    text-shadow: 0px 0px 5px black;
 }
 
 .font-shadow-light {
-    text-shadow: 3px 3px 5px azure;
+    text-shadow: 0px 0px 5px azure;
 }
 
 /* Font Shadow Hover */
 .font-shadow-hover-dark:hover {
-    text-shadow: 3px 3px 5px black;
+    text-shadow: 0px 0px 5px black;
 }
 
-.font-shadow-hover-light:hover  {
-    text-shadow: 3px 3px 5px azure;
+.font-shadow-hover-light:hover {
+    text-shadow: 0px 0px 5px azure;
 }
 
 .font-shadow-hover-one:hover {
-    text-shadow: 3px 3px 5px #2896F5;
+    text-shadow: 0px 0px 5px #2896F5;
 }
 
-.font-shadow-hover-two:hover  {
-    text-shadow: 3px 3px 5px #FF3C3C;
+.font-shadow-hover-two:hover {
+    text-shadow: 0px 0px 5px #FF3C3C;
 }
 
-.font-shadow-hover-tree:hover  {
+.font-shadow-hover-tree:hover {
     text-shadow: 5px 0 2px #FF3C3C, -5px 0 2px #2896F5;
 }
 
@@ -116,7 +152,7 @@ a {
     box-shadow: 3px 3px 5px black;
 }
 
-.box-shadow-hover-light:hover  {
+.box-shadow-hover-light:hover {
     box-shadow: 3px 3px 5px azure;
 }
 
@@ -124,10 +160,98 @@ a {
     box-shadow: 3px 3px 5px #2896F5;
 }
 
-.box-shadow-hover-two:hover  {
+.box-shadow-hover-two:hover {
     box-shadow: 3px 3px 5px #FF3C3C;
 }
 
-.box-shadow-hover-tree:hover  {
+.box-shadow-hover-tree:hover {
     box-shadow: 5px 0 2px #FF3C3C, -5px 0 2px #2896F5;
+}
+
+/* Font Family */
+.font-family-tittle {
+    font-family: 'Audiowide', sans-serif;
+}
+
+.font-family-subtittle {
+    font-family: 'Oxanium', sans-serif;
+}
+
+.font-family-regular {
+    font-family: 'SpaceGrotesk', sans-serif;
+}
+
+/* Box Content */
+.box-content-father {
+    color: azure;
+    border: 0.2rem solid #3E4A5A;
+    border-radius: 8px;
+    box-shadow:
+      inset 0 0 20px rgba(0, 0, 0, 0.8), /* Main inner shadow */
+      inset 0 0 5px rgba(255, 255, 255, 0.1), /* Subtle inner highlight */
+      5px 5px 15px rgba(0, 0, 0, 0.5); /* Outer shadow */
+    position: relative;
+}
+
+.box-content-father::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Simulate scanlines */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2) 4px, transparent 4px);
+    background-size: 100% 10px;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.box-content-father * {
+    z-index: 1;
+    position: relative;
+}
+
+/* Tabs */
+.box-content-tabs {
+    border-bottom: 0.2rem solid #3E4A5A;
+}
+
+.box-content-tabs .tab, .box-content-tabs .tab-active{
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: 0.3s ease; /* Transición suave para el hover */
+}
+
+.box-content-tabs .tab::after, .box-content-tabs .tab-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem; /* Para que se superponga al borde del padre */
+    width: 100%;
+    height: 0.2rem; /* Grosor del borde azul al hacer hover */
+    background-color: transparent; /* Inicialmente transparente */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+    z-index: 2; /* Asegura que el borde del hover esté por encima del borde inicial del hijo */
+}
+
+.box-content-tabs .tab:hover::after {
+    background-color: #2896F5; /* Cambia el color del borde al hacer hover */
+    box-shadow: 0 2px 5px #2896F5;
+}
+
+.box-content-tabs .tab:hover {
+    text-shadow: 0px 0px 5px #2896F5;
+    color: #2896F5;
+}
+
+.box-content-tabs .tab-active::after {
+    background-color: #FF3C3C; /* Cambia el color del borde al hacer hover */
+    box-shadow: 0 2px 5px #FF3C3C;
+}
+
+.box-content-tabs .tab-active {
+    text-shadow: 0px 0px 5px #FF3C3C;
+    color: #FF3C3C;
 }

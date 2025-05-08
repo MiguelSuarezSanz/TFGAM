@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { RouterModule,Routes } from '@angular/router';
 
+import { IndexComponent } from './index/index.component';
 import { CreateUserComponent } from './users/create-user/create-user.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { DetailUserComponent } from './users/detail-user/detail-user.component';
@@ -11,12 +12,15 @@ import { IndexUsersComponent } from './users/index-users/index-users.component';
 
 
 export const routes: Routes = [
+    // Index
+    {path: '', component: IndexComponent},
 
     // Routing Users
     {path: 'users/create', component: CreateUserComponent},
     {path: 'users/edit/:id', component: EditUserComponent},
     {path: 'users/detail/:id', component: DetailUserComponent},
     {path: 'users', component: IndexUsersComponent},
+
     // Routing Characters
     {path: 'Characters', component: CharacterIndexComponent},
 
