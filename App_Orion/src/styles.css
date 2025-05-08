@@ -211,3 +211,47 @@ body * {
     z-index: 1;
     position: relative;
 }
+
+/* Tabs */
+.box-content-tabs {
+    border-bottom: 0.2rem solid #3E4A5A;
+}
+
+.box-content-tabs .tab, .box-content-tabs .tab-active{
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: 0.3s ease; /* Transición suave para el hover */
+}
+
+.box-content-tabs .tab::after, .box-content-tabs .tab-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem; /* Para que se superponga al borde del padre */
+    width: 100%;
+    height: 0.2rem; /* Grosor del borde azul al hacer hover */
+    background-color: transparent; /* Inicialmente transparente */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+    z-index: 2; /* Asegura que el borde del hover esté por encima del borde inicial del hijo */
+}
+
+.box-content-tabs .tab:hover::after {
+    background-color: #2896F5; /* Cambia el color del borde al hacer hover */
+    box-shadow: 0 2px 5px #2896F5;
+}
+
+.box-content-tabs .tab:hover {
+    text-shadow: 0px 0px 5px #2896F5;
+    color: #2896F5;
+}
+
+.box-content-tabs .tab-active::after {
+    background-color: #FF3C3C; /* Cambia el color del borde al hacer hover */
+    box-shadow: 0 2px 5px #FF3C3C;
+}
+
+.box-content-tabs .tab-active {
+    text-shadow: 0px 0px 5px #FF3C3C;
+    color: #FF3C3C;
+}

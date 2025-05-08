@@ -1,14 +1,23 @@
 <div class="flex flex-row gap-4">
 
-    <div class="w-2/3 px-6">
-        
-        <div class="w-full flex flex-row justify-around justify-items-center content-center items-center gap-1">
-            <ins class="box-content-father p-2"> <span class="font-color-highlight-two">Opcion 1</span></ins>
-            <ins class="font-hover-one font-shadow-hover-one box-content-father p-2"><span>Opcion 1</span></ins>
-            <ins class="font-hover-one font-shadow-hover-one box-content-father p-2"><span>Opcion 1</span></ins>
-            <ins class="font-hover-one font-shadow-hover-one box-content-father p-2"><span>Opcion 1</span></ins>
-            <ins class="font-hover-one font-shadow-hover-one box-content-father p-2"><span>Opcion 1</span></ins>
-            <ins class="font-hover-one font-shadow-hover-one box-content-father p-2"><span>Opcion 1</span></ins>
+    <div class="w-2/3 px-6 flex flex-col gap-4">
+
+        <div
+            class="w-full flex flex-row justify-around justify-items-center content-center items-center gap-1 box-content-tabs">
+            <b class="p-2 tab tab-active" data-tab="personales">Datos Personales</b>
+            <b class="p-2 tab" data-tab="combate">Combate</b>
+            <b class="p-2 tab" data-tab="epicos">Momentos Epicos</b>
+            <b class="p-2 tab" data-tab="pasivas">Pasivas</b>
+            <b class="p-2 tab" data-tab="inventario">Inventario</b>
+            <b class="p-2 tab" data-tab="estado">Efectos de estado</b>
+        </div>
+        <div class="w-full tab-content">
+            <p class="p-1 active-content" id="personales">Contenido de Datos Personales.</p>
+            <p class="p-1" id="combate">Contenido de Combate.</p>
+            <p class="p-1" id="epicos">Contenido de Momentos Épicos.</p>
+            <p class="p-1" id="pasivas">Contenido de Pasivas.</p>
+            <p class="p-1" id="inventario">Contenido del Inventario.</p>
+            <p class="p-1" id="estado">Contenido de Efectos de Estado.</p>
         </div>
 
     </div>
@@ -19,30 +28,35 @@
 
             <div class="w-max flex flex-col gap-2 box-content-father p-4">
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">LV:<span id="LV">1</span></div>
-                    <div class="flex-grow text-center">PX:<span id="PX">10</span></div>
+                    <div class="flex-grow text-center">LV: <span id="LV">1</span></div>
+                    <div class="flex-grow text-center">PX: <span id="PX">10</span></div>
                 </div>
-        
+
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">PS:<span id="PS">10</span>/<span id="PSactual">10</span></div>
+                    <div class="flex-grow text-center">PS: <span id="PS">10</span>/<span id="PSactual">10</span></div>
                 </div>
-        
+
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">Acciones:<span id="ACT">1</span></div>
-                    <div class="flex-grow text-center">Reacciones:<span id="REC">1</span></div>
+                    <div class="flex-grow text-center">Acciones: <span id="ACT">1</span></div>
+                    <div class="flex-grow text-center">Reacciones: <span id="REC">1</span></div>
                 </div>
-        
+
                 <div class="flex flex-row gap-2">
-                    <div class="flex-grow text-center">Iniciativa:<span id="INI">1</span></div>
-                    <div class="flex-grow text-center">Oportunidad:<span id="OPT">1</span></div>
+                    <div class="flex-grow text-center">Iniciativa: <span id="INI">1</span></div>
+                    <div class="flex-grow text-center">Oportunidad: <span id="OPT">1</span></div>
                 </div>
             </div>
 
-            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-2 box-content-father p-4">
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one">Nuevo Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one">Importar Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one">Exportar Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one">Borrar Personaje</button>
+            <div
+                class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-2 box-content-father p-4">
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Editar
+                    Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Nuevo
+                    Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Guardar
+                    Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Cargar
+                    Personaje</button>
             </div>
 
         </div>
@@ -51,32 +65,38 @@
 
             <div class="flex flex-row gap-1 w-full justify-between">
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>FUE</span>
                     <span id="FUE">0</span>
                 </div>
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>DES</span>
                     <span id="DES">0</span>
                 </div>
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>CON</span>
                     <span id="CON">0</span>
                 </div>
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>SAB</span>
                     <span id="SAB">0</span>
                 </div>
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>INT</span>
                     <span id="INT">0</span>
                 </div>
 
-                <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <span>ESP</span>
                     <span id="ESP">0</span>
                 </div>
@@ -89,7 +109,8 @@
 
             <div class="flex flex-column gap-2 justify-center justify-items-center content-center items-center w-1/2">
 
-                <div class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <img src="" alt="dado">
                     <span id="ESP">Name</span>
                     <span id="ESP">1dX</span>
@@ -100,13 +121,14 @@
 
             <div class="flex flex-column gap-2 justify-center justify-items-center content-center items-center w-1/2">
 
-                <div class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <div
+                    class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
                     <img src="" alt="dado">
                     <span id="ESP">Name</span>
                     <span id="ESP">1dX</span>
                     <span id="ESP">+X</span>
                 </div>
-                
+
             </div>
 
         </div>
