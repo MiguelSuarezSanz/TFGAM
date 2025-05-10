@@ -29,13 +29,12 @@ export class UsersService {
     return this.http.get<UserDTO[]>(this.apiURL, { observe: 'response' });
   }
 
-  public getUser(id: number): Observable<UserDTO>{
-    return this.http.get<UserDTO>(`${this.apiURL}/${id}`);
+  public getUser(id: number): Observable<HttpResponse<UserDTO>> {
+    return this.http.get<UserDTO>(`${this.apiURL}/${id}`, { observe: 'response' });
   }
 
-  public edit(id: number, user:UserCreateDTO){
-    const formData = this.BuildFormData(user);
-    return this.http.put(`${this.apiURL}/edit/${id}`, formData)
+  public edit(userId: number, user: UserCreateDTO): Observable<HttpResponse<any>> {
+    return this.http.put<HttpResponse<any>>(`${this.apiURL}/${userId}`, user, { observe: 'response' });
   }
 
   public borrar(id: number){
@@ -45,16 +44,16 @@ export class UsersService {
    private BuildFormData(user: UserCreateDTO): FormData{
     const formData = new FormData();
 
-    formData.append('nombre', user.nombre)
+    formData.append('nombre', user.Nombre)
   
-    formData.append('email', user.email)
-    formData.append('fechaNacimiento', formatDate(user.fechaNacimiento))
-    formData.append('password', user.password)
-    if(user.perfil){
-      formData.append('perfil', user.perfil)
+    formData.append('email', user.Email)
+    formData.append('fechaNacimiento', formatDate(user.FechaNacimiento))
+    formData.append('password', user.Password)
+    if(user.Perfil){
+      formData.append('perfil', user.Perfil)
     }
-    formData.append('privilegios', user.privilegios)
-    formData.append('bloqueado', user.bloqueado)
+    formData.append('privilegios', user.Privilegios)
+    formData.append('bloqueado', user.Bloqueado)
 
     return formData;
    }
