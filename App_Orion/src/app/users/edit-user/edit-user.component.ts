@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormUserComponent } from "../form-user/form-user.component";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,34 +17,43 @@ export class EditUserComponent implements OnInit {
   }
 
   model!: UserDTO;
-  errors: string[] = []
+
+  errors: string[] = [];
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       const userId = params['id'];
-      debugger
+
       if (userId) {
         this.usersService.getUser(userId).subscribe({
-          next: (user: UserDTO | undefined) => {
-            if (user) {
-              this.model = user;
-            } else {
-              //this.router.navigate(['/users']);
+          next: (response) => {
+            if(response.body !== null){
+              this.model = response.body;
+            }else{
+              this.router.navigate(['/users']);
             }
           },
-          //error: () => this.router.navigate(['/users'])
+          error: (error) => {
+            console.error('Error loading user:', error);
+          }
         });
       } else {
-        // this.router.navigate(['/users']);
-      }
+        this.router.navigate(['/users']);
+      };
     });
   }
 
 
   saveChanges(user: UserCreateDTO){
-    this.usersService.edit(this.model.id, user)
-      .subscribe(() => {
-        this.router.navigate([`/user/${this.model.id}`])
-      })
+    if (this.model !== null) {
+      this.usersService.edit(this.model.Id, user).subscribe({
+        next: () => {
+          this.router.navigate([`/user/${this.model.Id}`]);
+        },
+        error: (err) => {
+          console.error('Error al guardar los cambios:', err);
+        }
+      });
+    }
   }
 }

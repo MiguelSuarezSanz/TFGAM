@@ -1,37 +1,40 @@
 <form (submit)="onSubmit()" [formGroup]="form">
-    <mat-form-field appearance="outline">
+    <mat-form-field >
         <mat-label>Nombre</mat-label>
-        <input type="text" matInput formControlName="nombre">
+        <input type="text" matInput formControlName="Nombre">
         <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
+    </mat-form-field><br>
+    <mat-form-field >
         <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email">
+        <input type="email" matInput formControlName="Email">
         <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
+    </mat-form-field><br>
+    <mat-form-field >
         <mat-label>Fecha Nacimiento</mat-label>
-        <input matInput formControlName="fechaNacimiento" [matDatepicker]="picker">
+        <input matInput formControlName="FechaNacimiento" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
+    </mat-form-field><br>
+    <mat-form-field >
         <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password">
+        <input type="password" matInput formControlName="Password">
         <mat-error></mat-error>
-    </mat-form-field>
+    </mat-form-field><br>
     <div class="form-control">
         <label for="perfil">Imagen Perfil</label>
-        <input type="file" formControlName="perfil" id="perfil">
-      </div>
-      <mat-form-field appearance="outline">
+        <input type="file" formControlName="Perfil">
+      </div><br>
+      <mat-form-field>
         <mat-label>Privilegios</mat-label>
-        <mat-select formControlName="privilegios">
+        <mat-select formControlName="Privilegios">
           <mat-option *ngFor="let p of privilegios" [value]="p">
             {{ p }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
-    <mat-checkbox formControlName="bloqueado">Bloqueado</mat-checkbox>
+      </mat-form-field><br>
+    <mat-checkbox formControlName="Bloqueado">Bloqueado</mat-checkbox><br>
+
+    <button mat-button [disabled]="form.invalid">Guardar</button>
+    <a mat-button >Cancelar</a>
 </form>
