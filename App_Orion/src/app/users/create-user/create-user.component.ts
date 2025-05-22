@@ -22,10 +22,19 @@ export class CreateUserComponent implements OnInit {
   ngOnInit(): void {}
 
   saveChange(user: UserCreateDTO) {
-    this.usersService.crear(user)
-      .subscribe(
-        (id: number) => this.router.navigate(['users/' + id]),
-        errors => this.errors = parseErrorsApi(errors)
-      );
+    this.usersService.crear(user).subscribe({
+      next: (id: number) => {
+        console.log("Usuario creado con éxito, ID:", id); 
+        this.router.navigate(['users/' + id]);
+      },
+      error: (err) => {
+        console.error("Error al crear usuario:", err);
+        if (err.status === 422) {
+          this.errors = err.error.detail;
+        } else {
+          this.errors = ['Error inesperado al crear el usuario.'];
+        }
+      }
+    });
   }
 }

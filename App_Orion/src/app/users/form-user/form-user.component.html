@@ -27,13 +27,13 @@
       </div><br>
       <mat-form-field>
         <mat-label>Privilegios</mat-label>
-        <mat-select formControlName="Privilegios">
+        <mat-select formControlName="Privilegios" [disabled]="!isAdmin">
           <mat-option *ngFor="let p of privilegios" [value]="p">
             {{ p }}
           </mat-option>
         </mat-select>
       </mat-form-field><br>
-    <mat-checkbox formControlName="Bloqueado">Bloqueado</mat-checkbox><br>
+    <mat-checkbox formControlName="Bloqueado" [disabled]="!isAdmin">Bloqueado</mat-checkbox><br>
 
     <button mat-button [disabled]="form.invalid">Guardar</button>
     <a mat-button >Cancelar</a>

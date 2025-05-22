@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { UserCreateDTO, UserDTO } from './user';
+import { UserCreateDTO, UserDTO, UserLoginDTO } from './user';
 import { Observable } from 'rxjs';
 import { formatDate } from '../utilidades/utilidades';
 
@@ -20,12 +20,14 @@ export class UsersService {
    private apiURL = environment.apiURL + "users";
 
    public crear(user: UserCreateDTO): Observable<number> {
-    const formData = this.BuildFormData(user);
+    let formData = this.BuildFormData(user);
 
-    return this.http.post<number>(this.apiURL+"create", formData);
-   }
+      return this.http.post<number>(this.apiURL, formData);
+      
+      
+  }
 
-   public getAll(): Observable<HttpResponse<UserDTO[]>> {
+  public getAll(): Observable<HttpResponse<UserDTO[]>> {
     return this.http.get<UserDTO[]>(this.apiURL, { observe: 'response' });
   }
 
@@ -41,19 +43,22 @@ export class UsersService {
     return this.http.delete(`${this.apiURL}/${id}`);
   }
 
+  public logIn(user: UserLoginDTO): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiURL}/login`, user);
+  }
+
    private BuildFormData(user: UserCreateDTO): FormData{
     const formData = new FormData();
 
-    formData.append('nombre', user.Nombre)
-  
-    formData.append('email', user.Email)
-    formData.append('fechaNacimiento', formatDate(user.FechaNacimiento))
-    formData.append('password', user.Password)
-    if(user.Perfil){
-      formData.append('perfil', user.Perfil)
+    formData.append('nombre', user.Nombre);
+    formData.append('email', user.Email);
+    formData.append('fechaNacimiento', formatDate(user.FechaNacimiento));
+    formData.append('password', user.Password);
+    if (user.Perfil) {
+      formData.append('perfil', user.Perfil ? user.Perfil : '');
     }
-    formData.append('privilegios', user.Privilegios)
-    formData.append('bloqueado', user.Bloqueado)
+    formData.append('privilegios', user.Privilegios);
+    formData.append('bloqueado', user.Bloqueado ? 'true' : 'false'); 
 
     return formData;
    }

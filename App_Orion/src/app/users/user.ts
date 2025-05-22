@@ -18,3 +18,18 @@ export interface UserDTO{
     Privilegios: string, 
     Bloqueado: string
 }
+
+export interface UserLoginDTO{
+    Email: string,
+    Password: string,
+}
+
+export interface credencialesUsuario{
+    Email: string;
+    Password: string;
+}
+
+export interface respuestaAutenticacion{
+    token: string;
+    expiracion: Date;
+}

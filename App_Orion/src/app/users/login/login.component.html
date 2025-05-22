@@ -1,0 +1,18 @@
+<form (submit)="onSubmit()" [formGroup]="form">
+    <mat-form-field >
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="Email">
+        <mat-error></mat-error>
+    </mat-form-field><br>
+    <mat-form-field >
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="Password">
+        <mat-error></mat-error>
+    </mat-form-field><br>
+
+    
+    <mat-checkbox formControlName="Bloqueado">Bloqueado</mat-checkbox><br>
+
+    <button mat-button [disabled]="form.invalid">Iniciar</button>
+    <a mat-button>Cancelar</a>
+</form>

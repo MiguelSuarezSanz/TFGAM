@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms'
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+
 
 
 @Component({
@@ -27,14 +28,13 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ReactiveFormsModule],
   templateUrl: './form-user.component.html',
-  styleUrl: './form-user.component.css'
+  styleUrls: ['./form-user.component.css']
 })
 export class FormUserComponent implements OnInit, OnChanges{
+  isAdmin: boolean = false;
   
-  constructor(private formBuilder: FormBuilder){
-    
-  }
-
+  constructor(private formBuilder: FormBuilder) {}
+  
   form!: FormGroup;
   
   @Input()
@@ -51,13 +51,13 @@ export class FormUserComponent implements OnInit, OnChanges{
 
   ngOnInit(): void{
     this.form = this.formBuilder.group({
-      Nombre: ['', {validators: [Validators.required]}],
-      Email: ['', { validators: [Validators.email, Validators.required] }],
-      FechaNacimiento: ['', {validators: [Validators.required]}],
-      Password: ['', {validators: [Validators.required]}],
-      Privilegios: ['', {validators: [Validators.required]}],
-      Bloqueado: [''],
-      Perfil: ['']
+      Nombre: ['', { validators: [Validators.required] }],
+      Email: ['', { validators: [Validators.required, Validators.email] }],
+      FechaNacimiento: ['', { validators: [Validators.required] }],
+      Password: ['', { validators: [Validators.required] }],
+      Privilegios: ['', { validators: [Validators.required] }],
+      Bloqueado: [''],  // Campo opcional
+      Perfil: ['']      // Campo opcional
     });
 
     if(this.model){
@@ -78,14 +78,13 @@ export class FormUserComponent implements OnInit, OnChanges{
     this.form.get('perfil')?.setValue(file);
   }
 
-
-
-  onSubmit(){
-    if(!this.imageChange){
-      this.form.patchValue({'perfil':null});
+  onSubmit() {
+    if (this.form.valid) {
+        console.log("Datos del formulario enviados:", this.form.value);  // Log para depuración
+        this.OnSubmit.emit(this.form.value);
+    } else {
+        console.error("Formulario inválido:", this.form.errors);  // Log de errores
     }
-
-    this.OnSubmit.emit(this.form.value);
   }
 
 }
