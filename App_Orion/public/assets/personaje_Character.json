@@ -1,0 +1,189 @@
+{
+    "datos_combate": {
+      "LV": "1",
+      "PX": "10",
+      "PS": "10",
+      "ACT": "1",
+      "REC": "1",
+      "INI": "1",
+      "OPT": "1",
+      "dmg": "1",
+      "dmg_type": "Cortante",
+      "res_con": "1",
+      "res_cor": "1",
+      "res_per": "1",
+      "amulento": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "stats": {
+      "FUE": "0",
+      "DES": "0",
+      "CON": "0",
+      "SAB": "0",
+      "INT": "0",
+      "ESP": "0"
+    },
+    "check_Atletismo": {
+      "img_Atletismo": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Atletismo": "Atletismo",
+      "bonus_Atletismo": "+X",
+      "stat_a_escalar_Atletismo": "FUE"
+    },
+    "check_Robo": {
+      "img_Robo": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Robo": "Robo",
+      "bonus_Robo": "+X",
+      "stat_a_escalar_Robo": "FUE"
+    },
+    "check_Sigilo": {
+      "img_Sigilo": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Sigilo": "Sigilo",
+      "bonus_Sigilo": "+X",
+      "stat_a_escalar_Sigilo": "FUE"
+    },
+    "check_Acrobacias": {
+      "img_Acrobacias": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Acrobacias": "Acrobacias",
+      "bonus_Acrobacias": "+X",
+      "stat_a_escalar_Acrobacias": "FUE"
+    },
+    "check_Quimica": {
+      "img_Quimica": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Quimica": "Quimica",
+      "bonus_Quimica": "+X",
+      "stat_a_escalar_Quimica": "FUE"
+    },
+    "check_Sociedad": {
+      "img_Sociedad": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Sociedad": "Sociedad",
+      "bonus_Sociedad": "+X",
+      "stat_a_escalar_Sociedad": "FUE"
+    },
+    "check_Naturaleza": {
+      "img_Naturaleza": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Naturaleza": "Naturaleza",
+      "bonus_Naturaleza": "+X",
+      "stat_a_escalar_Naturaleza": "FUE"
+    },
+    "check_Percepcion": {
+      "img_Percepcion": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Percepcion": "Percepcion",
+      "bonus_Percepcion": "+X",
+      "stat_a_escalar_Percepcion": "FUE"
+    },
+    "check_Conocimiento_Poder": {
+      "img_Conocimiento_Poder": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Conocimiento_Poder": "Conocimiento_Poder",
+      "bonus_Conocimiento_Poder": "+X",
+      "stat_a_escalar_Conocimiento_Poder": "FUE"
+    },
+    "check_Medicina": {
+      "img_Medicina": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Medicina": "Medicina",
+      "bonus_Medicina": "+X",
+      "stat_a_escalar_Medicina": "FUE"
+    },
+    "check_Tecnologia": {
+      "img_Tecnologia": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Tecnologia": "Tecnologia",
+      "bonus_Tecnologia": "+X",
+      "stat_a_escalar_Tecnologia": "FUE"
+    },
+    "check_Supervivencia": {
+      "img_Supervivencia": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Supervivencia": "Supervivencia",
+      "bonus_Supervivencia": "+X",
+      "stat_a_escalar_Supervivencia": "FUE"
+    },
+    "check_Investigacion": {
+      "img_Investigacion": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Investigacion": "Investigacion",
+      "bonus_Investigacion": "+X",
+      "stat_a_escalar_Investigacion": "FUE"
+    },
+    "check_Trato_Animales": {
+      "img_Trato_Animales": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Trato_Animales": "Trato_Animales",
+      "bonus_Trato_Animales": "+X",
+      "stat_a_escalar_Trato_Animales": "FUE"
+    },
+    "check_Intimidacion": {
+      "img_Intimidacion": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Intimidacion": "Intimidacion",
+      "bonus_Intimidacion": "+X",
+      "stat_a_escalar_Intimidacion": "FUE"
+    },
+    "check_Engaño": {
+      "img_Engaño": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Engaño": "Engaño",
+      "bonus_Engaño": "+X",
+      "stat_a_escalar_Engaño": "FUE"
+    },
+    "check_Persuasion": {
+      "img_Persuasion": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Persuasion": "Persuasion",
+      "bonus_Persuasion": "+X",
+      "stat_a_escalar_Persuasion": "FUE"
+    },
+    "check_Actuacion": {
+      "img_Actuacion": "http://localhost:4300/assets/images/dice/d2.png",
+      "name_Actuacion": "Actuacion",
+      "bonus_Actuacion": "+X",
+      "stat_a_escalar_Actuacion": "FUE"
+    },
+    "datos_personales": {
+      "Nombre": "Character",
+      "Edad": "20",
+      "Altura": "1,65m",
+      "Ciudad": "Metropolis",
+      "Raza": "Humano",
+      "Genero": "Binario",
+      "Peso": "95kg",
+      "Poder": "Superfuerza",
+      "character_image": "",
+      "character_desc": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam consectetur cupiditate repellendus accusantium eveniet dolores eaque dolor quos illo rem pariatur nisi a porro temporibus sed aut deserunt, dolore similique? Dolorem rerum expedita, ea molestias possimus sit reiciendis molestiae totam quas, dolor nihil corrupti dignissimos dolorum blanditiis, iste autem recusandae voluptas corporis qui. Eos temporibus quos sit vero ducimus excepturi odit iste, provident illo consequuntur voluptate porro omnis distinctio amet assumenda expedita harum nisi cum quae dolorem exercitationem enim. Repudiandae inventore quisquam tempora amet reiciendis iste exercitationem ipsum tempore esse quaerat! Eum, neque? Saepe ducimus earum porro similique nulla, minima ullam sunt dolorum provident debitis eaque reprehenderit suscipit! Ullam amet nostrum quis. Nostrum non animi repellat temporibus cupiditate. Molestiae minus mollitia consequatur tempora quod corrupti illo laborum atque voluptatum quia exercitationem omnis dolor cupiditate excepturi maiores quaerat, officiis ratione impedit obcaecati!"
+    },
+    "momentos_epicos_1": {
+      "momento_epico_title_1": "Momento Epico 1",
+      "momento_epico_content_1": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "momentos_epicos_2": {
+      "momento_epico_title_2": "Momento Epico 2",
+      "momento_epico_content_2": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "momentos_epicos_3": {
+      "momento_epico_title_3": "Momento Epico 3",
+      "momento_epico_content_3": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "momentos_epicos_4": {
+      "momento_epico_title_4": "Momento Epico 4",
+      "momento_epico_content_4": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "momentos_epicos_5": {
+      "momento_epico_title_5": "Momento Epico 5",
+      "momento_epico_content_5": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "momentos_epicos_6": {
+      "momento_epico_title_6": "Momento Epico 6",
+      "momento_epico_content_6": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "pasivas_1": {
+      "pasiva_title_1": "Pasiva 1",
+      "pasiva_content_1": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "pasivas_2": {
+      "pasiva_title_2": "Pasiva 2",
+      "pasiva_content_2": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "pasivas_3": {
+      "pasiva_title_3": "Pasiva 3",
+      "pasiva_content_3": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "pasivas_4": {
+      "pasiva_title_4": "Pasiva 4",
+      "pasiva_content_4": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    },
+    "pasivas_5": {
+      "pasiva_title_5": "Pasiva 5",
+      "pasiva_content_5": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!"
+    }
+  }

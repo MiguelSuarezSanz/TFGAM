@@ -1,138 +1,252 @@
-<div class="flex flex-row gap-4">
+<div class="flex flex-row-reverse gap-4 flex-column-l">
 
-    <div class="w-2/3 px-6 flex flex-col gap-4">
+    <!-- ASIDE -->
+    <div class="flex flex-col gap-5 items-center">
 
-        <div
-            class="w-full flex flex-row justify-around justify-items-center content-center items-center gap-1 box-content-tabs">
-            <b class="p-2 tab tab-active" data-tab="personales">Datos Personales</b>
-            <b class="p-2 tab" data-tab="combate">Combate</b>
-            <b class="p-2 tab" data-tab="epicos">Momentos Epicos</b>
-            <b class="p-2 tab" data-tab="pasivas">Pasivas</b>
-            <b class="p-2 tab" data-tab="inventario">Inventario</b>
-            <b class="p-2 tab" data-tab="estado">Efectos de estado</b>
-        </div>
-        <div class="w-full tab-content">
-            <p class="p-1 active-content" id="personales">Contenido de Datos Personales.</p>
-            <p class="p-1" id="combate">Contenido de Combate.</p>
-            <p class="p-1" id="epicos">Contenido de Momentos Épicos.</p>
-            <p class="p-1" id="pasivas">Contenido de Pasivas.</p>
-            <p class="p-1" id="inventario">Contenido del Inventario.</p>
-            <p class="p-1" id="estado">Contenido de Efectos de Estado.</p>
-        </div>
+        <!-- PRIMARY BOX -->
+        <div class="max-w-max flex flex-row gap-2 justify-center justify-items-center content-center items-center flex-column-xl">
 
-    </div>
-
-    <div class="flex flex-col gap-5">
-
-        <div class="flex flex-row gap-2 justify-center justify-items-center content-center items-center">
-
+            <!-- MINI STATS BOX -->
             <div class="w-max flex flex-col gap-2 box-content-father p-4">
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">LV: <span id="LV">1</span></div>
-                    <div class="flex-grow text-center">PX: <span id="PX">10</span></div>
+                    <div class="flex-grow text-center">LV: <span id="LV" class="character-form" data-key="datos_combate">1</span></div>
+                    <div class="flex-grow text-center">PX: <span id="PX" class="character-form" data-key="datos_combate">10</span></div>
                 </div>
 
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">PS: <span id="PS">10</span>/<span id="PSactual">10</span></div>
+                    <div class="flex-grow text-center">PS: <span id="PS" class="character-form" data-key="datos_combate">10</span>/<span id="PSactual">10</span></div>
                 </div>
 
                 <div class="flex flex-row">
-                    <div class="flex-grow text-center">Acciones: <span id="ACT">1</span></div>
-                    <div class="flex-grow text-center">Reacciones: <span id="REC">1</span></div>
+                    <div class="flex-grow text-center">Acciones: <span id="ACT" class="character-form" data-key="datos_combate">1</span></div>
+                    <div class="flex-grow text-center">Reacciones: <span id="REC" class="character-form" data-key="datos_combate">1</span></div>
                 </div>
 
                 <div class="flex flex-row gap-2">
-                    <div class="flex-grow text-center">Iniciativa: <span id="INI">1</span></div>
-                    <div class="flex-grow text-center">Oportunidad: <span id="OPT">1</span></div>
+                    <div class="flex-grow text-center">Iniciativa: <span id="INI" class="character-form" data-key="datos_combate">1</span></div>
+                    <div class="flex-grow text-center">Oportunidad: <span id="OPT" class="character-form" data-key="datos_combate">1</span></div>
                 </div>
             </div>
+            <!-- END MINI STATS BOX -->
 
-            <div
-                class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-2 box-content-father p-4">
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Editar
-                    Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Nuevo
-                    Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Guardar
-                    Personaje</button>
-                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer">Cargar
-                    Personaje</button>
+            <!-- BUTTONS BOX -->
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-2 box-content-father p-4">
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="editar_personaje">Editar Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="nuevo_personaje">Nuevo Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="guardar_personaje">Guardar Personaje</button>
+                <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="cargar_personaje">Cargar Personaje</button>
+            </div>
+            <!-- END BUTTONS BOX -->
+
+        </div>
+        <!-- END PRIMARY BOX -->
+
+        <!-- MAIN STAT BOX -->
+        <div class="flex flex-row gap-5 w-full justify-evenly flex-wrap">
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>FUE</span>
+                <span id="FUE" class="character-form" data-key="stats">0</span>
+            </div>
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>DES</span>
+                <span id="DES" class="character-form" data-key="stats">0</span>
+            </div>
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>CON</span>
+                <span id="CON" class="character-form" data-key="stats">0</span>
+            </div>
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>SAB</span>
+                <span id="SAB" class="character-form" data-key="stats">0</span>
+            </div>
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>INT</span>
+                <span id="INT" class="character-form" data-key="stats">0</span>
+            </div>
+
+            <div class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
+                <span>ESP</span>
+                <span id="ESP" class="character-form" data-key="stats">0</span>
             </div>
 
         </div>
+        <!-- END MAIN STAT BOX -->
 
-        <div>
-
-            <div class="flex flex-row gap-1 w-full justify-between">
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>FUE</span>
-                    <span id="FUE">0</span>
-                </div>
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>DES</span>
-                    <span id="DES">0</span>
-                </div>
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>CON</span>
-                    <span id="CON">0</span>
-                </div>
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>SAB</span>
-                    <span id="SAB">0</span>
-                </div>
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>INT</span>
-                    <span id="INT">0</span>
-                </div>
-
-                <div
-                    class="w-max flex flex-col justify-center justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <span>ESP</span>
-                    <span id="ESP">0</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="flex flex-row gap-2 justify-center justify-items-center content-center items-center">
-
-            <div class="flex flex-column gap-2 justify-center justify-items-center content-center items-center w-1/2">
-
-                <div
-                    class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <img src="" alt="dado">
-                    <span id="ESP">Name</span>
-                    <span id="ESP">1dX</span>
-                    <span id="ESP">+X</span>
-                </div>
-
-            </div>
-
-            <div class="flex flex-column gap-2 justify-center justify-items-center content-center items-center w-1/2">
-
-                <div
-                    class="w-full flex flex-row justify-between justify-items-center content-center items-center gap-1 box-content-father px-4 py-2">
-                    <img src="" alt="dado">
-                    <span id="ESP">Name</span>
-                    <span id="ESP">1dX</span>
-                    <span id="ESP">+X</span>
-                </div>
-
-            </div>
-
-        </div>
-
+        <!-- MAIN CHECK BOX -->
+        <div class="flex flex-col gap-2 justify-center justify-items-center content-center items-center flex-column-m w-full" id="checks"></div>
+        <!-- END MAIN CHECK BOX -->
 
     </div>
+    <!-- END ASIDE -->
+
+    <div class="px-6 flex flex-col flex-grow gap-4">
+
+        <!-- TABS HEADER -->
+        <div class="w-full flex flex-row justify-around justify-items-center content-center items-center box-content-tabs flex-column-m m-gap">
+            <b (click)="onTabClick($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab-active" data-tab="personales">Datos Personales</b>
+            <b (click)="onTabClick($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="combate">Combate</b>
+            <b (click)="onTabClick($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="epicos">Momentos Epicos</b>
+            <b (click)="onTabClick($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="pasivas">Pasivas</b>
+        </div>
+        <!-- END TABS HEADER -->
+
+        <!-- TABS CONTENT -->
+        <div class="w-full">
+
+            <!-- TABS CONTENT PERSONALES -->
+            <div class="tab-content py-1 px-4 flex flex-col justify-center justify-items-center content-center items-center gap-4" id="personales">
+
+                <!-- BOX CARACTERISTICS -->
+                <div class="flex flex-row w-full flex-wrap gap-4 justify-around flex-column-m">
+
+                    <!-- BOX MINI CARACTERISTICS 1 -->
+                    <div class="flex flex-row flex-wrap flex-grow gap-2">
+
+                        <div class="w-max flex flex-col gap-2">
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Nombre:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Edad:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Altura:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Ciudad:</span></div>
+                        </div>
+    
+                        <div class="flex flex-col flex-grow gap-2">
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Nombre" class="character-form" data-key="datos_personales">Character</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Edad" class="character-form" data-key="datos_personales">20</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Altura" class="character-form" data-key="datos_personales">1,65m</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Ciudad" class="character-form" data-key="datos_personales">Metropolis</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END BOX MINI CARACTERISTICS 1 -->
+
+                    <!-- BOX MINI CARACTERISTICS 2 -->
+                    <div class="flex flex-row flex-wrap flex-grow gap-2">
+
+                        <div class="w-max flex flex-col gap-2">
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Raza:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Genero:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Peso:</span></div>
+                            <div class="w-full py-1 px-2 box-content-father flex justify-center justify-items-center content-center items-center"><span>Poder:</span></div>
+                        </div>
+    
+                        <div class="flex flex-col flex-grow gap-2">
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Raza" class="character-form" data-key="datos_personales">Humano</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Genero" class="character-form" data-key="datos_personales">Binario</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Peso" class="character-form" data-key="datos_personales">95kg</span>
+                            </div>
+                            <div class="w-full py-1 px-2 box-content-father">
+                                <span id="Poder" class="character-form" data-key="datos_personales">Superfuerza</span>
+                            </div>
+                        </div>
+                            
+                    </div>
+                    <!-- END BOX MINI CARACTERISTICS 2 -->
+
+                </div>
+                <!-- END BOX CARACTERISTICS -->
+
+
+                <!-- BOX EXTRA -->
+                <div class="flex-row gap-4 flex-column-m">
+
+                    <!-- BOX CHARACTER VISUAL -->
+                    <div class="flex flex-col justify-center justify-items-center content-center items-center gap-4 box-content-father p-4 flex-grow my-4">
+    
+                        <div class="flex justify-center justify-items-center content-center items-center box-border-bottom">
+                            <span>Visual del Personaje</span>
+                        </div>
+        
+                        <div class="max-w-full flex justify-center justify-items-center content-center items-center">
+                            <img [src]="img_placeholder" alt="Imagen del personaje" class="w-full character-form" id="character_image" data-key="datos_personales">
+                        </div>
+    
+                    </div>
+                    <!-- END BOX CHARACTER VISUAL -->
+
+                    <!-- BOX DESCRIPTION -->
+                    <div class="flex flex-col justify-center justify-items-center content-center items-center gap-2 box-content-father px-4 py-2 flex-grow my-4">
+        
+                        <div class="flex justify-center justify-items-center content-center items-center box-border-bottom">
+                            <span>Descripcion del Personaje</span>
+                        </div>
+            
+                        <div class="flex justify-center justify-items-center content-center items-center">
+                            <span class="character-form" id="character_desc" data-key="datos_personales">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam consectetur cupiditate repellendus accusantium eveniet dolores eaque dolor quos illo rem pariatur nisi a porro temporibus sed aut deserunt, dolore similique? Dolorem rerum expedita, ea molestias possimus sit reiciendis molestiae totam quas, dolor nihil corrupti dignissimos dolorum blanditiis, iste autem recusandae voluptas corporis qui. Eos temporibus quos sit vero ducimus excepturi odit iste, provident illo consequuntur voluptate porro omnis distinctio amet assumenda expedita harum nisi cum quae dolorem exercitationem enim. Repudiandae inventore quisquam tempora amet reiciendis iste exercitationem ipsum tempore esse quaerat! Eum, neque? Saepe ducimus earum porro similique nulla, minima ullam sunt dolorum provident debitis eaque reprehenderit suscipit! Ullam amet nostrum quis. Nostrum non animi repellat temporibus cupiditate. Molestiae minus mollitia consequatur tempora quod corrupti illo laborum atque voluptatum quia exercitationem omnis dolor cupiditate excepturi maiores quaerat, officiis ratione impedit obcaecati!</span>
+                        </div>
+        
+                    </div>
+                    <!-- BOX DESCRIPTION -->
+
+                </div>
+                <!-- END BOX EXTRA -->
+
+            </div>
+            <!-- END TABS CONTENT PERSONALES -->
+            
+            <!-- TABS CONTENT COMBATE -->
+            <div class="tab-content hidden" id="combate">
+
+                <!-- BOX ARMA -->
+                <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
+                    <p class="box-border-bottom text-center">Arma</p>
+                    <span class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                    <div class="flex flex-row justify-evenly flex-column-m">
+                        <p class="text-center">Ataque: <span id="dmg" class="character-form" data-key="datos_combate">1</span></p>
+                        <p class="text-center">Tipo de daño: <span id="dmg_type" class="character-form" data-key="datos_combate">Cortante</span></p>
+                    </div>
+                </div>
+                <!-- END BOX ARMA -->
+
+                <!-- BOX ARMADURA -->
+                <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
+                    <p class="box-border-bottom text-center">Armadura</p>
+                    <span class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                    <div class="flex flex-row justify-evenly flex-column-m">
+                        <p class="text-center">Resistencia Contundente: <span id="res_con" class="character-form" data-key="datos_combate">1</span></p>
+                        <p class="text-center">Resistencia Cortante: <span id="res_cor" class="character-form" data-key="datos_combate">1</span></p>
+                        <p class="text-center">Resistencia Perforante: <span id="res_per" class="character-form" data-key="datos_combate">1</span></p>
+                    </div>
+                </div>
+                <!-- END BOX ARMADURA -->
+
+                <!-- BOX AMULETO -->
+                <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
+                    <p class="box-border-bottom text-center">Amuleto</p>
+                    <span class="p-2" id="amulento" class="character-form" data-key="datos_combate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                </div>
+                <!-- END BOX AMULETO -->
+
+            </div>
+            <!-- END TABS CONTENT COMBATE -->
+
+            <!-- TABS CONTENT MOMENTOS ÉPICOS -->
+            <div class="tab-content hidden" id="epicos"></div>
+            <!-- END TABS CONTENT MOMENTOS ÉPICOS -->
+
+            <!-- TABS CONTENT PASIVAS -->
+            <div class="tab-content hidden" id="pasivas"></div>
+            <!-- END TABS CONTENT PASIVAS -->
+
+        </div>
+
+    </div>
+    <!-- END TABS CONTENT -->
 </div>
