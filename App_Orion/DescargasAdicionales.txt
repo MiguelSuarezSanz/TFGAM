@@ -1,6 +1,7 @@
 Andrei 
 
 npm uninstall @sweetalert2/ngx-sweetalert2
+pip install python-jose[cryptography] passlib[bcrypt]
 
 
 Mihaku

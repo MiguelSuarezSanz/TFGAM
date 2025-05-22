@@ -9,7 +9,7 @@ import { UserCreateDTO, UserDTO } from '../user';
   selector: 'app-edit-user',
   imports: [FormUserComponent,CommonModule],
   templateUrl: './edit-user.component.html',
-  styleUrl: './edit-user.component.css'
+  styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
   constructor(private router: Router, private usersService: UsersService, private activatedRoute: ActivatedRoute){

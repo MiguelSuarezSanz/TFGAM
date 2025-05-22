@@ -15,7 +15,7 @@ import { ListadoGenericoComponent } from '../../utilidades/listado-generico/list
   standalone: true,
   imports: [CommonModule, ListadoGenericoComponent,MatTableModule, RouterLink, MatDialogModule],
   templateUrl: './index-users.component.html',
-  styleUrl: './index-users.component.css'
+  styleUrls: ['./index-users.component.css']
 })
 export class IndexUsersComponent implements OnInit{
 
