@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms'
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { UserCreateDTO, UserDTO } from '../user';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
     MatCheckboxModule,
     MatSelectModule,
     MatInputModule,
+    MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatOptionModule,
@@ -27,7 +29,7 @@ import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
   templateUrl: './form-user.component.html',
   styleUrl: './form-user.component.css'
 })
-export class FormUserComponent implements OnInit{
+export class FormUserComponent implements OnInit, OnChanges{
   
   constructor(private formBuilder: FormBuilder){
     
@@ -39,29 +41,36 @@ export class FormUserComponent implements OnInit{
   model!: UserDTO;
 
   @Input()
-  errors: string[] = []
+  errors: string[] = [];
 
   @Output()
   OnSubmit: EventEmitter<UserCreateDTO> = new EventEmitter<UserCreateDTO>();
 
-  privilegios = ['Admin','Usuario']
+  privilegios = ['Admin','Usuario'];
   imageChange = false;
 
   ngOnInit(): void{
     this.form = this.formBuilder.group({
-      nombre: ['', {validators: [Validators.required]}],
-      email: ['', {validatros: [Validators.email,Validators.required]}],
-      fechaNacimiento: ['', {validators: [Validators.required]}],
-      password: ['', {validators: [Validators.required]}],
-      perfil: [''],
-      privilegios: ['', {validators: [Validators.required]}],
-      bloqueado: ['']
-    })
+      Nombre: ['', {validators: [Validators.required]}],
+      Email: ['', { validators: [Validators.email, Validators.required] }],
+      FechaNacimiento: ['', {validators: [Validators.required]}],
+      Password: ['', {validators: [Validators.required]}],
+      Privilegios: ['', {validators: [Validators.required]}],
+      Bloqueado: [''],
+      Perfil: ['']
+    });
 
-    if(this.model !== undefined){
-      this.form.patchValue(this.model)
+    if(this.model){
+      console.log(this.model);
+      this.form.patchValue(this.model);
+    };
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['model'] && this.model && this.form) {
+      this.form.patchValue(this.model);
     }
-
   }
 
   imageSelected(file: any){
@@ -73,7 +82,7 @@ export class FormUserComponent implements OnInit{
 
   onSubmit(){
     if(!this.imageChange){
-      this.form.patchValue({'perfil':null})
+      this.form.patchValue({'perfil':null});
     }
 
     this.OnSubmit.emit(this.form.value);

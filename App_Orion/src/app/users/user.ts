@@ -1,20 +1,20 @@
 export interface UserCreateDTO {
-    nombre: string,
-    email: string,
-    fechaNacimiento: Date,
-    password: string,
-    perfil: string,
-    privilegios: string, 
-    bloqueado: string
+    Nombre: string,
+    Email: string,
+    FechaNacimiento: Date,
+    Password: string,
+    Perfil: string,
+    Privilegios: string, 
+    Bloqueado: string
 }
 
 export interface UserDTO{
-    id: number,
-    nombre: string,
-    email: string,
-    fechaNacimiento: Date,
-    password: string,
-    perfil: string,
-    privilegios: string, 
-    bloqueado: string
+    Id: number,
+    Nombre: string,
+    Email: string,
+    FechaNacimiento: Date,
+    Password: string,
+    Perfil: string,
+    Privilegios: string, 
+    Bloqueado: string
 }

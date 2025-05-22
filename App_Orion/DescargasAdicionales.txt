@@ -1,6 +1,6 @@
 Andrei 
 
-npm install @sweetalert2/ngx-sweetalert2
+npm uninstall @sweetalert2/ngx-sweetalert2
 
 
 Mihaku

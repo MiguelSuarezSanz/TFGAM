@@ -3,8 +3,22 @@ from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from enum import Enum
 from datetime import date
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",  
+    "http://localhost:4200",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],  
+)
 
 import pymysql
 
@@ -35,9 +49,18 @@ class PrivilegiosEnum(str, Enum):
     admin = "Admin"
     user = "User"
 
-# Pydantic model for User
+
 class User(BaseModel):
     Id: int
+    Nombre: str
+    Email: EmailStr
+    FechaNacimiento: date
+    Password: str
+    Privilegios: PrivilegiosEnum
+    Bloqueado: bool
+    Perfil: Optional[str]
+
+class UserUpdateDTO(BaseModel):
     Nombre: str
     Email: EmailStr
     FechaNacimiento: date
@@ -79,13 +102,41 @@ async def get_user_id(user_id: int):
         conn.close()
 
 # PUT: actualizar un usuario existente
-@app.put("/users/{user_id}", response_model=User)
-def update_user(user_id: int, updated_user: User):
-    for index, user in enumerate(fake_db):
-        if user.id == user_id:
-            fake_db[index] = updated_user
-            return updated_user
-    raise HTTPException(status_code=404, detail="User not found")
+@app.put("/users/{user_id}", response_model=UserUpdateDTO)
+async def update_user(user_id: int, user: UserUpdateDTO):
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            sql = """
+                UPDATE Usuarios
+                SET Nombre = %s,
+                    Email = %s,
+                    FechaNacimiento = %s,
+                    Perfil = %s,
+                    Privilegios = %s,
+                    Bloqueado = %s
+                WHERE Id = %s
+            """
+            cursor.execute(sql, (
+                user.Nombre,
+                user.Email,
+                user.FechaNacimiento,
+                user.Perfil,
+                user.Privilegios,
+                user.Bloqueado,
+                user_id
+            ))
+
+            if cursor.rowcount == 0:
+                raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+            conn.commit()
+            return {"mensaje": "Usuario actualizado correctamente"}
+    except Exception as e:
+        print("Error:", e)
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
+    finally:
+        conn.close()
 
 # DELETE: eliminar un usuario
 @app.delete("/users/{user_id}")
