@@ -201,7 +201,11 @@ export class CharacterIndexComponent implements OnInit  {
 
   }
 
-  cargar_json_personaje() {
+  cargar_json_personaje(objeto: any) {
+
+    if (objeto) {
+      
+    }
   }
 
   nuevo_json_personaje() {
