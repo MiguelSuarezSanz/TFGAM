@@ -2,8 +2,9 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { UserCreateDTO, UserDTO, UserLoginDTO } from './user';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { formatDate } from '../utilidades/utilidades';
+import { catchError } from 'rxjs/operators';
 
 
 @Injectable({
@@ -20,9 +21,15 @@ export class UsersService {
    private apiURL = environment.apiURL + "users";
 
    public crear(user: UserCreateDTO): Observable<number> {
-    let formData = this.BuildFormData(user);
 
-      return this.http.post<number>(this.apiURL, formData);
+    // Formatear la fecha para enviar solo día, mes y año
+    const fecha = new Date(user.FechaNacimiento);
+    const formattedFechaNacimiento = `${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getDate().toString().padStart(2, '0')}`;
+    (user as any).FechaNacimiento = formattedFechaNacimiento;
+
+    user.Bloqueado = user.Bloqueado ? 'true' : 'false';
+
+    return this.http.post<number>(this.apiURL, user);
       
       
   }
@@ -43,8 +50,26 @@ export class UsersService {
     return this.http.delete(`${this.apiURL}/${id}`);
   }
 
-  public logIn(user: UserLoginDTO): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiURL}/login`, user);
+  // Improved error messages for better user understanding
+  public logIn(user: UserLoginDTO): Observable<{ token: string; user: UserDTO }> {
+    return this.http.post<{ token: string; user: UserDTO }>(`${this.apiURL}/login`, user).pipe(
+      catchError((error) => {
+        console.error('Error during login:', error);
+        return throwError(() => new Error('Login failed'));
+      })
+    );
+  }
+
+  public registrar(user: UserCreateDTO): Observable<number> {
+
+    // Formatear la fecha para enviar solo día, mes y año
+    const fecha = new Date(user.FechaNacimiento);
+    user.FechaNacimiento = new Date(`${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getDate().toString().padStart(2, '0')}`);
+
+    user.Bloqueado = 'false'; // Bloqueado por defecto
+    user.Privilegios = 'Usuario'; // Privilegios por defecto
+
+    return this.http.post<number>(this.apiURL, user);
   }
 
    private BuildFormData(user: UserCreateDTO): FormData{

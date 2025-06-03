@@ -25,16 +25,16 @@
         <label for="perfil">Imagen Perfil</label>
         <input type="file" formControlName="Perfil">
       </div><br>
-      <mat-form-field>
+      <mat-form-field *ngIf="isAdmin">
         <mat-label>Privilegios</mat-label>
-        <mat-select formControlName="Privilegios" [disabled]="!isAdmin">
+        <mat-select formControlName="Privilegios">
           <mat-option *ngFor="let p of privilegios" [value]="p">
             {{ p }}
           </mat-option>
         </mat-select>
       </mat-form-field><br>
-    <mat-checkbox formControlName="Bloqueado" [disabled]="!isAdmin">Bloqueado</mat-checkbox><br>
+    <mat-checkbox *ngIf="isAdmin" formControlName="Bloqueado">Bloqueado</mat-checkbox><br>
 
     <button mat-button [disabled]="form.invalid">Guardar</button>
-    <a mat-button >Cancelar</a>
+    <a mat-button (click)="onCancel()">Cancelar</a>
 </form>

@@ -46,6 +46,9 @@ export class FormUserComponent implements OnInit, OnChanges{
   @Output()
   OnSubmit: EventEmitter<UserCreateDTO> = new EventEmitter<UserCreateDTO>();
 
+  @Output()
+  OnCancel: EventEmitter<void> = new EventEmitter<void>();
+
   privilegios = ['Admin','Usuario'];
   imageChange = false;
 
@@ -55,9 +58,9 @@ export class FormUserComponent implements OnInit, OnChanges{
       Email: ['', { validators: [Validators.required, Validators.email] }],
       FechaNacimiento: ['', { validators: [Validators.required] }],
       Password: ['', { validators: [Validators.required] }],
-      Privilegios: ['', { validators: [Validators.required] }],
-      Bloqueado: [''],  // Campo opcional
-      Perfil: ['']      // Campo opcional
+      Privilegios: [{ value: 'Usuario', disabled: !this.isAdmin }, { validators: [Validators.required] }],
+      Bloqueado: [{ value: false, disabled: !this.isAdmin }],
+      Perfil: ['']
     });
 
     if(this.model){
@@ -87,4 +90,7 @@ export class FormUserComponent implements OnInit, OnChanges{
     }
   }
 
+  onCancel() {
+    this.OnCancel.emit();
+  }
 }
