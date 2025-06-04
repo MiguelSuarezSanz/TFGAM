@@ -6,7 +6,7 @@ export function formatDate(date: Date | string): string {
     const month = String(d.getMonth() + 1).padStart(2, '0'); // meses: 0-11
     const year = d.getFullYear();
 
-return `${day}-${month}-${year}`;
+ return `${day}-${month}-${year}`;
 }
 
 

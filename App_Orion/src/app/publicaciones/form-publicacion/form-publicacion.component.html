@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="titulo">Título</label>
+    <input id="titulo" formControlName="titulo" type="text" />
+    <div *ngIf="form.get('titulo')?.invalid && form.get('titulo')?.touched">
+      El título es obligatorio.
+    </div>
+  </div>
+
+  <div>
+    <label for="contenido">Contenido</label>
+    <textarea id="contenido" formControlName="contenido"></textarea>
+    <div *ngIf="form.get('contenido')?.invalid && form.get('contenido')?.touched">
+      El contenido es obligatorio.
+    </div>
+  </div>
+
+  <div>
+    <label for="imagen">Imagen (opcional)</label>
+    <input id="imagen" formControlName="imagen" type="text" />
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Guardar</button>
+</form>

@@ -43,14 +43,14 @@ export class IndexUsersComponent implements OnInit{
     }, error => console.error(error))
   }
 
-  openDialog() {
+  openDialog(id: number) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: { message: '¿Estás seguro de que deseas borrar este registro?' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Registro borrado');
+        this.borrar(id);
       }
     });
   }

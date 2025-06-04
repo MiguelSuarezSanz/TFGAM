@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../users.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UserLoginDTO } from '../user';
+import { UserLoginDTO, UserDTO } from '../user';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   errors: string[] = [];
 
   @Output()
-  OnSubmit: EventEmitter<UserLoginDTO> = new EventEmitter<UserLoginDTO>();
+  OnSubmit: EventEmitter<UserDTO> = new EventEmitter<UserDTO>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,11 +62,12 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         console.log('Inicio de sesión exitoso:', response);
         localStorage.setItem('token', response.token); // Almacenar el token JWT
-        this.OnSubmit.emit(loginData);
+        this.dialog.closeAll(); // Cerrar el modal de login
+        this.OnSubmit.emit(response.user); // Emitir el objeto UserDTO completo
       },
       error: (err) => {
         console.error('Error al iniciar sesión:', err);
-        this.errors = ['Error al iniciar sesión. Por favor, inténtalo de nuevo.'];
+        this.errors = ['Error al iniciar sesión. Por favor, verifica tus credenciales.'];
       },
     });
   }
