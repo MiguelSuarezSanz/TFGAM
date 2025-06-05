@@ -16,6 +16,7 @@ import { CreatePublicacionComponent } from './publicaciones/create-publicacion/c
 import { EditPublicacionComponent } from './publicaciones/edit-publicacion/edit-publicacion.component';
 import { DetailPublicacionComponent } from './publicaciones/detail-publicacion/detail-publicacion.component';
 import { ListPublicacionesComponent } from './publicaciones/list-publicaciones/list-publicaciones.component';
+import { ListComentariosComponent } from './comentarios/list-comentarios/list-comentarios.component';
 
 
 export const routes: Routes = [
@@ -38,6 +39,9 @@ export const routes: Routes = [
     {path: 'publicaciones/edit/:id', component: EditPublicacionComponent},
     {path: 'publicaciones/detail/:id', component: DetailPublicacionComponent},
     {path: 'publicaciones', component: ListPublicacionesComponent},
+    {path: 'publicaciones',component: ListPublicacionesComponent},
+    {path: 'publicaciones/:id',component: DetailPublicacionComponent},
+    {path: 'comentarios',component: ListComentariosComponent},
 
     {path: '', component:IndexUsersComponent},
     {path: '**', redirectTo: ''}

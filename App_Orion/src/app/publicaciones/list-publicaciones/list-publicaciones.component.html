@@ -1,8 +1,13 @@
 <h1>Lista de Publicaciones</h1>
 <ul>
   <li *ngFor="let publicacion of publicaciones">
-    <a [routerLink]="['/publicaciones', publicacion.id]">
-      {{ publicacion.titulo }}
+    <a [routerLink]="['/publicaciones/', publicacion.Id]">
+      {{ publicacion.Titulo }}
     </a>
+    <ul>
+      <li *ngFor="let comentario of comentariosPorPublicacion[publicacion.Id]">
+        {{ comentario.contenido }}
+      </li>
+    </ul>
   </li>
 </ul>

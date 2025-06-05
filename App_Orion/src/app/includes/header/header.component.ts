@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
     this.userProfilePicture = user.Perfil;
     this.userModal = user;
     localStorage.setItem('user', JSON.stringify(user)); // Guardar el usuario en localStorage
-    this.showModal = false;
+    this.showModal = false; // Cerrar el popup
     location.reload();
   }
 }

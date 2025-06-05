@@ -1,0 +1,118 @@
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    border: none;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.alert {
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert ul {
+    padding-left: 1.5rem;
+}
+
+.alert li {
+    margin-bottom: 0.25rem;
+}
+
+.comentario-card {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+}
+
+.comentario-card.disabled {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+mat-card-header {
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    color: #2c3e50;
+}
+
+.form-container {
+    position: relative;
+    min-height: 150px;
+}
+
+.spinner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.error-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+mat-error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+mat-error:last-child {
+    margin-bottom: 0;
+}
+
+.error-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    color: #f44336;
+}
+
+mat-icon {
+    color: #3f51b5;
+}
+
+:host ::ng-deep .success-snackbar {
+    background: #4caf50;
+    color: white;
+}
+
+:host ::ng-deep .error-snackbar {
+    background: #f44336;
+    color: white;
+}

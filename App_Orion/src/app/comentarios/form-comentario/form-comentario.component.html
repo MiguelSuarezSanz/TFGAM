@@ -1,1 +1,32 @@
-<p>form-comentario works!</p>
+<form [formGroup]="form" (ngSubmit)="guardarCambios()" class="comentario-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Comentario</mat-label>
+        <textarea matInput
+            formControlName="contenido"
+            rows="3"
+            placeholder="Escribe tu comentario aquí..."
+            [disabled]="isDisabled">
+        </textarea>
+        <mat-error *ngIf="f['contenido'].errors?.['required']">
+            El contenido es requerido
+        </mat-error>
+        <mat-error *ngIf="f['contenido'].errors?.['minlength']">
+            El comentario debe tener al menos 1 caracter
+        </mat-error>
+    </mat-form-field>
+
+    <div class="actions-container">
+        <button mat-raised-button 
+                color="primary" 
+                type="submit"
+                [disabled]="form.invalid || isDisabled">
+            Guardar
+        </button>
+        <button mat-button 
+                type="button"
+                [disabled]="isDisabled"
+                (click)="cancelar()">
+            Cancelar
+        </button>
+    </div>
+</form>

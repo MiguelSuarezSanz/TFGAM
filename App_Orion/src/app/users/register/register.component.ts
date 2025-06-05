@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserCreateDTO } from '../user';
 import { UsersService } from '../users.service';
@@ -15,11 +15,24 @@ export class RegisterComponent {
 
   errors: string[] = [];
 
+  @Output()
+  OnCancel: EventEmitter<void> = new EventEmitter<void>();
+
+  // Ajuste para que los campos del formulario estén vacíos
   register(user: UserCreateDTO) {
+    user.Nombre = '';
+    user.Email = '';
+    user.FechaNacimiento = new Date();
+    user.Password = '';
+    user.Perfil = '';
+    user.Privilegios = 'Usuario';
+    user.Bloqueado = "false";
+
     this.usersService.registrar(user).subscribe({
       next: (id: number) => {
         console.log("Usuario registrado con éxito, ID:", id);
         this.router.navigate(['users/' + id]);
+        this.closeModal();
       },
       error: (err) => {
         console.error("Error al registrar usuario:", err);
@@ -30,5 +43,16 @@ export class RegisterComponent {
         }
       }
     });
+  }
+
+  public cancel(): void {
+    this.OnCancel.emit();
+  }
+
+  closeModal() {
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+      modal.classList.remove('show');
+    }
   }
 }

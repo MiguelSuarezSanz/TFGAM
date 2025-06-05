@@ -37,4 +37,9 @@ export class CreatePublicacionComponent implements OnInit {
       }
     });
   }
+
+  // Added the 'cancel' method to handle the cancel action
+  cancel() {
+    this.router.navigate(['/publicaciones']);
+  }
 }

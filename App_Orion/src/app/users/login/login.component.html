@@ -1,15 +1,17 @@
 <form (submit)="onSubmit()" [formGroup]="form">
     <mat-form-field >
         <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="Email">
+        <input type="email" matInput formControlName="Email" autocomplete="off">
         <mat-error></mat-error>
     </mat-form-field><br>
     <mat-form-field >
         <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="Password">
+        <input type="password" matInput formControlName="Password" autocomplete="off">
         <mat-error></mat-error>
     </mat-form-field><br>
 
-    <button mat-button [disabled]="form.invalid">Iniciar</button>
-    <a mat-button>Cancelar</a>
+    <div class="box-content-father">
+        <button class="font-shadow-hover-one font-hover-one cursor-pointer" mat-button [disabled]="form.invalid">Iniciar Sesión</button>
+        <a class="font-shadow-hover-one font-hover-one cursor-pointer" mat-button (click)="cancel()">Cancelar</a>
+    </div>
 </form>
