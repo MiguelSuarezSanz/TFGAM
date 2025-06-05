@@ -1,4 +1,11 @@
 <app-form-user
     (OnSubmit)= "register($event)"
+    (OnCancel)="cancel()"
 >
+    <input type="email" matInput formControlName="Email" autocomplete="off">
+    <input type="password" matInput formControlName="Password" autocomplete="off">
+    <div class="box-content-father">
+        <button class="font-shadow-hover-one font-hover-one cursor-pointer">Registrar Usuario</button>
+        <a class="font-shadow-hover-one font-hover-one cursor-pointer" (click)="cancel()">Cancelar</a>
+    </div>
 </app-form-user>

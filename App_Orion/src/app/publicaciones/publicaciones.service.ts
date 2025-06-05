@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { PublicacionDTO, PublicacionCreateDTO } from './publicacion';
 import { environment } from '../../environments/environment';
 
@@ -13,7 +13,14 @@ export class PublicacionesService {
   constructor(private http: HttpClient) {}
 
   crear(publicacion: PublicacionCreateDTO): Observable<number> {
-    return this.http.post<number>(this.apiURL, publicacion);
+    // Simplified error handling
+    return this.http.post<number>(this.apiURL, publicacion).pipe(
+      catchError((error) => {
+        console.log('Error al crear publicación:', error);
+        alert('Error al crear publicación');
+        return throwError(() => new Error('Error al crear publicación'));
+      })
+    );
   }
 
   obtenerPorId(id: number): Observable<PublicacionDTO> {

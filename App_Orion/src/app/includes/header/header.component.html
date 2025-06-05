@@ -3,13 +3,13 @@
     <h2 class="font-shadow-hover-tree font-shadow-dark font-family-tittle">Orion Game System</h2>
     <div class="auth-buttons">
         <ng-container *ngIf="!isLoggedIn">
-            <button class="login-button" (click)="openModal('login')">Login</button>
-            <button class="register-button" (click)="openModal('register')">Registro</button>
+            <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="openModal('login')">Login</button>
+            <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="openModal('register')">Registro</button>
         </ng-container>
         <ng-container *ngIf="isLoggedIn">
             <img [src]="userModal?.Perfil" alt="Foto de perfil" class="profile-picture">
             <span class="user-name">{{ userModal?.Nombre }}</span>
-            <button class="logout-button" (click)="logout()">Logout</button>
+            <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="logout()">Logout</button>
         </ng-container>
     </div>
 </header>
@@ -23,10 +23,10 @@
 <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
         <ng-container *ngIf="modalType === 'login'">
-            <app-login (OnSubmit)="onLoginSuccess($event)"></app-login>
+            <app-login (OnSubmit)="onLoginSuccess($event)" (OnCancel)="closeModal()"></app-login>
         </ng-container>
         <ng-container *ngIf="modalType === 'register'">
-            <app-register></app-register>
+            <app-register (OnCancel)="closeModal()"></app-register>
         </ng-container>
     </div>
 </div>

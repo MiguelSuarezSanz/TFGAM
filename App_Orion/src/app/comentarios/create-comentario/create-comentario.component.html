@@ -1,1 +1,30 @@
-<p>create-comentario works!</p>
+<mat-card class="comentario-card" [class.disabled]="isSubmitting">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-icon>comment</mat-icon>
+            Nuevo comentario
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="form-container" [class.loading]="isSubmitting">
+            <app-form-comentario 
+                [modelo]="modeloInicial"
+                [isDisabled]="isSubmitting"
+                (onSubmit)="guardarCambios($event)"
+                (onCancel)="cancelar()">
+            </app-form-comentario>
+
+            <div *ngIf="isSubmitting" class="spinner-overlay">
+                <mat-spinner diameter="40"></mat-spinner>
+            </div>
+        </div>
+
+        <div *ngIf="errors.length > 0" class="error-container">
+            <mat-error *ngFor="let error of errors">
+                <mat-icon class="error-icon">error_outline</mat-icon>
+                {{error}}
+            </mat-error>
+        </div>
+    </mat-card-content>
+</mat-card>

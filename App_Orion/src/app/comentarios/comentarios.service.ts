@@ -1,33 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Comentario } from './comentario';
+import { Observable, catchError, throwError } from 'rxjs';
+import { ComentarioDTO, ComentarioCreateDTO } from './comentario';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ComentariosService {
-  private apiUrl = 'http://localhost:3000/comentarios';
+  private apiURL = environment.apiURL + 'comentarios';
 
   constructor(private http: HttpClient) {}
 
-  getComentarios(): Observable<Comentario[]> {
-    return this.http.get<Comentario[]>(this.apiUrl);
+  crear(comentario: ComentarioCreateDTO): Observable<number> {
+    // Simplified error handling
+    return this.http.post<number>(this.apiURL, comentario).pipe(
+      catchError((error) => {
+        console.log('Error al crear comentario:', error);
+        alert('Error al crear comentario');
+        return throwError(() => new Error('Error al crear comentario'));
+      })
+    );
   }
 
-  getComentario(id: number): Observable<Comentario> {
-    return this.http.get<Comentario>(`${this.apiUrl}/${id}`);
+  obtenerPorId(id: number): Observable<ComentarioDTO> {
+    return this.http.get<ComentarioDTO>(`${this.apiURL}/${id}`);
   }
 
-  createComentario(comentario: Comentario): Observable<Comentario> {
-    return this.http.post<Comentario>(this.apiUrl, comentario);
+  obtenerPorPublicacion(idPublicacion: number): Observable<ComentarioDTO[]> {
+    return this.http.get<ComentarioDTO[]>(`${this.apiURL}/publicacion/${idPublicacion}`);
   }
 
-  updateComentario(id: number, comentario: Comentario): Observable<Comentario> {
-    return this.http.put<Comentario>(`${this.apiUrl}/${id}`, comentario);
+  // Ensure publicacionId is validated before constructing the URL
+  obtenerPorPublicacionId(idPublicacion: number): Observable<ComentarioDTO[]> {
+    if (typeof idPublicacion !== 'number' || isNaN(idPublicacion)) {
+        throw new Error('El parámetro idPublicacion debe ser un número válido.');
+    }
+    return this.http.get<ComentarioDTO[]>(`${this.apiURL}/publicacion/${idPublicacion}`);
   }
 
-  deleteComentario(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  editar(id: number, comentario: ComentarioCreateDTO): Observable<void> {
+    return this.http.put<void>(`${this.apiURL}/${id}`, comentario);
+  }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
   }
 }

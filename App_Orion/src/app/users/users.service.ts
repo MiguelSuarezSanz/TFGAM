@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { UserCreateDTO, UserDTO, UserLoginDTO } from './user';
 import { Observable, throwError } from 'rxjs';
-import { formatDate } from '../utilidades/utilidades';
 import { catchError } from 'rxjs/operators';
 
 
@@ -21,17 +20,14 @@ export class UsersService {
    private apiURL = environment.apiURL + "users";
 
    public crear(user: UserCreateDTO): Observable<number> {
-
-    // Formatear la fecha para enviar solo día, mes y año
-    const fecha = new Date(user.FechaNacimiento);
-    const formattedFechaNacimiento = `${fecha.getFullYear()}-${(fecha.getMonth() + 1).toString().padStart(2, '0')}-${fecha.getDate().toString().padStart(2, '0')}`;
-    (user as any).FechaNacimiento = formattedFechaNacimiento;
-
-    user.Bloqueado = user.Bloqueado ? 'true' : 'false';
-
-    return this.http.post<number>(this.apiURL, user);
-      
-      
+    // Simplified error handling and removed advanced formatting
+    return this.http.post<number>(this.apiURL, user).pipe(
+      catchError((error) => {
+        console.log('Error al crear usuario:', error);
+        alert('Error al crear usuario');
+        return throwError(() => new Error('Error al crear usuario'));
+      })
+    );
   }
 
   public getAll(): Observable<HttpResponse<UserDTO[]>> {
@@ -50,12 +46,13 @@ export class UsersService {
     return this.http.delete(`${this.apiURL}/${id}`);
   }
 
-  // Improved error messages for better user understanding
+  // Simplified login logic
   public logIn(user: UserLoginDTO): Observable<{ token: string; user: UserDTO }> {
     return this.http.post<{ token: string; user: UserDTO }>(`${this.apiURL}/login`, user).pipe(
       catchError((error) => {
-        console.error('Error during login:', error);
-        return throwError(() => new Error('Login failed'));
+        console.log('Error al iniciar sesión:', error);
+        alert('Error al iniciar sesión');
+        return throwError(() => new Error('Error al iniciar sesión'));
       })
     );
   }
@@ -77,7 +74,7 @@ export class UsersService {
 
     formData.append('nombre', user.Nombre);
     formData.append('email', user.Email);
-    formData.append('fechaNacimiento', formatDate(user.FechaNacimiento));
+    formData.append('fechaNacimiento', user.FechaNacimiento.toISOString().split('T')[0]);
     formData.append('password', user.Password);
     if (user.Perfil) {
       formData.append('perfil', user.Perfil ? user.Perfil : '');

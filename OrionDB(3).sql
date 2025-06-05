@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-06-2025 a las 23:15:58
+-- Tiempo de generación: 05-06-2025 a las 23:56:37
 -- Versión del servidor: 10.6.22-MariaDB-0ubuntu0.22.04.1
 -- Versión de PHP: 8.1.2-1ubuntu2.21
 
@@ -52,18 +52,9 @@ CREATE TABLE `Chats` (
 CREATE TABLE `Comentarios` (
   `Id` int(11) NOT NULL,
   `Id_Usuario` int(11) NOT NULL,
-  `Contenido` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Comentario_Publicacion`
---
-
-CREATE TABLE `Comentario_Publicacion` (
-  `Id_Comentario` int(11) NOT NULL,
-  `Id_Publicacion` int(11) NOT NULL
+  `Id_Publicacion` int(11) NOT NULL,
+  `Contenido` text NOT NULL,
+  `Fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -125,18 +116,8 @@ CREATE TABLE `Mensaje` (
   `Id` int(11) NOT NULL,
   `Contenido` text NOT NULL,
   `FechaMensaje` date NOT NULL,
-  `Id_Usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Mensaje_Chat`
---
-
-CREATE TABLE `Mensaje_Chat` (
-  `Id_Chat` int(11) NOT NULL,
-  `Id_Mensaje` int(11) NOT NULL
+  `Id_Usuario` int(11) NOT NULL,
+  `Id_Chat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -234,7 +215,9 @@ CREATE TABLE `Usuarios` (
 
 INSERT INTO `Usuarios` (`Id`, `Nombre`, `Email`, `FechaNacimiento`, `Password`, `Privilegios`, `Bloqueado`, `Perfil`) VALUES
 (1, 'Andrei', 'andrei@gmail.com', '2000-05-19', '$2b$12$bgl.BvOT4HECEiRIyJ08VuD/Kge0RuDxLesUGwLOpzCdCTpZpVoue', 'Admin', 0, NULL),
-(2, 'Miguel', 'miguel@gmail.com', '2025-05-23', 'miguel1290', 'Usuario', 0, NULL);
+(2, 'Miguel', 'miguel@gmail.com', '2025-05-23', 'miguel1290', 'Usuario', 0, NULL),
+(3, 'Maffi', 'maffi@gmail.com', '2025-02-05', '$2b$12$5wHuKk3MLf7MfTgnup1GF.MQ1N1GnkGJqg4tbGstHYqK4Hq66.Ik6', 'Usuario', 0, ''),
+(5, 'Bruno', 'bruno@gmail.com', '2018-03-01', '$2b$12$UBRIeKu4rmVUfKzbWiCJ9uQSjtoRsN/E.OCAXzPN7VpX.JJnLITT6', 'Usuario', 0, '');
 
 -- --------------------------------------------------------
 
@@ -292,14 +275,8 @@ ALTER TABLE `Chats`
 --
 ALTER TABLE `Comentarios`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `FK_UsuarioComentario_Id` (`Id_Usuario`);
-
---
--- Indices de la tabla `Comentario_Publicacion`
---
-ALTER TABLE `Comentario_Publicacion`
-  ADD KEY `FK_ComentarioPublicacion_Id` (`Id_Comentario`),
-  ADD KEY `FK_PublicacionComentario_Id` (`Id_Publicacion`);
+  ADD KEY `FK_UsuarioComentario_Id` (`Id_Usuario`),
+  ADD KEY `FK_UsuarioPublicacionComentario_Id` (`Id_Publicacion`);
 
 --
 -- Indices de la tabla `Comentario_Reaccion`
@@ -334,14 +311,8 @@ ALTER TABLE `Mapa`
 --
 ALTER TABLE `Mensaje`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `FK_Usuario_Id` (`Id_Usuario`);
-
---
--- Indices de la tabla `Mensaje_Chat`
---
-ALTER TABLE `Mensaje_Chat`
-  ADD KEY `FK_Chat_Id` (`Id_Chat`) USING BTREE,
-  ADD KEY `FK_Mensaje_Id` (`Id_Mensaje`) USING BTREE;
+  ADD KEY `FK_Usuario_Id` (`Id_Usuario`),
+  ADD KEY `FK_MensajeChat_Id` (`Id_Chat`);
 
 --
 -- Indices de la tabla `Partida`
@@ -473,7 +444,7 @@ ALTER TABLE `Publicacion_Reaccion`
 -- AUTO_INCREMENT de la tabla `Usuarios`
 --
 ALTER TABLE `Usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
@@ -490,14 +461,8 @@ ALTER TABLE `Amistades`
 -- Filtros para la tabla `Comentarios`
 --
 ALTER TABLE `Comentarios`
-  ADD CONSTRAINT `FK_UsuarioComentario_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`);
-
---
--- Filtros para la tabla `Comentario_Publicacion`
---
-ALTER TABLE `Comentario_Publicacion`
-  ADD CONSTRAINT `FK_ComentarioPublicacion_Id` FOREIGN KEY (`Id_Comentario`) REFERENCES `Comentarios` (`Id`),
-  ADD CONSTRAINT `FK_PublicacionComentario_Id` FOREIGN KEY (`Id_Publicacion`) REFERENCES `Publicaciones` (`Id`);
+  ADD CONSTRAINT `FK_UsuarioComentario_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`),
+  ADD CONSTRAINT `FK_UsuarioPublicacionComentario_Id` FOREIGN KEY (`Id_Publicacion`) REFERENCES `Publicaciones` (`Id`);
 
 --
 -- Filtros para la tabla `Comentario_Reaccion`
@@ -523,14 +488,8 @@ ALTER TABLE `Mapa`
 -- Filtros para la tabla `Mensaje`
 --
 ALTER TABLE `Mensaje`
+  ADD CONSTRAINT `FK_MensajeChat_Id` FOREIGN KEY (`Id_Chat`) REFERENCES `Chats` (`Id`),
   ADD CONSTRAINT `FK_Usuario_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`);
-
---
--- Filtros para la tabla `Mensaje_Chat`
---
-ALTER TABLE `Mensaje_Chat`
-  ADD CONSTRAINT `FK_Chat` FOREIGN KEY (`Id_Chat`) REFERENCES `Chats` (`Id`),
-  ADD CONSTRAINT `FK_Mensaje` FOREIGN KEY (`Id_Mensaje`) REFERENCES `Mensaje` (`Id`);
 
 --
 -- Filtros para la tabla `Partida_Chat`
@@ -589,3 +548,18 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Ejemplo de inserciones para la tabla Publicaciones
+INSERT INTO `Publicaciones` (`Id`, `Id_Usuario`, `FechaPubl`, `Titulo`, `Imagen`, `Contenido`) VALUES
+(1, 1, '2025-06-06', 'Primera Publicación', 'imagen1.png', 'Este es el contenido de la primera publicación.'),
+(2, 2, '2025-06-06', 'Segunda Publicación', 'imagen2.png', 'Este es el contenido de la segunda publicación.'),
+(3, 3, '2025-06-06', 'Tercera Publicación', 'imagen3.png', 'Este es el contenido de la tercera publicación.');
+
+-- Ejemplo de inserciones para la tabla Comentarios
+INSERT INTO `Comentarios` (`Id`, `Id_Usuario`, `Id_Publicacion`, `Contenido`, `Fecha`) VALUES
+(1, 2, 1, 'Este es un comentario sobre la primera publicación.', '2025-06-06'),
+(2, 3, 1, 'Otro comentario sobre la primera publicación.', '2025-06-06'),
+(3, 1, 1, 'Un tercer comentario sobre la primera publicación.', '2025-06-06'),
+(4, 1, 2, 'Comentario sobre la segunda publicación.', '2025-06-06'),
+(5, 3, 2, 'Otro comentario sobre la segunda publicación.', '2025-06-06'),
+(6, 2, 3, 'Comentario sobre la tercera publicación.', '2025-06-06');

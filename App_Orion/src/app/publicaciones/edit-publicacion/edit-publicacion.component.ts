@@ -22,11 +22,13 @@ export class EditPublicacionComponent implements OnInit {
   ) {}
 
   publicacion: PublicacionDTO = {
-    id: 0, // Replace with appropriate default values
-    titulo: '',
-    contenido: '',
-    imagen: '',
-    fechaPubl: new Date().toISOString() // Default to the current date as ISO string
+    Id: 0, // Replace with appropriate default values
+    Titulo: '',
+    Contenido: '',
+    Imagen: '',
+    FechaPubl: new Date().toISOString(), // Default to the current date as ISO string
+    Id_Usuario: 0, // Default value for user ID
+    Usuario_Nombre: '' // Default value for user name
   };
   errors: string[] = [];
 

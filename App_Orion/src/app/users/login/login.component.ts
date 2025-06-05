@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit {
   @Output()
   OnSubmit: EventEmitter<UserDTO> = new EventEmitter<UserDTO>();
 
+  @Output()
+  OnCancel: EventEmitter<void> = new EventEmitter<void>();
+
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
@@ -62,8 +65,8 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         console.log('Inicio de sesión exitoso:', response);
         localStorage.setItem('token', response.token); // Almacenar el token JWT
-        this.dialog.closeAll(); // Cerrar el modal de login
         this.OnSubmit.emit(response.user); // Emitir el objeto UserDTO completo
+        this.dialog.closeAll(); // Cerrar el popup
       },
       error: (err) => {
         console.error('Error al iniciar sesión:', err);
@@ -74,5 +77,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.logIn();
+  }
+
+  public closeModal(): void {
+    this.dialog.closeAll();
+    this.OnCancel.emit();
+  }
+
+  public cancel(): void {
+    this.OnCancel.emit();
   }
 }

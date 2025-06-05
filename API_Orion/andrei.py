@@ -319,12 +319,18 @@ async def get_publicaciones():
     finally:
         conn.close()
 
+# Adjusted query to include the user's name in the publication details
 @app.get("/publicaciones/{publicacion_id}", response_model=Publicacion)
 async def get_publicacion_id(publicacion_id: int):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            sql = "SELECT * FROM Publicaciones WHERE Id = %s"
+            sql = """
+                SELECT p.Id, p.Titulo, p.Contenido, p.Imagen, p.FechaPubl, u.Nombre AS Usuario_Nombre
+                FROM Publicaciones p
+                JOIN Usuarios u ON p.Id_Usuario = u.Id
+                WHERE p.Id = %s
+            """
             cursor.execute(sql, (publicacion_id,))
             row = cursor.fetchone()
 
@@ -409,16 +415,16 @@ async def delete_publicacion(publicacion_id: int):
 
 class Comentario(BaseModel):
     Id: int
+    Id_Usuario: int
+    Id_Publicacion: int
     Contenido: str
     Fecha: date
-    IdPublicacion: int
-    IdUsuario: int
 
 class ComentarioCreateDTO(BaseModel):
+    Id_Usuario: int
+    Id_Publicacion: int
     Contenido: str
     Fecha: date
-    IdPublicacion: int
-    IdUsuario: int
 
 @app.get("/comentarios", response_model=List[Comentario])
 async def get_comentarios():
@@ -433,6 +439,9 @@ async def get_comentarios():
 
 @app.get("/comentarios/{comentario_id}", response_model=Comentario)
 async def get_comentario_id(comentario_id: int):
+    if not isinstance(comentario_id, int):
+        raise HTTPException(status_code=422, detail="comentario_id debe ser un entero válido")
+
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
@@ -447,20 +456,48 @@ async def get_comentario_id(comentario_id: int):
     finally:
         conn.close()
 
+@app.get("/comentarios/publicacion/{publicacion_id}", response_model=List[Comentario])
+async def get_comentarios_by_publicacion(publicacion_id: int):
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            sql = "SELECT Id, Id_Usuario, Id_Publicacion, Contenido, Fecha FROM Comentarios WHERE Id_Publicacion = %s ORDER BY Fecha DESC"
+            cursor.execute(sql, (publicacion_id,))
+            rows = cursor.fetchall()
+
+            if not rows:
+                raise HTTPException(status_code=404, detail="No se encontraron comentarios para esta publicación")
+
+            return [Comentario(**row) for row in rows]
+    finally:
+        conn.close()
+
 @app.post("/comentarios", response_model=ComentarioCreateDTO)
 async def create_comentario(comentario: ComentarioCreateDTO):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
+            # Verificar que la publicación existe
+            sql_check = "SELECT Id FROM Publicaciones WHERE Id = %s"
+            cursor.execute(sql_check, (comentario.Id_Publicacion,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Publicación no encontrada")
+
+            # Verificar que el usuario existe
+            sql_check = "SELECT Id FROM Usuarios WHERE Id = %s"
+            cursor.execute(sql_check, (comentario.Id_Usuario,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
             sql = """
-                INSERT INTO Comentarios (Id, Contenido, Fecha, IdPublicacion, IdUsuario)
-                VALUES (Null, %s, %s, %s, %s)
+                INSERT INTO Comentarios (Id, Id_Usuario, Id_Publicacion, Contenido, Fecha)
+                VALUES (NULL, %s, %s, %s, %s)
             """
             cursor.execute(sql, (
+                comentario.Id_Usuario,
+                comentario.Id_Publicacion,
                 comentario.Contenido,
-                comentario.Fecha,
-                comentario.IdPublicacion,
-                comentario.IdUsuario
+                comentario.Fecha
             ))
 
             conn.commit()
@@ -473,24 +510,27 @@ async def update_comentario(comentario_id: int, comentario: ComentarioCreateDTO)
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
+            # Verificar que el comentario existe
+            sql_check = "SELECT Id FROM Comentarios WHERE Id = %s"
+            cursor.execute(sql_check, (comentario_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Comentario no encontrado")
+
             sql = """
                 UPDATE Comentarios
-                SET Contenido = %s,
-                    Fecha = %s,
-                    IdPublicacion = %s,
-                    IdUsuario = %s
+                SET Id_Usuario = %s,
+                    Id_Publicacion = %s,
+                    Contenido = %s,
+                    Fecha = %s
                 WHERE Id = %s
             """
             cursor.execute(sql, (
+                comentario.Id_Usuario,
+                comentario.Id_Publicacion,
                 comentario.Contenido,
                 comentario.Fecha,
-                comentario.IdPublicacion,
-                comentario.IdUsuario,
                 comentario_id
             ))
-
-            if cursor.rowcount == 0:
-                raise HTTPException(status_code=404, detail="Comentario no encontrado")
 
             conn.commit()
             return comentario
@@ -502,17 +542,21 @@ async def delete_comentario(comentario_id: int):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
+            # Verificar si el comentario existe
             sql_check = "SELECT Id FROM Comentarios WHERE Id = %s"
             cursor.execute(sql_check, (comentario_id,))
-            comentario = cursor.fetchone()
-
-            if not comentario:
+            if not cursor.fetchone():
                 raise HTTPException(status_code=404, detail="Comentario no encontrado")
 
+            # Primero eliminar las reacciones asociadas al comentario
+            sql_delete_reactions = "DELETE FROM Comentario_Reaccion WHERE Id_Comentario = %s"
+            cursor.execute(sql_delete_reactions, (comentario_id,))
+
+            # Luego eliminar el comentario
             sql_delete = "DELETE FROM Comentarios WHERE Id = %s"
             cursor.execute(sql_delete, (comentario_id,))
+            
             conn.commit()
-
             return {"message": "Comentario eliminado correctamente"}
     finally:
         conn.close()
