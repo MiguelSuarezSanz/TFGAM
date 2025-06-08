@@ -1,0 +1,27 @@
+.comments-section {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.comment-item {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+}
+
+.comment-content {
+    margin-bottom: 0.5rem;
+}
+
+.comment-metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.comments-list {
+    max-width: 800px;
+    margin: 0 auto;
+}

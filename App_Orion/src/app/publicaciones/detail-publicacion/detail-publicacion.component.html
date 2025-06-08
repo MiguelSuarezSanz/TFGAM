@@ -1,0 +1,16 @@
+<h1 *ngIf="publicacion">{{ publicacion.Titulo }}</h1>
+<div style="display: flex; justify-content: space-between;">
+  <p *ngIf="publicacion"><strong>Publicado por:</strong> {{ publicacion.Usuario_Nombre }}</p>
+  <p *ngIf="publicacion"><strong>Fecha:</strong> {{ publicacion.FechaPubl | date:'dd/MM/yyyy' }}</p>
+</div>
+<p *ngIf="publicacion">{{ publicacion.Contenido }}</p>
+<img *ngIf="publicacion?.Imagen" [src]="publicacion.Imagen" alt="Imagen de la publicación">
+
+<h2>Comentarios</h2>
+<ul>
+  <li *ngFor="let comentario of comentarios">
+    <p><strong>Contenido:</strong> {{ comentario.contenido }}</p>
+    <p><strong>Publicado por:</strong> Usuario {{ comentario.idUsuario }}</p>
+    <p><strong>Fecha:</strong> {{ comentario.fecha | date:'dd/MM/yyyy' }}</p>
+  </li>
+</ul>

@@ -1,0 +1,35 @@
+<div class="comments-section">
+    <app-create-comentario 
+        [idPublicacion]="idPublicacion"
+        [idUsuario]="idUsuarioActual">
+    </app-create-comentario>
+
+    <div *ngIf="errors.length > 0" class="alert alert-danger mt-3">
+        <ul>
+            <li *ngFor="let error of errors">{{error}}</li>
+        </ul>
+    </div>
+
+    <div class="comments-list mt-4">
+        <h4>Comentarios</h4>
+        <div *ngIf="comentarios.length === 0" class="text-muted">
+            No hay comentarios aún. ¡Sé el primero en comentar!
+        </div>
+
+        <div *ngFor="let comentario of comentarios" class="comment-item card mb-3">
+            <div class="card-body">
+                <p class="comment-content">{{comentario.contenido}}</p>
+                <div class="comment-metadata">
+                    <small class="text-muted">
+                        Comentado el {{comentario.fecha | date:'dd/MM/yyyy HH:mm'}}
+                    </small>
+                    <button *ngIf="comentario.idUsuario === idUsuarioActual" 
+                            (click)="eliminarComentario(comentario.id)"
+                            class="btn btn-danger btn-sm ms-2">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
