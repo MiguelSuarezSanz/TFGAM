@@ -53,6 +53,38 @@ body * {
     transition: all 0.8s ease-out;
 }
 
+
+/*SCROLL BAR*/
+* {
+  
+    /* Para Firefox */
+        scrollbar-color: azure transparent;
+        scrollbar-width: thin;
+}
+
+/* Para navegadores WebKit */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: azure;
+    border-radius: 4px;
+}
+
+/* Esta cosa no me gusta asi que la he smiteado */
+@layer base {
+    :is([type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], [multiple], textarea, select):focus {
+      --tw-ring-shadow: none !important;
+      outline: none !important;
+    }
+}
+
+
 /* CLASSES COLORES */
 
 /* Background */
@@ -68,6 +100,16 @@ body * {
 
 .background-color-lighter {
     background-color: #3E4A5A;
+    color: azure;
+}
+
+.background-color-one {
+    background-color: #2896F5;
+    color: azure;
+}
+
+.background-color-two {
+    background-color: #FF3C3C;
     color: azure;
 }
 
@@ -187,13 +229,16 @@ body * {
     border: 0.2rem solid #3E4A5A;
     border-radius: 8px;
     box-shadow:
-      inset 0 0 20px rgba(0, 0, 0, 0.8), /* Main inner shadow */
-      inset 0 0 5px rgba(255, 255, 255, 0.1), /* Subtle inner highlight */
-      5px 5px 15px rgba(0, 0, 0, 0.5); /* Outer shadow */
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        /* Main inner shadow */
+        inset 0 0 5px rgba(255, 255, 255, 0.1),
+        /* Subtle inner highlight */
+        5px 5px 15px rgba(0, 0, 0, 0.5);
+    /* Outer shadow */
     position: relative;
 }
 
-.box-content-father::after {
+.box-content-father::after, #modal::after  {
     content: '';
     position: absolute;
     top: 0;
@@ -217,27 +262,38 @@ body * {
     border-bottom: 0.2rem solid #3E4A5A;
 }
 
-.box-content-tabs .tab, .box-content-tabs .tab-active{
+.box-content-tabs .tab,
+.box-content-tabs .tab-active,
+.box-content-tabs .tab-active2 {
     cursor: pointer;
     position: relative;
     z-index: 1;
-    transition: 0.3s ease; /* Transición suave para el hover */
+    transition: 0.3s ease;
+    /* Transición suave para el hover */
 }
 
-.box-content-tabs .tab::after, .box-content-tabs .tab-active::after {
+.box-content-tabs .tab::after,
+.box-content-tabs .tab-active::after,
+.box-content-tabs .tab-active2::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -0.2rem; /* Para que se superponga al borde del padre */
+    bottom: -0.2rem;
+    /* Para que se superponga al borde del padre */
     width: 100%;
-    height: 0.2rem; /* Grosor del borde azul al hacer hover */
-    background-color: transparent; /* Inicialmente transparente */
-    transition: background-color 0.3s ease; /* Transición suave para el hover */
-    z-index: 2; /* Asegura que el borde del hover esté por encima del borde inicial del hijo */
+    height: 0.2rem;
+    /* Grosor del borde azul al hacer hover */
+    background-color: transparent;
+    /* Inicialmente transparente */
+    transition: background-color 0.3s ease;
+    /* Transición suave para el hover */
+    z-index: 2;
+    /* Asegura que el borde del hover esté por encima del borde inicial del hijo */
 }
 
 .box-content-tabs .tab:hover::after {
-    background-color: #2896F5; /* Cambia el color del borde al hacer hover */
+    background-color: #2896F5;
+    /* Cambia el color del borde al hacer hover */
     box-shadow: 0 2px 5px #2896F5;
 }
 
@@ -246,12 +302,15 @@ body * {
     color: #2896F5;
 }
 
-.box-content-tabs .tab-active::after {
-    background-color: #FF3C3C; /* Cambia el color del borde al hacer hover */
+.box-content-tabs .tab-active::after,
+.box-content-tabs .tab-active2::after {
+    background-color: #FF3C3C;
+    /* Cambia el color del borde al hacer hover */
     box-shadow: 0 2px 5px #FF3C3C;
 }
 
-.box-content-tabs .tab-active {
+.box-content-tabs .tab-active,
+.box-content-tabs .tab-active2 {
     text-shadow: 0px 0px 5px #FF3C3C;
     color: #FF3C3C;
 }
@@ -262,31 +321,6 @@ body * {
 
 .box-border-bottom {
     border-bottom: #3E4A5A solid 2px;
-}
-  
-
-@media (max-width: 1654px) {
-    .flex-column-xl {
-        display: flex;
-        flex-direction: column;
-    }
-}
-  
-@media (max-width: 1280px) {
-    .flex-column-l {
-        display: flex;
-        flex-direction: column;
-    }
-}
-  
-@media (max-width: 853px) {
-    .m-gap {
-        gap: 0.5rem;
-    }
-    .flex-column-m {
-        display: flex;
-        flex-direction: column;
-    }
 }
 
 .dice {
@@ -305,7 +339,191 @@ body * {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* MODAL */
+#black-fade {
+    transition: 0.4s;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+#modal {
+    transition: 0.4s;
+    position: absolute;
+    top: -1000px;
+    /*top: 20px;*/
+    left: 20vw;
+    display: flex;
+    z-index: 11;
+    flex-direction: column;
+    width: 60vw;
+    background-color: #161A20;
+    border: #3E4A5A 4px solid;
+    border-radius: 8px;
+    color: azure;
+    padding: 0.8rem;
+    gap: 0.6rem;
+    max-height: 95vh;
+    overflow-y: scroll;
+}
+
+#modal .modal-title {
+    text-align: center;
+    font-size: 1.5rem;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal .modal-title .close-modal,
+#modal .modal-title .close-modal path {
+    position: absolute;
+    right: 1rem;
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    fill: currentcolor;
+    cursor: pointer;
+}
+
+#modal .modal-content {
+    display: flex;
+}
+
+#modal .modal-bottom * {
+    font-size: 1rem;
+    float: right;
+    margin: 0 0.5rem;
+}
+
+/* END MODAL */
+
+/* FORM */
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid azure;
+    outline: 0;
+    font-size: 1.3rem;
+    color: azure;
+    background: transparent;
+    transition: border-color 0.2s;
+    padding: 7px;
+}
+
+textarea.form__field {
+    border: 2px solid azure;
+    padding: 7px;
+}
+
+.form__group textarea.form__field:valid ~ .form__label  {
+    top: -15px;
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:placeholder-shown~.form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+    margin: 0 7px;
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: azure;
+}
+
+.form__field:focus~.form__label {
+    margin: 0;
+    position: absolute;
+    top: 0px;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #3E4A5A;
+    font-weight: 700;
+}
+
+textarea.form__field:focus~.form__label {
+    position: absolute;
+    top: -15px;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #3E4A5A;
+    font-weight: 700;
+}
+
+.form__field:focus {
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 2px;
+    border-image: linear-gradient(to right, #FF3C3C, #2896F5);
+    border-image-slice: 1;
+}
+
+.form__field:required,
+.form__field:invalid {
+    box-shadow: none;
+}
+
+/* END FORM */
+
+@media (max-width: 1654px) {
+    .flex-column-xl {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1280px) {
+    .flex-column-l {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 853px) {
+    .m-gap {
+        gap: 0.5rem;
+    }
+
+    .flex-column-m {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modal {
+        width: calc(100% - 0.5rem*2) ;
+        left: 0;
+        margin: 0.5rem;
     }
 }
