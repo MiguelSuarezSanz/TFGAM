@@ -1,40 +1,50 @@
-<form (submit)="onSubmit()" [formGroup]="form">
-    <mat-form-field >
+<form (submit)="onSubmit()" [formGroup]="form" class="flex flex-col gap-2 p-2">
+    <mat-form-field  class="flex flex-col gap-1">
         <mat-label>Nombre</mat-label>
         <input type="text" matInput formControlName="Nombre">
         <mat-error></mat-error>
-    </mat-form-field><br>
-    <mat-form-field >
+    </mat-form-field>
+
+    <mat-form-field  class="flex flex-col gap-1">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="Email">
         <mat-error></mat-error>
-    </mat-form-field><br>
-    <mat-form-field >
+    </mat-form-field>
+
+    <mat-form-field  class="flex flex-col gap-1">
         <mat-label>Fecha Nacimiento</mat-label>
         <input matInput formControlName="FechaNacimiento" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error></mat-error>
-    </mat-form-field><br>
-    <mat-form-field >
+    </mat-form-field>
+
+    <mat-form-field  class="flex flex-col gap-1">
         <mat-label>Password</mat-label>
         <input type="password" matInput formControlName="Password">
         <mat-error></mat-error>
-    </mat-form-field><br>
-    <div class="form-control">
-        <label for="perfil">Imagen Perfil</label>
+    </mat-form-field>
+
+    <div class="form-control flex flex-col gap-1">
+        <label for="perfil" class="w-max text-center">Imagen Perfil</label>
         <input type="file" formControlName="Perfil">
-      </div><br>
-      <mat-form-field *ngIf="isAdmin">
+    </div>
+
+      <mat-form-field *ngIf="isAdmin"  class="flex flex-col gap-1">
         <mat-label>Privilegios</mat-label>
         <mat-select formControlName="Privilegios">
           <mat-option *ngFor="let p of privilegios" [value]="p">
             {{ p }}
           </mat-option>
         </mat-select>
-      </mat-form-field><br>
+      </mat-form-field>
+
     <mat-checkbox *ngIf="isAdmin" formControlName="Bloqueado">Bloqueado</mat-checkbox><br>
 
-    <button mat-button [disabled]="form.invalid">Guardar</button>
-    <a mat-button (click)="onCancel()">Cancelar</a>
+    <div class="flex-grow flex flex-row justify-around">
+
+      <button mat-button [disabled]="form.invalid" class="form__button">Guardar</button>
+      <a mat-button (click)="onCancel()" class="form__button">Cancelar</a>
+
+    </div>
 </form>

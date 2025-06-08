@@ -1,11 +1,12 @@
 <app-form-user
     (OnSubmit)= "register($event)"
     (OnCancel)="cancel()"
+    class="flex flex-col gap-2 p-2 gap-2"
 >
-    <input type="email" matInput formControlName="Email" autocomplete="off">
-    <input type="password" matInput formControlName="Password" autocomplete="off">
-    <div class="box-content-father">
-        <button class="font-shadow-hover-one font-hover-one cursor-pointer">Registrar Usuario</button>
-        <a class="font-shadow-hover-one font-hover-one cursor-pointer" (click)="cancel()">Cancelar</a>
+    <input type="email" matInput formControlName="Email" autocomplete="off" class="flex-grow flex flex-col gap-1">
+    <input type="password" matInput formControlName="Password" autocomplete="off" class="flex-grow flex flex-col gap-1">
+    <div class="flex-grow flex flex-col gap-1">
+        <button class="form__button">Registrar Usuario</button>
+        <a class="form__button danger" (click)="cancel()">Cancelar</a>
     </div>
 </app-form-user>

@@ -89,7 +89,7 @@ body * {
 
 /* Background */
 .background-color-main {
-    background-color: #2A323D;
+    background-color: #2A323D !important;
     color: azure;
 }
 
@@ -255,6 +255,7 @@ body * {
 .box-content-father * {
     z-index: 1;
     position: relative;
+    color: azure;
 }
 
 /* Tabs */
@@ -408,6 +409,22 @@ body * {
     margin: 0 0.5rem;
 }
 
+.modal-MHK {
+    transition: 0.4s !important;
+    display: flex !important;
+    z-index: 11 !important;
+    flex-direction: column !important;
+    width: 60vw !important;
+    background-color: #161A20 !important;
+    border: #3E4A5A 4px solid !important;
+    border-radius: 8px !important;
+    color: azure !important;
+    padding: 0.8rem !important;
+    gap: 0.6rem !important;
+    max-height: 95vh !important;
+    overflow-y: scroll !important;
+}
+
 /* END MODAL */
 
 /* FORM */
@@ -495,6 +512,26 @@ textarea.form__field:focus~.form__label {
     box-shadow: none;
 }
 
+.form__button {
+    color: azure !important;
+    cursor: pointer !important;
+    padding: 0.5rem calc(0.5rem*1.618) !important;
+    background-color: #2896F5 !important;
+    border-radius: 0.5rem !important;
+}
+
+.form__button.danger {
+    background-color: #FF3C3C !important;
+}
+
+.form__button.Inactive {
+    background-color: #3E4A5A !important;
+}
+
+.form__button:hover {
+    text-shadow: 0px 0px 5px black;
+    box-shadow: 3px 3px 5px black;
+}
 /* END FORM */
 
 @media (max-width: 1654px) {
