@@ -1,3 +1,4 @@
 #/bin/bash
 cd App_Orion 
-ng serve --port 4200
+xdg-open "http://localhost:4300/"
+ng serve --port 4300
