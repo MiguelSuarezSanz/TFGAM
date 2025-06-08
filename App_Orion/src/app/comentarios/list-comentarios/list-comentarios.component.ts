@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ComentarioDTO } from '../comentario';
+import { FormsModule } from '@angular/forms';
+import { ComentarioCreateDTO, ComentarioDTO } from '../comentario';
 import { ComentariosService } from '../comentarios.service';
 import { CreateComentarioComponent } from '../create-comentario/create-comentario.component';
 
 @Component({
   selector: 'app-list-comentarios',
   standalone: true,
-  imports: [CommonModule, CreateComentarioComponent],
+  imports: [CommonModule, CreateComentarioComponent, FormsModule],
   templateUrl: './list-comentarios.component.html',
   styleUrls: ['./list-comentarios.component.css']
 })
@@ -17,6 +18,7 @@ export class ListComentariosComponent implements OnInit {
 
   comentarios: ComentarioDTO[] = [];
   errors: string[] = [];
+  newComment: string = '';
 
   constructor(private comentariosService: ComentariosService) {}
 
@@ -48,5 +50,30 @@ export class ListComentariosComponent implements OnInit {
         }
       });
     }
+  }
+
+  addComment() {
+    if (!this.newComment.trim()) {
+      this.errors = ['El comentario no puede estar vacío.'];
+      return;
+    }
+
+    const comentario: ComentarioCreateDTO = {
+      contenido: this.newComment,
+      idPublicacion: this.idPublicacion,
+      idUsuario: this.idUsuarioActual,
+      fecha: new Date(),
+    };
+
+    this.comentariosService.crear(comentario).subscribe({
+      next: () => {
+        this.newComment = '';
+        this.cargarComentarios();
+      },
+      error: (err) => {
+        console.error('Error al añadir comentario:', err);
+        this.errors = ['Error al añadir el comentario.'];
+      }
+    });
   }
 }

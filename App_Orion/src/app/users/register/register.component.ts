@@ -14,6 +14,7 @@ export class RegisterComponent {
   constructor(private usersService: UsersService, private router: Router) {}
 
   errors: string[] = [];
+  isAdmin: boolean = true;
 
   @Output()
   OnCancel: EventEmitter<void> = new EventEmitter<void>();

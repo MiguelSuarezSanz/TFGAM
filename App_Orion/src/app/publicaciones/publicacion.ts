@@ -4,12 +4,12 @@ export interface PublicacionDTO {
   Contenido: string;
   Imagen?: string;
   FechaPubl: string;
-  Id_Usuario: number; // Added field for user ID
-  Usuario_Nombre: string; // Added field for user name
+  Id_Usuario: number; 
+  Usuario_Nombre: string; 
 }
 
 export interface PublicacionCreateDTO {
-  Titulo: string; // Changed to uppercase
-  Contenido: string; // Changed to uppercase
-  Imagen?: string; // Changed to uppercase
+  Titulo: string; 
+  Contenido: string; 
+  Imagen?: string; 
 }

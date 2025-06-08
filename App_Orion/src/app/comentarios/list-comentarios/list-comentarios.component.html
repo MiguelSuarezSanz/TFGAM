@@ -1,4 +1,8 @@
 <div class="comments-section">
+    <div class="add-comment">
+        <textarea [(ngModel)]="newComment" placeholder="Escribe tu comentario aquí..."></textarea>
+        <button (click)="addComment()">Comentar</button>
+    </div>
     <app-create-comentario 
         [idPublicacion]="idPublicacion"
         [idUsuario]="idUsuarioActual">

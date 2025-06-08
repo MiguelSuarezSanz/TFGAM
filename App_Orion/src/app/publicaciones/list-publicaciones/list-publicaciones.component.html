@@ -1,4 +1,5 @@
 <h1>Lista de Publicaciones</h1>
+<button class="add-publicacion-btn" (click)="navigateToCreatePublicacion()">+</button>
 <ul>
   <li *ngFor="let publicacion of publicaciones">
     <a [routerLink]="['/publicaciones/', publicacion.Id]">

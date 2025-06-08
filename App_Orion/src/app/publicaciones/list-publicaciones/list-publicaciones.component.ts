@@ -50,4 +50,9 @@ export class ListPublicacionesComponent implements OnInit {
       });
     });
   }
+
+  navigateToCreatePublicacion(): void {
+    // Navigate to the create publication page
+    console.log('Navigating to create publication page');
+  }
 }

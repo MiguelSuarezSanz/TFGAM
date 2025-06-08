@@ -3,7 +3,7 @@ export interface UserCreateDTO {
     Email: string,
     FechaNacimiento: Date,
     Password: string,
-    Perfil: string,
+    Perfil: string;
     Privilegios: string, 
     Bloqueado: string
 }
@@ -14,7 +14,7 @@ export interface UserDTO{
     Email: string,
     FechaNacimiento: Date,
     Password: string,
-    Perfil: string,
+    Perfil: string;
     Privilegios: string, 
     Bloqueado: string
 }
@@ -33,3 +33,6 @@ export interface respuestaAutenticacion{
     token: string;
     expiracion: Date;
 }
+
+// Add default profile image logic
+export const DEFAULT_PROFILE_IMAGE = 'Assets/FotoPreterminada.png';

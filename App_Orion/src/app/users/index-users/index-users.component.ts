@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from '../../utilidades/dialogo-confirmaci
 import { RouterLink } from '@angular/router';
 
 import { ListadoGenericoComponent } from '../../utilidades/listado-generico/listado-generico.component';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-index-users',
@@ -19,9 +20,12 @@ import { ListadoGenericoComponent } from '../../utilidades/listado-generico/list
 })
 export class IndexUsersComponent implements OnInit{
 
-  constructor(private usersService: UsersService, private dialog: MatDialog){}
+  constructor(private usersService: UsersService, private dialog: MatDialog, private authService: AuthService){}
+
+  isAdmin: boolean = false;
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
     this.cargarRegistros();
   }
 

@@ -25,7 +25,7 @@ export const routes: Routes = [
 
     // Routing Users
     {path: 'users/create', component: CreateUserComponent, canActivate: [AuthGuard]},
-    {path: 'users/edit/:id', component: EditUserComponent},
+    {path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard]},
     {path: 'users/detail/:id', component: DetailUserComponent},
     {path: 'users', component: IndexUsersComponent, canActivate: [AuthGuard]},
     {path: 'users/login', component: LoginComponent},

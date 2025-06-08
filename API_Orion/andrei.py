@@ -159,6 +159,8 @@ async def get_user_id(user_id: int):
 # POST: crear un nuevo usuario
 @app.post("/users", response_model=UserCreateDTO)
 async def create_user(user: UserCreateDTO):
+    if not user.Perfil:
+        user.Perfil = "Assets/FotoPreterminada.png"
 
     print(user.dict())
     
@@ -193,6 +195,9 @@ async def create_user(user: UserCreateDTO):
 # PUT: actualizar un usuario existente
 @app.put("/users/{user_id}", response_model=UserUpdateDTO)
 async def update_user(user_id: int, user: UserUpdateDTO):
+    if not user.Perfil:
+        user.Perfil = "Assets/FotoPreterminada.png"
+
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
@@ -328,7 +333,7 @@ async def get_publicacion_id(publicacion_id: int):
             sql = """
                 SELECT p.Id, p.Titulo, p.Contenido, p.Imagen, p.FechaPubl, u.Nombre AS Usuario_Nombre
                 FROM Publicaciones p
-                JOIN Usuarios u ON p.Id_Usuario = u.Id
+                INNER JOIN Usuarios u ON p.Id_Usuario = u.Id
                 WHERE p.Id = %s
             """
             cursor.execute(sql, (publicacion_id,))
@@ -461,7 +466,13 @@ async def get_comentarios_by_publicacion(publicacion_id: int):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            sql = "SELECT Id, Id_Usuario, Id_Publicacion, Contenido, Fecha FROM Comentarios WHERE Id_Publicacion = %s ORDER BY Fecha DESC"
+            sql = """
+                SELECT c.Id, c.Id_Usuario, c.Id_Publicacion, c.Contenido, c.Fecha, u.Nombre AS Usuario_Nombre
+                FROM Comentarios c
+                INNER JOIN Usuarios u ON c.Id_Usuario = u.Id
+                WHERE c.Id_Publicacion = %s
+                ORDER BY c.Fecha DESC
+            """
             cursor.execute(sql, (publicacion_id,))
             rows = cursor.fetchall()
 

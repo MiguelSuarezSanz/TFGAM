@@ -5,11 +5,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule } from '@angular/forms';
-import { UserCreateDTO, UserDTO } from '../user';
+import { UserCreateDTO, UserDTO, DEFAULT_PROFILE_IMAGE } from '../user';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../auth/auth.service';
 
 
 
@@ -32,8 +33,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class FormUserComponent implements OnInit, OnChanges{
   isAdmin: boolean = false;
-  
-  constructor(private formBuilder: FormBuilder) {}
+
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
   
   form!: FormGroup;
   
@@ -53,6 +54,7 @@ export class FormUserComponent implements OnInit, OnChanges{
   imageChange = false;
 
   ngOnInit(): void{
+    this.isAdmin = this.authService.isAdmin();
     this.form = this.formBuilder.group({
       Nombre: ['', { validators: [Validators.required] }],
       Email: ['', { validators: [Validators.required, Validators.email] }],
@@ -82,15 +84,27 @@ export class FormUserComponent implements OnInit, OnChanges{
   }
 
   onSubmit() {
+    if (!this.form) {
+      console.error('El formulario no está inicializado correctamente.');
+      return;
+    }
+
     if (this.form.valid) {
-        console.log("Datos del formulario enviados:", this.form.value);  // Log para depuración
-        this.OnSubmit.emit(this.form.value);
+      if (!this.form.get('Perfil')?.value) {
+        this.form.get('Perfil')?.setValue(DEFAULT_PROFILE_IMAGE);
+      }
+      console.log("Datos del formulario enviados:", this.form.value);  // Log para depuración
+      this.OnSubmit.emit(this.form.value);
     } else {
-        console.error("Formulario inválido:", this.form.errors);  // Log de errores
+      console.error("Formulario inválido:", this.form.errors);  // Log de errores
     }
   }
 
   onCancel() {
+    if (!this.OnCancel) {
+      console.error('El evento OnCancel no está inicializado.');
+      return;
+    }
     this.OnCancel.emit();
   }
 }
