@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from enum import Enum
@@ -6,6 +6,7 @@ from datetime import date,datetime, timedelta
 from fastapi.middleware.cors import CORSMiddleware
 from passlib.context import CryptContext
 from jose import JWTError, jwt
+import pymysql
 
 app = FastAPI()
 
@@ -23,13 +24,14 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permitir todos los orígenes temporalmente
+    allow_origins=[
+        "http://localhost:4200",  # Explicitly allow the frontend's origin
+        "http://127.0.0.1:4200"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos HTTP
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
-
-import pymysql
 
 host = "localhost"
 user = "admin"
@@ -47,10 +49,8 @@ def get_db_connection():
             port=3306,
             cursorclass=pymysql.cursors.DictCursor 
         )
-        print("Conexión exitosa")
         return conn
     except pymysql.MySQLError as e:
-        print(f"Error conectando a la base de datos: {e}")
         raise HTTPException(status_code=500, detail="Error conectando a la base de datos")
 
 
@@ -151,7 +151,6 @@ async def get_user_id(user_id: int):
 
             return User(**row)
     except Exception as e:
-        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail="Error interno del servidor")
     finally:
         conn.close()
@@ -159,11 +158,17 @@ async def get_user_id(user_id: int):
 # POST: crear un nuevo usuario
 @app.post("/users", response_model=UserCreateDTO)
 async def create_user(user: UserCreateDTO):
-
-    print(user.dict())
     
+    user.Perfil = user.Perfil or "public/assets/FotoPreterminada.png"
+    user.Bloqueado = user.Bloqueado if user.Bloqueado is not None else False
 
-    print(user)
+    # Validar que la fecha de nacimiento sea una fecha válida
+    if isinstance(user.FechaNacimiento, str):
+        try:
+            user.FechaNacimiento = datetime.strptime(user.FechaNacimiento, "%Y-%m-%d").date()
+        except ValueError:
+            raise HTTPException(status_code=422, detail="FechaNacimiento debe ser una fecha válida en formato YYYY-MM-DD.")
+
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
@@ -176,17 +181,19 @@ async def create_user(user: UserCreateDTO):
                 user.Nombre,
                 user.Email,
                 user.FechaNacimiento,
-                user.Perfil,  # Can be None
+                user.Perfil,
                 user.Privilegios,
-                user.Bloqueado if user.Bloqueado is not None else False,  # Default False
+                user.Bloqueado,
                 hashed_password,
             ))
 
             conn.commit()
-            return user  # Return the created user object
-    except Exception as e:
-        print("Error:", e)
-        raise HTTPException(status_code=500, detail="Error interno del servidor")
+            return user
+    except pymysql.MySQLError as e:
+        if "Duplicate entry" in str(e):
+            raise HTTPException(status_code=422, detail="El correo electrónico ya está registrado.")
+        print("Error de base de datos:", e)
+        raise HTTPException(status_code=500, detail="Error interno del servidor.")
     finally:
         conn.close()
 
@@ -196,7 +203,7 @@ async def update_user(user_id: int, user: UserUpdateDTO):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            hashed_password = get_password_hash(user.Password)  # <-- Hashear la nueva contraseña
+            hashed_password = get_password_hash(user.Password) if user.Password else None
             sql = """
                 UPDATE Usuarios
                 SET Nombre = %s,
@@ -205,7 +212,7 @@ async def update_user(user_id: int, user: UserUpdateDTO):
                     Perfil = %s,
                     Privilegios = %s,
                     Bloqueado = %s,
-                    Password = %s  # <-- Agregado para actualizar la contraseña
+                    Password = COALESCE(%s, Password)  # Use existing password if none provided
                 WHERE Id = %s
             """
             cursor.execute(sql, (
@@ -223,9 +230,16 @@ async def update_user(user_id: int, user: UserUpdateDTO):
                 raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
             conn.commit()
-            return {"mensaje": "Usuario actualizado correctamente"}
+
+            # Fetch the updated user details
+            cursor.execute("SELECT * FROM Usuarios WHERE Id = %s", (user_id,))
+            updated_user = cursor.fetchone()
+
+            if not updated_user:
+                raise HTTPException(status_code=404, detail="Usuario no encontrado después de la actualización")
+
+            return UserUpdateDTO(**updated_user)
     except Exception as e:
-        print("Error:", e)
         raise HTTPException(status_code=500, detail="Error interno del servidor")
     finally:
         conn.close()
@@ -251,7 +265,6 @@ async def delete_user(user_id: int):
 
             return {"message": "Usuario eliminado correctamente"}
     except Exception as e:
-        print("Error:", e)
         raise HTTPException(status_code=500, detail="Error interno del servidor")
     finally:
         conn.close()
@@ -260,38 +273,27 @@ async def delete_user(user_id: int):
 @app.post("/users/login")
 async def login(user: LoginDTO):
     try:
-        print("Estableciendo conexión con la base de datos...")
         conn = get_db_connection()
-        print("Conexión establecida correctamente.")
         with conn.cursor() as cursor:
-            print("Ejecutando consulta SQL para el email:", user.Email)
             sql = "SELECT * FROM Usuarios WHERE Email = %s"
             cursor.execute(sql, (user.Email,))
             row = cursor.fetchone()
 
             if row is None:
-                print("Usuario no encontrado en la base de datos.")
                 raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
-            print("Usuario encontrado en la base de datos:", row)
-
             if not verify_password(user.Password, row['Password']):
-                print("La contraseña proporcionada no coincide.")
                 raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
             access_token = create_access_token(data={"sub": row['Email']})
-            print("Token de acceso generado correctamente.")
             return {"access_token": access_token, "token_type": "bearer", "user": row}
     except pymysql.MySQLError as db_error:
-        print("Error de base de datos:", db_error)
         raise HTTPException(status_code=500, detail="Error conectando a la base de datos")
     except Exception as e:
-        print("Error interno del servidor:", e)
         raise HTTPException(status_code=500, detail="Error interno del servidor")
     finally:
         if 'conn' in locals() and conn.open:
             conn.close()
-            print("Conexión a la base de datos cerrada.")
 
 # -------------------- Publicaciones --------------------
 
@@ -300,35 +302,95 @@ class Publicacion(BaseModel):
     Titulo: str
     Contenido: str
     Imagen: Optional[str]
-    FechaPubl: date
+    FechaPubl: date 
 
 class PublicacionCreateDTO(BaseModel):
     Titulo: str
     Contenido: str
     Imagen: Optional[str] = None
-    FechaPubl: date
+    FechaPubl: date  
+    Id_Usuario: int  
 
-@app.get("/publicaciones", response_model=List[Publicacion])
+class PublicacionDTO(BaseModel):
+    Id: int
+    Titulo: str
+    Contenido: str
+    Imagen: Optional[str]
+    FechaPubl: str
+    usuario: User
+
+@app.get("/publicaciones", response_model=List[PublicacionDTO])
 async def get_publicaciones():
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM Publicaciones")
-            rows = cursor.fetchall()
-            return [Publicacion(**row) for row in rows]
+            sql = """
+                SELECT 
+                    p.Id, 
+                    p.Titulo, 
+                    p.Contenido, 
+                    p.Imagen, 
+                    DATE_FORMAT(p.FechaPubl, '%Y-%m-%d') AS FechaPubl, 
+                    u.Id AS usuario_id, 
+                    u.Nombre AS usuario_nombre, 
+                    u.Email AS usuario_email, 
+                    u.FechaNacimiento AS usuario_fechaNacimiento, 
+                    u.Privilegios AS usuario_privilegios, 
+                    u.Bloqueado AS usuario_bloqueado, 
+                    u.Perfil AS usuario_fotoPerfil
+                FROM Publicaciones p
+                JOIN Usuarios u ON p.Id_Usuario = u.Id
+            """
+            try:
+                cursor.execute(sql)
+                rows = cursor.fetchall()
+            except Exception as e:
+                raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+            return [
+                PublicacionDTO(
+                    Id=row["Id"],
+                    Titulo=row["Titulo"],
+                    Contenido=row["Contenido"],
+                    Imagen=row["Imagen"],
+                    FechaPubl=row["FechaPubl"],
+                    usuario=User(
+                        Id=row["usuario_id"],
+                        Nombre=row["usuario_nombre"],
+                        Email=row["usuario_email"],
+                        FechaNacimiento=row["usuario_fechaNacimiento"],
+                        Privilegios=row["usuario_privilegios"],
+                        Bloqueado=row["usuario_bloqueado"],
+                        Perfil=row["usuario_fotoPerfil"]
+                    )
+                )
+                for row in rows
+            ]
     finally:
         conn.close()
 
-# Adjusted query to include the user's name in the publication details
-@app.get("/publicaciones/{publicacion_id}", response_model=Publicacion)
+# Modifying the function to return a DTO instead of a dictionary
+@app.get("/publicaciones/{publicacion_id}", response_model=PublicacionDTO)
 async def get_publicacion_id(publicacion_id: int):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
             sql = """
-                SELECT p.Id, p.Titulo, p.Contenido, p.Imagen, p.FechaPubl, u.Nombre AS Usuario_Nombre
+                SELECT 
+                    p.Id, 
+                    p.Titulo, 
+                    p.Contenido, 
+                    p.Imagen, 
+                    p.FechaPubl, 
+                    u.Id AS usuario_id, 
+                    u.Nombre AS usuario_nombre, 
+                    u.Email AS usuario_email, 
+                    u.FechaNacimiento AS usuario_fechaNacimiento, 
+                    u.Privilegios AS usuario_privilegios, 
+                    u.Bloqueado AS usuario_bloqueado, 
+                    u.Perfil AS usuario_fotoPerfil
                 FROM Publicaciones p
-                JOIN Usuarios u ON p.Id_Usuario = u.Id
+                INNER JOIN Usuarios u ON p.Id_Usuario = u.Id
                 WHERE p.Id = %s
             """
             cursor.execute(sql, (publicacion_id,))
@@ -337,24 +399,49 @@ async def get_publicacion_id(publicacion_id: int):
             if row is None:
                 raise HTTPException(status_code=404, detail="Publicación no encontrada")
 
-            return Publicacion(**row)
+            # Fetch comments for the publication
+            cursor.execute("SELECT * FROM Comentarios WHERE Id_Publicacion = %s", (publicacion_id,))
+            comentarios = cursor.fetchall()
+
+            # Format the date after fetching the row
+            row["FechaPubl"] = row["FechaPubl"].strftime('%Y-%m-%d')
+
+            return {
+                "Id": row["Id"],
+                "Titulo": row["Titulo"],
+                "Contenido": row["Contenido"],
+                "Imagen": row["Imagen"],
+                "FechaPubl": row["FechaPubl"],
+                "usuario": {
+                    "Id": row["usuario_id"],
+                    "Nombre": row["usuario_nombre"],
+                    "Email": row["usuario_email"],
+                    "FechaNacimiento": row["usuario_fechaNacimiento"],
+                    "Privilegios": row["usuario_privilegios"],
+                    "Bloqueado": row["usuario_bloqueado"],
+                    "Perfil": row["usuario_fotoPerfil"]
+                },
+                "comentarios": comentarios
+            }
     finally:
         conn.close()
 
 @app.post("/publicaciones", response_model=PublicacionCreateDTO)
 async def create_publicacion(publicacion: PublicacionCreateDTO):
     conn = get_db_connection()
+    print("Creating publication:", publicacion)
     try:
         with conn.cursor() as cursor:
             sql = """
-                INSERT INTO Publicaciones (Id, Titulo, Contenido, Imagen, FechaPubl)
-                VALUES (Null, %s, %s, %s, %s)
+                INSERT INTO Publicaciones (Id, Titulo, Contenido, Imagen, FechaPubl, Id_Usuario)
+                VALUES (Null, %s, %s, %s, %s, %s)
             """
             cursor.execute(sql, (
                 publicacion.Titulo,
                 publicacion.Contenido,
                 publicacion.Imagen,
-                publicacion.FechaPubl
+                publicacion.FechaPubl,
+                publicacion.Id_Usuario
             ))
 
             conn.commit()
@@ -396,17 +483,9 @@ async def delete_publicacion(publicacion_id: int):
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            sql_check = "SELECT Id FROM Publicaciones WHERE Id = %s"
-            cursor.execute(sql_check, (publicacion_id,))
-            publicacion = cursor.fetchone()
-
-            if not publicacion:
-                raise HTTPException(status_code=404, detail="Publicación no encontrada")
-
-            sql_delete = "DELETE FROM Publicaciones WHERE Id = %s"
-            cursor.execute(sql_delete, (publicacion_id,))
+            sql = "DELETE FROM Publicaciones WHERE Id = %s"
+            cursor.execute(sql, (publicacion_id,))
             conn.commit()
-
             return {"message": "Publicación eliminada correctamente"}
     finally:
         conn.close()
@@ -460,42 +539,80 @@ async def get_comentario_id(comentario_id: int):
 async def get_comentarios_by_publicacion(publicacion_id: int):
     conn = get_db_connection()
     try:
-        with conn.cursor() as cursor:
-            sql = "SELECT Id, Id_Usuario, Id_Publicacion, Contenido, Fecha FROM Comentarios WHERE Id_Publicacion = %s ORDER BY Fecha DESC"
-            cursor.execute(sql, (publicacion_id,))
-            rows = cursor.fetchall()
+        cursor = conn.cursor()
+        sql = """
+            SELECT 
+                c.Id, 
+                c.Id_Usuario, 
+                c.Id_Publicacion, 
+                c.Contenido, 
+                c.Fecha,
+                u.Nombre AS Usuario_Nombre,
+                u.Perfil AS Usuario_Perfil,
+                p.Titulo AS Publicacion_Titulo,
+                p.Imagen AS Publicacion_Imagen
+            FROM Comentarios c
+            LEFT JOIN Usuarios u ON c.Id_Usuario = u.Id
+            LEFT JOIN Publicaciones p ON c.Id_Publicacion = p.Id
+            WHERE c.Id_Publicacion = %s
+            ORDER BY c.Fecha DESC
+        """
+        cursor.execute(sql, (publicacion_id,))
+        rows = cursor.fetchall()
 
-            if not rows:
-                raise HTTPException(status_code=404, detail="No se encontraron comentarios para esta publicación")
+        if not rows:
+            raise HTTPException(status_code=404, detail="No se encontraron comentarios para esta publicación")
 
-            return [Comentario(**row) for row in rows]
+        return [
+            {
+                "Id": row["Id"],
+                "Id_Usuario": row["Id_Usuario"],
+                "Id_Publicacion": row["Id_Publicacion"],
+                "Contenido": row["Contenido"],
+                "Fecha": row["Fecha"],
+                "Usuario": {
+                    "Nombre": row["Usuario_Nombre"],
+                    "Perfil": row["Usuario_Perfil"]
+                }
+            }
+            for row in rows
+        ]
     finally:
+        cursor.close()
         conn.close()
+
 
 @app.post("/comentarios", response_model=ComentarioCreateDTO)
 async def create_comentario(comentario: ComentarioCreateDTO):
+    try:
+        if isinstance(comentario.Fecha, str):
+            comentario.Fecha = datetime.strptime(comentario.Fecha, "%Y-%m-%d").date()
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Fecha debe ser una fecha válida en formato YYYY-MM-DD.")
+
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            # Verificar que la publicación existe
-            sql_check = "SELECT Id FROM Publicaciones WHERE Id = %s"
-            cursor.execute(sql_check, (comentario.Id_Publicacion,))
+            # Validate publication ID
+            sql_check_publicacion = "SELECT Id FROM Publicaciones WHERE Id = %s"
+            cursor.execute(sql_check_publicacion, (comentario.IdPublicacion,))
             if not cursor.fetchone():
                 raise HTTPException(status_code=404, detail="Publicación no encontrada")
 
-            # Verificar que el usuario existe
-            sql_check = "SELECT Id FROM Usuarios WHERE Id = %s"
-            cursor.execute(sql_check, (comentario.Id_Usuario,))
+            # Validate user ID
+            sql_check_usuario = "SELECT Id FROM Usuarios WHERE Id = %s"
+            cursor.execute(sql_check_usuario, (comentario.IdUsuario,))
             if not cursor.fetchone():
                 raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-            sql = """
-                INSERT INTO Comentarios (Id, Id_Usuario, Id_Publicacion, Contenido, Fecha)
-                VALUES (NULL, %s, %s, %s, %s)
+            # Insert comment
+            sql_insert_comentario = """
+                INSERT INTO Comentarios (Id_Usuario, Id_Publicacion, Contenido, Fecha)
+                VALUES (%s, %s, %s, %s)
             """
-            cursor.execute(sql, (
-                comentario.Id_Usuario,
-                comentario.Id_Publicacion,
+            cursor.execute(sql_insert_comentario, (
+                comentario.IdUsuario,
+                comentario.IdPublicacion,
                 comentario.Contenido,
                 comentario.Fecha
             ))
@@ -558,5 +675,50 @@ async def delete_comentario(comentario_id: int):
             
             conn.commit()
             return {"message": "Comentario eliminado correctamente"}
+    finally:
+        conn.close()
+
+# -------------------- Amistades y Chats --------------------
+
+class AmistadDTO(BaseModel):
+    id: int
+    usuario_id_1: int
+    usuario_id_2: int
+    fecha_solicitud: datetime
+    estado: str
+
+@app.get("/amistades", response_model=List[AmistadDTO])
+async def get_amistades():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Amistades")
+    amistades = cursor.fetchall()
+    conn.close()
+    return amistades
+
+@app.post("/amistades", response_model=AmistadDTO)
+async def create_amistad(amistad: AmistadDTO):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO Amistades (usuario_id_1, usuario_id_2, fecha_solicitud, estado) VALUES (%s, %s, %s, %s)",
+        (amistad.usuario_id_1, amistad.usuario_id_2, amistad.fecha_solicitud, amistad.estado)
+    )
+    conn.commit()
+    conn.close()
+    return amistad
+
+@app.get("/amistades/{user_id}", response_model=List[AmistadDTO])
+async def get_user_amistades(user_id: int):
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            sql = """
+                SELECT * FROM Amistades
+                WHERE usuario_id_1 = %s OR usuario_id_2 = %s
+            """
+            cursor.execute(sql, (user_id, user_id))
+            rows = cursor.fetchall()
+            return [AmistadDTO(**row) for row in rows]
     finally:
         conn.close()

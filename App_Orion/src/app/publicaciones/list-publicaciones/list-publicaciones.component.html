@@ -1,13 +1,20 @@
-<h1>Lista de Publicaciones</h1>
-<ul>
-  <li *ngFor="let publicacion of publicaciones">
-    <a [routerLink]="['/publicaciones/', publicacion.Id]">
-      {{ publicacion.Titulo }}
-    </a>
-    <ul>
-      <li *ngFor="let comentario of comentariosPorPublicacion[publicacion.Id]">
-        {{ comentario.contenido }}
-      </li>
-    </ul>
-  </li>
-</ul>
+<h1 class="w-max text-center">Lista de Publicaciones</h1>
+<div class="box-content-father">
+  <div class="publicaciones-list">
+    <div *ngFor="let publicacion of publicaciones" class="publicacion-item">
+
+      <a [routerLink]="['/publicaciones/detail', publicacion.Id]">{{ publicacion.Titulo }}</a>
+
+            <img [src]="publicacion.usuario.FotoPerfil" alt="Foto de perfil" class="profile-pic">
+            {{ publicacion.usuario.Nombre }} - {{ publicacion.FechaPubl | date:'dd/MM/yyyy' }}
+
+          <p>{{ publicacion.Contenido | slice:0:120 }}</p>
+       
+        
+          <button *ngIf="publicacion.usuario.Id === idUsuarioActual || isAdmin" (click)="editarPublicacion(publicacion.Id)">Editar</button>
+          <button *ngIf="publicacion.usuario.Id === idUsuarioActual || isAdmin" (click)="borrarPublicacion(publicacion.Id)">Borrar</button>
+        
+    
+    </div>
+  </div>
+</div>

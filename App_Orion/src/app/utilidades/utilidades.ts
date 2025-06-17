@@ -33,7 +33,27 @@ export function parseErrorsApi(response: any): string[] {
                 })
             })
         }
+    } else if (response.detail) {
+        return Array.isArray(response.detail) ? response.detail : [response.detail];
+    } else {
+        return ['Error inesperado.'];
     }
 
     return result;
+}
+
+
+export function formatDateToISO(date: Date): string {
+    return date.toISOString().split('T')[0];
+}
+
+
+export function getCurrentUser(): any {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    console.warn('localStorage is not available in this environment.');
+    return null;
+  }
+
+  const user = localStorage.getItem('user');
+  return user ? JSON.parse(user) : null;
 }

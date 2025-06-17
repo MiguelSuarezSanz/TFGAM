@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-06-2025 a las 23:56:37
+-- Tiempo de generación: 10-06-2025 a las 18:58:40
 -- Versión del servidor: 10.6.22-MariaDB-0ubuntu0.22.04.1
 -- Versión de PHP: 8.1.2-1ubuntu2.21
 
@@ -28,8 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Amistades` (
-  `Usuario_Id_1` int(11) NOT NULL,
-  `Usuario_Id_2` int(11) NOT NULL
+  `id` int(11) NOT NULL,
+  `usuario_id_1` int(11) NOT NULL,
+  `usuario_id_2` int(11) NOT NULL,
+  `fecha_solicitud` datetime DEFAULT current_timestamp(),
+  `estado` enum('pendiente','aceptada','rechazada') DEFAULT 'pendiente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -57,6 +60,18 @@ CREATE TABLE `Comentarios` (
   `Fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `Comentarios`
+--
+
+INSERT INTO `Comentarios` (`Id`, `Id_Usuario`, `Id_Publicacion`, `Contenido`, `Fecha`) VALUES
+(1, 2, 1, 'Este es un comentario sobre la primera publicación.', '2025-06-06'),
+(2, 3, 1, 'Otro comentario sobre la primera publicación.', '2025-06-06'),
+(3, 1, 1, 'Un tercer comentario sobre la primera publicación.', '2025-06-06'),
+(4, 1, 2, 'Comentario sobre la segunda publicación.', '2025-06-06'),
+(5, 3, 2, 'Otro comentario sobre la segunda publicación.', '2025-06-06'),
+(6, 2, 3, 'Comentario sobre la tercera publicación.', '2025-06-06');
+
 -- --------------------------------------------------------
 
 --
@@ -65,10 +80,9 @@ CREATE TABLE `Comentarios` (
 
 CREATE TABLE `Comentario_Reaccion` (
   `Id` int(11) NOT NULL,
+  `Reaccion` enum('Like','Dislike') NOT NULL,
   `Id_Comentario` int(11) NOT NULL,
-  `Id_Usuario` int(11) NOT NULL,
-  `User_Liked` tinyint(1) NOT NULL,
-  `User_Disliked` tinyint(1) NOT NULL
+  `Id_Usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -123,50 +137,6 @@ CREATE TABLE `Mensaje` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Partida`
---
-
-CREATE TABLE `Partida` (
-  `Id` int(11) NOT NULL,
-  `FechaPartida` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Partida_Chat`
---
-
-CREATE TABLE `Partida_Chat` (
-  `Id_Partida` int(11) NOT NULL,
-  `Id_Chat` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Partida_Mapa`
---
-
-CREATE TABLE `Partida_Mapa` (
-  `Id_Partida` int(11) NOT NULL,
-  `Id_Mapa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Partida_Personaje`
---
-
-CREATE TABLE `Partida_Personaje` (
-  `Id_Partida` int(11) NOT NULL,
-  `Id_Personaje` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `Publicaciones`
 --
 
@@ -179,6 +149,15 @@ CREATE TABLE `Publicaciones` (
   `Contenido` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `Publicaciones`
+--
+
+INSERT INTO `Publicaciones` (`Id`, `Id_Usuario`, `FechaPubl`, `Titulo`, `Imagen`, `Contenido`) VALUES
+(1, 1, '2025-06-06', 'Primera Publicación', 'imagen1.png', 'Este es el contenido de la primera publicación.'),
+(2, 2, '2025-06-06', 'Segunda Publicación', 'imagen2.png', 'Este es el contenido de la segunda publicación.'),
+(3, 3, '2025-06-06', 'Tercera Publicación', 'imagen3.png', 'Este es el contenido de la tercera publicación.');
+
 -- --------------------------------------------------------
 
 --
@@ -187,9 +166,9 @@ CREATE TABLE `Publicaciones` (
 
 CREATE TABLE `Publicacion_Reaccion` (
   `Id` int(11) NOT NULL,
+  `Reaccion` enum('Like','Dislike') NOT NULL,
   `Id_Publicacion` int(11) NOT NULL,
-  `Id_Usuario` int(11) NOT NULL,
-  `Valoracion` float NOT NULL
+  `Id_Usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -217,7 +196,9 @@ INSERT INTO `Usuarios` (`Id`, `Nombre`, `Email`, `FechaNacimiento`, `Password`, 
 (1, 'Andrei', 'andrei@gmail.com', '2000-05-19', '$2b$12$bgl.BvOT4HECEiRIyJ08VuD/Kge0RuDxLesUGwLOpzCdCTpZpVoue', 'Admin', 0, NULL),
 (2, 'Miguel', 'miguel@gmail.com', '2025-05-23', 'miguel1290', 'Usuario', 0, NULL),
 (3, 'Maffi', 'maffi@gmail.com', '2025-02-05', '$2b$12$5wHuKk3MLf7MfTgnup1GF.MQ1N1GnkGJqg4tbGstHYqK4Hq66.Ik6', 'Usuario', 0, ''),
-(5, 'Bruno', 'bruno@gmail.com', '2018-03-01', '$2b$12$UBRIeKu4rmVUfKzbWiCJ9uQSjtoRsN/E.OCAXzPN7VpX.JJnLITT6', 'Usuario', 0, '');
+(5, 'Bruno', 'bruno@gmail.com', '2018-03-01', '$2b$12$UBRIeKu4rmVUfKzbWiCJ9uQSjtoRsN/E.OCAXzPN7VpX.JJnLITT6', 'Usuario', 0, ''),
+(7, 'Karla', 'karla@gmail.com', '2016-03-03', '$2b$12$xvxTvZbR0NeTVR2jboXwdOjFn.b6ONoFuXxqF1wUOjAdj1I8AuloC', 'Usuario', 0, ''),
+(13, 'Marcos', 'marcos@gmail.com', '2025-06-02', '$2b$12$o4Vv.dh7geekVvfdn07tDOIXwqFXx0NLKClKrVqpQPvDxOtVV2tP2', 'Usuario', 0, 'assets/images/placeholder.png');
 
 -- --------------------------------------------------------
 
@@ -228,18 +209,6 @@ INSERT INTO `Usuarios` (`Id`, `Nombre`, `Email`, `FechaNacimiento`, `Password`, 
 CREATE TABLE `Usuario_Grupo` (
   `Id_Usuario` int(11) NOT NULL,
   `Id_Grupo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Usuario_Partida`
---
-
-CREATE TABLE `Usuario_Partida` (
-  `Id_Usuario` int(11) NOT NULL,
-  `Id_Partida` int(11) NOT NULL,
-  `Rol` enum('GM','Jugador','Espectador') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -261,8 +230,9 @@ CREATE TABLE `Usuario_Personaje` (
 -- Indices de la tabla `Amistades`
 --
 ALTER TABLE `Amistades`
-  ADD KEY `FK_Usuario_Id_1` (`Usuario_Id_1`),
-  ADD KEY `FK_Usuario_Id_2` (`Usuario_Id_2`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id_1` (`usuario_id_1`),
+  ADD KEY `usuario_id_2` (`usuario_id_2`);
 
 --
 -- Indices de la tabla `Chats`
@@ -315,32 +285,6 @@ ALTER TABLE `Mensaje`
   ADD KEY `FK_MensajeChat_Id` (`Id_Chat`);
 
 --
--- Indices de la tabla `Partida`
---
-ALTER TABLE `Partida`
-  ADD PRIMARY KEY (`Id`);
-
---
--- Indices de la tabla `Partida_Chat`
---
-ALTER TABLE `Partida_Chat`
-  ADD KEY `FK_ChatPartida_ID` (`Id_Chat`),
-  ADD KEY `FK_Partida_Id` (`Id_Partida`);
-
---
--- Indices de la tabla `Partida_Mapa`
---
-ALTER TABLE `Partida_Mapa`
-  ADD KEY `FK_PartidaMapa_Id` (`Id_Partida`),
-  ADD KEY `FK_MapaPartida_Id` (`Id_Mapa`);
-
---
--- Indices de la tabla `Partida_Personaje`
---
-ALTER TABLE `Partida_Personaje`
-  ADD KEY `FK_PartidaPersonaje_Id` (`Id_Partida`);
-
---
 -- Indices de la tabla `Publicaciones`
 --
 ALTER TABLE `Publicaciones`
@@ -370,13 +314,6 @@ ALTER TABLE `Usuario_Grupo`
   ADD KEY `FK_GrupoUsuario_Id` (`Id_Grupo`);
 
 --
--- Indices de la tabla `Usuario_Partida`
---
-ALTER TABLE `Usuario_Partida`
-  ADD KEY `FK_UsuarioPartida_Id` (`Id_Usuario`),
-  ADD KEY `FK_PartidaUsuario_Id` (`Id_Partida`);
-
---
 -- Indices de la tabla `Usuario_Personaje`
 --
 ALTER TABLE `Usuario_Personaje`
@@ -385,6 +322,12 @@ ALTER TABLE `Usuario_Personaje`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `Amistades`
+--
+ALTER TABLE `Amistades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `Chats`
@@ -396,7 +339,7 @@ ALTER TABLE `Chats`
 -- AUTO_INCREMENT de la tabla `Comentarios`
 --
 ALTER TABLE `Comentarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `Comentario_Reaccion`
@@ -423,16 +366,10 @@ ALTER TABLE `Mensaje`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `Partida`
---
-ALTER TABLE `Partida`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `Publicaciones`
 --
 ALTER TABLE `Publicaciones`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `Publicacion_Reaccion`
@@ -444,7 +381,7 @@ ALTER TABLE `Publicacion_Reaccion`
 -- AUTO_INCREMENT de la tabla `Usuarios`
 --
 ALTER TABLE `Usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
@@ -454,8 +391,8 @@ ALTER TABLE `Usuarios`
 -- Filtros para la tabla `Amistades`
 --
 ALTER TABLE `Amistades`
-  ADD CONSTRAINT `FK_Usuario_Id_1` FOREIGN KEY (`Usuario_Id_1`) REFERENCES `Usuarios` (`Id`),
-  ADD CONSTRAINT `FK_Usuario_Id_2` FOREIGN KEY (`Usuario_Id_2`) REFERENCES `Usuarios` (`Id`);
+  ADD CONSTRAINT `Amistades_ibfk_1` FOREIGN KEY (`usuario_id_1`) REFERENCES `Usuarios` (`Id`),
+  ADD CONSTRAINT `Amistades_ibfk_2` FOREIGN KEY (`usuario_id_2`) REFERENCES `Usuarios` (`Id`);
 
 --
 -- Filtros para la tabla `Comentarios`
@@ -492,26 +429,6 @@ ALTER TABLE `Mensaje`
   ADD CONSTRAINT `FK_Usuario_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`);
 
 --
--- Filtros para la tabla `Partida_Chat`
---
-ALTER TABLE `Partida_Chat`
-  ADD CONSTRAINT `FK_ChatPartida_ID` FOREIGN KEY (`Id_Chat`) REFERENCES `Chats` (`Id`),
-  ADD CONSTRAINT `FK_Partida_Id` FOREIGN KEY (`Id_Partida`) REFERENCES `Partida` (`Id`);
-
---
--- Filtros para la tabla `Partida_Mapa`
---
-ALTER TABLE `Partida_Mapa`
-  ADD CONSTRAINT `FK_MapaPartida_Id` FOREIGN KEY (`Id_Mapa`) REFERENCES `Mapa` (`Id`),
-  ADD CONSTRAINT `FK_PartidaMapa_Id` FOREIGN KEY (`Id_Partida`) REFERENCES `Partida` (`Id`);
-
---
--- Filtros para la tabla `Partida_Personaje`
---
-ALTER TABLE `Partida_Personaje`
-  ADD CONSTRAINT `FK_PartidaPersonaje_Id` FOREIGN KEY (`Id_Partida`) REFERENCES `Partida` (`Id`);
-
---
 -- Filtros para la tabla `Publicaciones`
 --
 ALTER TABLE `Publicaciones`
@@ -532,13 +449,6 @@ ALTER TABLE `Usuario_Grupo`
   ADD CONSTRAINT `FK_UsuarioGrupo_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`);
 
 --
--- Filtros para la tabla `Usuario_Partida`
---
-ALTER TABLE `Usuario_Partida`
-  ADD CONSTRAINT `FK_PartidaUsuario_Id` FOREIGN KEY (`Id_Partida`) REFERENCES `Partida` (`Id`),
-  ADD CONSTRAINT `FK_UsuarioPartida_Id` FOREIGN KEY (`Id_Usuario`) REFERENCES `Usuarios` (`Id`);
-
---
 -- Filtros para la tabla `Usuario_Personaje`
 --
 ALTER TABLE `Usuario_Personaje`
@@ -548,18 +458,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- Ejemplo de inserciones para la tabla Publicaciones
-INSERT INTO `Publicaciones` (`Id`, `Id_Usuario`, `FechaPubl`, `Titulo`, `Imagen`, `Contenido`) VALUES
-(1, 1, '2025-06-06', 'Primera Publicación', 'imagen1.png', 'Este es el contenido de la primera publicación.'),
-(2, 2, '2025-06-06', 'Segunda Publicación', 'imagen2.png', 'Este es el contenido de la segunda publicación.'),
-(3, 3, '2025-06-06', 'Tercera Publicación', 'imagen3.png', 'Este es el contenido de la tercera publicación.');
-
--- Ejemplo de inserciones para la tabla Comentarios
-INSERT INTO `Comentarios` (`Id`, `Id_Usuario`, `Id_Publicacion`, `Contenido`, `Fecha`) VALUES
-(1, 2, 1, 'Este es un comentario sobre la primera publicación.', '2025-06-06'),
-(2, 3, 1, 'Otro comentario sobre la primera publicación.', '2025-06-06'),
-(3, 1, 1, 'Un tercer comentario sobre la primera publicación.', '2025-06-06'),
-(4, 1, 2, 'Comentario sobre la segunda publicación.', '2025-06-06'),
-(5, 3, 2, 'Otro comentario sobre la segunda publicación.', '2025-06-06'),
-(6, 2, 3, 'Comentario sobre la tercera publicación.', '2025-06-06');

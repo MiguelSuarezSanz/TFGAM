@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { PublicacionDTO, PublicacionCreateDTO } from './publicacion';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { PublicacionCreateDTO, PublicacionDTO } from './publicacion';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +12,12 @@ export class PublicacionesService {
 
   constructor(private http: HttpClient) {}
 
+  obtenerTodos(): Observable<PublicacionDTO[]> {
+    return this.http.get<PublicacionDTO[]>(this.apiURL);
+  }
+
   crear(publicacion: PublicacionCreateDTO): Observable<number> {
-    // Simplified error handling
-    return this.http.post<number>(this.apiURL, publicacion).pipe(
-      catchError((error) => {
-        console.log('Error al crear publicación:', error);
-        alert('Error al crear publicación');
-        return throwError(() => new Error('Error al crear publicación'));
-      })
-    );
+    return this.http.post<number>(this.apiURL, publicacion);
   }
 
   obtenerPorId(id: number): Observable<PublicacionDTO> {
@@ -31,7 +28,11 @@ export class PublicacionesService {
     return this.http.put<void>(`${this.apiURL}/${id}`, publicacion);
   }
 
-  obtenerTodos(): Observable<PublicacionDTO[]> {
-    return this.http.get<PublicacionDTO[]>(this.apiURL);
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
+
+  getPublicacionConComentarios(id: number): Observable<PublicacionDTO> {
+    return this.http.get<PublicacionDTO>(`${this.apiURL}/${id}`);
   }
 }

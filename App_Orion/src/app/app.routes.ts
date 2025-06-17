@@ -17,6 +17,7 @@ import { EditPublicacionComponent } from './publicaciones/edit-publicacion/edit-
 import { DetailPublicacionComponent } from './publicaciones/detail-publicacion/detail-publicacion.component';
 import { ListPublicacionesComponent } from './publicaciones/list-publicaciones/list-publicaciones.component';
 import { ListComentariosComponent } from './comentarios/list-comentarios/list-comentarios.component';
+import { IndexAsmistadComponent } from './amistades/index-chat/index-amistad.component';
 
 
 export const routes: Routes = [
@@ -25,7 +26,7 @@ export const routes: Routes = [
 
     // Routing Users
     {path: 'users/create', component: CreateUserComponent, canActivate: [AuthGuard]},
-    {path: 'users/edit/:id', component: EditUserComponent},
+    {path: 'users/edit/:id', component: EditUserComponent, canActivate: [AuthGuard]},
     {path: 'users/detail/:id', component: DetailUserComponent},
     {path: 'users', component: IndexUsersComponent, canActivate: [AuthGuard]},
     {path: 'users/login', component: LoginComponent},
@@ -41,7 +42,14 @@ export const routes: Routes = [
     {path: 'publicaciones', component: ListPublicacionesComponent},
     {path: 'publicaciones',component: ListPublicacionesComponent},
     {path: 'publicaciones/:id',component: DetailPublicacionComponent},
+    // Routing Comentarios
     {path: 'comentarios',component: ListComentariosComponent},
+    {path: 'comentarios/:id',component: ListComentariosComponent},
+    {path: 'comentarios/publicacion/:id', component: ListComentariosComponent},
+
+    // Routing Amistades
+    { path: 'amistades', component: IndexAsmistadComponent },
+
 
     {path: '', component:IndexUsersComponent},
     {path: '**', redirectTo: ''}

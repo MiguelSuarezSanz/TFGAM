@@ -1,14 +1,19 @@
-export interface ComentarioDTO {
-  id: number;
-  contenido: string;
-  fecha: Date;
-  idPublicacion: number;
-  idUsuario: number;
+export interface ComentarioCreateDTO {
+  Id_Usuario: number;
+  Id_Publicacion: number;
+  Contenido: string;
+  Fecha: Date;
 }
 
-export interface ComentarioCreateDTO {
-  contenido: string;
-  fecha: Date;
-  idPublicacion: number;
-  idUsuario: number;
+export interface ComentarioDTO {
+  Id: number;
+  Id_Usuario: number;
+  Id_Publicacion: number;
+  Contenido: string;
+  Fecha: Date;
+  Usuario?: {
+    Id: number;
+    Nombre: string;
+    FotoPerfil?: string;
+  };
 }

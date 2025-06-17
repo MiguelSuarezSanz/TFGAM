@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+
+
+@Component({
+  selector: 'app-character-index',
+  imports: [],
+
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,6 +14,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
   ],
+
   templateUrl: './character-index.component.html',
   styleUrl: './character-index.component.css'
 })
@@ -40,40 +47,28 @@ export class CharacterIndexComponent implements OnInit  {
     
   }
 
-  onTabClick2(event: MouseEvent) {
-    const tabActive = document.querySelector('.tab-active2') as HTMLElement;
-    let classBase = 'px-2 py-1 h-full w-full flex justify-center items-center tab' as string;
-
-    tabActive.className = classBase;
-
-    const targetElement = event.target as HTMLElement;
-    targetElement.className += '-active2';
-
-    const targetElementValue = event.target as HTMLElement;
-    const datasetTab = targetElementValue.dataset['tab'];
-    
-
-    const tabContents = document.querySelectorAll('.tab-content2') as NodeListOf<HTMLButtonElement>;
-    classBase = 'tab-content2 py-1 px-4 flex flex-col gap-4' as string;
-    tabContents.forEach(tabContent => {
-      
-      tabContent.className = classBase;
-      if (tabContent.id != datasetTab) {
-        tabContent.className += ' hidden';
-      }
-      
-    });
-  }
-
   constructor(private http: HttpClient) {}
   
   ngOnInit(): void {
-    //this.auto_init_page();
+    this.auto_init_page();
     this.auto_init_momentos_epicos();
     this.auto_init_pasivas();
     this.auto_init_check();
     this.button_init_editar_personaje();
     this.button_init_guardar_personaje();
+
+  }
+
+  auto_init_page() {
+    /* let personaje_cache = localStorage.getItem('personaje_cache') as string;
+
+    if (personaje_cache == null) {
+      this.nuevo_json_personaje();
+    } else {
+      console.log('personaje cargado');
+      console.log(JSON.parse(personaje_cache));
+    } */
+
     this.button_init_nuevo_personaje();
     this.button_init_cargar_personaje();
     this.button_init_roll_dice();
@@ -85,6 +80,7 @@ export class CharacterIndexComponent implements OnInit  {
   auto_init_page() {
 
     this.nuevo_json_personaje();
+
 
   }
 
@@ -161,6 +157,12 @@ export class CharacterIndexComponent implements OnInit  {
     if (typeof window === 'undefined') { return; };
   
     const objetivo = document.querySelector('#editar_personaje') as HTMLElement;
+
+
+    objetivo.addEventListener('click',()=>{
+
+      console.log(document.querySelectorAll('.character-form'));
+
     const objetivo2 = document.querySelectorAll('.close-modal');
     const objetivo3 = document.querySelector('#save-input-modal') as HTMLElement;
     const modalblack = document.querySelector('#black-fade') as HTMLDivElement;
@@ -461,6 +463,7 @@ export class CharacterIndexComponent implements OnInit  {
       console.log('-----------');
       console.log('Objeto Json:');
       console.log(objetoJson);
+
       
 
       for (const fatherKey in objetoDom) {
@@ -515,6 +518,7 @@ export class CharacterIndexComponent implements OnInit  {
     if (typeof window === 'undefined') { return; };
 
     const objetivo = document.querySelector('#nuevo_personaje') as HTMLElement;
+
     
     objetivo.addEventListener('click',()=>{
 
@@ -527,37 +531,16 @@ export class CharacterIndexComponent implements OnInit  {
   button_init_cargar_personaje() {
     if (typeof window === 'undefined') { return; };
 
-    const objetivo = document.querySelector('#cargar_personaje') as HTMLElement;
-    
+
     objetivo.addEventListener('click',()=>{
-      
-      let subObjetivo = document.querySelector('#Cargar_Personaje_Hidden') as HTMLElement;
-      subObjetivo.click();
-
-      subObjetivo.addEventListener('change', (event) => {
-        const archivo = event.target as HTMLInputElement;
-        if (archivo.files && archivo.files.length > 0) {
-
-          const archivoLeido = archivo.files[0];
-
-          const lector = new FileReader();
-          lector.onload = (evento) => {
-            const contenido = evento.target?.result as string;
-            let contenidoText = JSON.parse(contenido) as object;
-            this.cargar_json_personaje(contenidoText);
-            console.log(contenidoText);
-            
-          };
-          lector.readAsText(archivoLeido);
-
-        }
-      });
-
+      this.nuevo_json_personaje();
     });
 
   }
 
   cargar_json_personaje(objeto: any) {
+
+    if (objeto) {
 
     for (const clavePadre in objeto) {
       if (Object.prototype.hasOwnProperty.call(objeto, clavePadre)) {
@@ -575,18 +558,17 @@ export class CharacterIndexComponent implements OnInit  {
         }
         
       }
-    }
 
+    }
   }
 
   nuevo_json_personaje() {
-
     this.http.get('assets/personaje_Character.json').subscribe(data => {
-    
-      this.cargar_json_personaje(data);
-
+      console.log('personaje cargado');
+      console.log(JSON.parse(data as string));
     });
   }
+
 
   auto_init_edit_check() {
     if (typeof window === 'undefined') { return; };

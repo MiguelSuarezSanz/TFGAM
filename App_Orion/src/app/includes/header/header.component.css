@@ -78,3 +78,10 @@ nav a {
     font-size: 18px;
     cursor: pointer;
 }
+
+header .profile-picture {
+    width: auto;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}

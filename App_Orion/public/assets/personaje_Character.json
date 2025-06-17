@@ -25,113 +25,113 @@
     "check_Atletismo": {
       "img_Atletismo": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Atletismo": "Atletismo",
-      "bonus_Atletismo": "+0",
+      "bonus_Atletismo": "+X",
       "stat_a_escalar_Atletismo": "FUE"
     },
     "check_Robo": {
       "img_Robo": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Robo": "Robo",
-      "bonus_Robo": "+0",
+      "bonus_Robo": "+X",
       "stat_a_escalar_Robo": "FUE"
     },
     "check_Sigilo": {
       "img_Sigilo": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Sigilo": "Sigilo",
-      "bonus_Sigilo": "+0",
+      "bonus_Sigilo": "+X",
       "stat_a_escalar_Sigilo": "FUE"
     },
     "check_Acrobacias": {
       "img_Acrobacias": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Acrobacias": "Acrobacias",
-      "bonus_Acrobacias": "+0",
+      "bonus_Acrobacias": "+X",
       "stat_a_escalar_Acrobacias": "FUE"
     },
     "check_Quimica": {
       "img_Quimica": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Quimica": "Quimica",
-      "bonus_Quimica": "+0",
+      "bonus_Quimica": "+X",
       "stat_a_escalar_Quimica": "FUE"
     },
     "check_Sociedad": {
       "img_Sociedad": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Sociedad": "Sociedad",
-      "bonus_Sociedad": "+0",
+      "bonus_Sociedad": "+X",
       "stat_a_escalar_Sociedad": "FUE"
     },
     "check_Naturaleza": {
       "img_Naturaleza": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Naturaleza": "Naturaleza",
-      "bonus_Naturaleza": "+0",
+      "bonus_Naturaleza": "+X",
       "stat_a_escalar_Naturaleza": "FUE"
     },
     "check_Percepcion": {
       "img_Percepcion": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Percepcion": "Percepcion",
-      "bonus_Percepcion": "+0",
+      "bonus_Percepcion": "+X",
       "stat_a_escalar_Percepcion": "FUE"
     },
     "check_Conocimiento_Poder": {
       "img_Conocimiento_Poder": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Conocimiento_Poder": "Conocimiento_Poder",
-      "bonus_Conocimiento_Poder": "+0",
+      "bonus_Conocimiento_Poder": "+X",
       "stat_a_escalar_Conocimiento_Poder": "FUE"
     },
     "check_Medicina": {
       "img_Medicina": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Medicina": "Medicina",
-      "bonus_Medicina": "+0",
+      "bonus_Medicina": "+X",
       "stat_a_escalar_Medicina": "FUE"
     },
     "check_Tecnologia": {
       "img_Tecnologia": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Tecnologia": "Tecnologia",
-      "bonus_Tecnologia": "+0",
+      "bonus_Tecnologia": "+X",
       "stat_a_escalar_Tecnologia": "FUE"
     },
     "check_Supervivencia": {
       "img_Supervivencia": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Supervivencia": "Supervivencia",
-      "bonus_Supervivencia": "+0",
+      "bonus_Supervivencia": "+X",
       "stat_a_escalar_Supervivencia": "FUE"
     },
     "check_Investigacion": {
       "img_Investigacion": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Investigacion": "Investigacion",
-      "bonus_Investigacion": "+0",
+      "bonus_Investigacion": "+X",
       "stat_a_escalar_Investigacion": "FUE"
     },
     "check_Trato_Animales": {
       "img_Trato_Animales": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Trato_Animales": "Trato_Animales",
-      "bonus_Trato_Animales": "+0",
+      "bonus_Trato_Animales": "+X",
       "stat_a_escalar_Trato_Animales": "FUE"
     },
     "check_Intimidacion": {
       "img_Intimidacion": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Intimidacion": "Intimidacion",
-      "bonus_Intimidacion": "+0",
+      "bonus_Intimidacion": "+X",
       "stat_a_escalar_Intimidacion": "FUE"
     },
     "check_Engaño": {
       "img_Engaño": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Engaño": "Engaño",
-      "bonus_Engaño": "+0",
+      "bonus_Engaño": "+X",
       "stat_a_escalar_Engaño": "FUE"
     },
     "check_Persuasion": {
       "img_Persuasion": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Persuasion": "Persuasion",
-      "bonus_Persuasion": "+0",
+      "bonus_Persuasion": "+X",
       "stat_a_escalar_Persuasion": "FUE"
     },
     "check_Actuacion": {
       "img_Actuacion": "http://localhost:4300/assets/images/dice/d2.png",
       "name_Actuacion": "Actuacion",
-      "bonus_Actuacion": "+0",
+      "bonus_Actuacion": "+X",
       "stat_a_escalar_Actuacion": "FUE"
     },
     "datos_personales": {
-      "Nombre": "Character02",
+      "Nombre": "Character",
       "Edad": "20",
       "Altura": "1,65m",
       "Ciudad": "Metropolis",

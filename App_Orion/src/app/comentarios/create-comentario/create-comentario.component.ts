@@ -1,94 +1,77 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { ComentariosService } from '../comentarios.service';
-import { FormComentarioComponent } from '../form-comentario/form-comentario.component';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatError } from '@angular/material/form-field';
 import { ComentarioCreateDTO } from '../comentario';
 
 @Component({
   selector: 'app-create-comentario',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormComentarioComponent,
+    CommonModule,
+    HttpClientModule,
     MatCardModule,
-    MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatFormFieldModule,
-    MatInputModule
+    MatError
   ],
   templateUrl: './create-comentario.component.html',
-  styleUrls: ['./create-comentario.component.css']
+  styleUrls: ['./create-comentario.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CreateComentarioComponent {
-  @Input() idPublicacion: number = 0;
-  @Input() idUsuario: number = 0;
-  @Output() comentarioCreado = new EventEmitter<void>();
-  @Output() cancelado = new EventEmitter<void>();
-  
-  private comentariosService = inject(ComentariosService);
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
-  
-  errors: string[] = [];
-  isSubmitting = false;
-
+  now = new Date();
+  isSubmitting: boolean = false;
   modeloInicial: ComentarioCreateDTO = {
-    contenido: '',
-    fecha: new Date(),
-    idPublicacion: this.idPublicacion,
-    idUsuario: this.idUsuario
+    Contenido: '',
+    Fecha: new Date(`${this.now.getFullYear()}-${(this.now.getMonth() + 1).toString().padStart(2, '0')}-${this.now.getDate().toString().padStart(2, '0')}`),
+    Id_Publicacion: this.getCurrentPublicationId(),
+    Id_Usuario: this.getCurrentUserId()
   };
+  errors: string[] = [];
 
-  guardarCambios(comentario: ComentarioCreateDTO) {
-    if (this.isSubmitting) return;
-    
-    this.isSubmitting = true;
-    this.errors = [];
-    
-    comentario.idPublicacion = this.idPublicacion;
-    comentario.idUsuario = this.idUsuario;
-    comentario.fecha = new Date();
-    
-    this.comentariosService.crear(comentario).subscribe({
+  constructor(
+    private router: Router,
+    private comentariosService: ComentariosService
+  ) {}
+
+  cancelar() {
+    console.log('Cancelado');
+  }
+
+  saveChange(event: ComentarioCreateDTO): void {
+    console.log('Save change:', event);
+  }
+
+  guardarComentario(): void {
+    if (!this.modeloInicial.Fecha || typeof this.modeloInicial.Fecha === 'string') {
+      this.modeloInicial.Fecha = new Date(this.modeloInicial.Fecha || new Date().toISOString());
+    }
+
+    this.comentariosService.crear(this.modeloInicial).subscribe({
       next: () => {
-        this.snackBar.open('Comentario creado exitosamente', 'Cerrar', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          panelClass: ['success-snackbar']
-        });
-        this.comentarioCreado.emit();
-        this.isSubmitting = false;
+        console.log('Comentario creado exitosamente');
+        // Aquí puedes agregar la lógica adicional que necesites después de crear el comentario
       },
       error: (err) => {
         console.error('Error al crear comentario:', err);
-        this.isSubmitting = false;
-        if (err.status === 422) {
-          this.errors = Array.isArray(err.error.detail) ? err.error.detail : [err.error.detail];
-        } else {
-          this.errors = ['Error inesperado al crear el comentario.'];
-        }
-        this.snackBar.open('Error al crear el comentario', 'Cerrar', {
-          duration: 5000,
-          panelClass: ['error-snackbar']
-        });
+        // Manejo del error, por ejemplo, mostrando un mensaje al usuario
       }
     });
   }
 
-  cancelar() {
-    this.cancelado.emit();
-    if (this.idPublicacion) {
-      this.router.navigate(['/publicaciones', this.idPublicacion]);
-    }
+  private getCurrentPublicationId(): number {
+    // Replace with actual logic to fetch the current publication ID
+    return 1; // Example publication ID
+  }
+
+  private getCurrentUserId(): number {
+    // Replace with actual logic to fetch the logged-in user's ID
+    return 1; // Example user ID
   }
 }

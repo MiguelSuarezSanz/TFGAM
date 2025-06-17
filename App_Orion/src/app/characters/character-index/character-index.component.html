@@ -35,7 +35,6 @@
                 <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="nuevo_personaje">Nuevo Personaje</button>
                 <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="guardar_personaje">Guardar Personaje</button>
                 <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" id="cargar_personaje">Cargar Personaje</button>
-                <input type="file" name="Cargar_Personaje_Hidden" id="Cargar_Personaje_Hidden" value="Cargar_Personaje_Hidden" class="hidden">
             </div>
             <!-- END BUTTONS BOX -->
 
@@ -207,8 +206,8 @@
 
                 <!-- BOX ARMA -->
                 <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
-                    <p class="box-border-bottom text-center character-form" data-key="datos_combate" id="Nombre_Arma">Arma</p>
-                    <span class="p-2" class="character-form" data-key="datos_combate" id="Descripcion_Arma">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                    <p class="box-border-bottom text-center">Arma</p>
+                    <span class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
                     <div class="flex flex-row justify-evenly flex-column-m">
                         <p class="text-center">Ataque: <span id="dmg" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Tipo de daño: <span id="dmg_type" class="character-form" data-key="datos_combate">Cortante</span></p>
@@ -220,8 +219,8 @@
 
                 <!-- BOX ARMADURA -->
                 <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
-                    <p class="box-border-bottom text-center character-form" data-key="datos_combate" id="Nombre_Armadura">Armadura</p>
-                    <span class="p-2" class="character-form" data-key="datos_combate" id="Descripcion_Armadura">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                    <p class="box-border-bottom text-center">Armadura</p>
+                    <span class="p-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
                     <div class="flex flex-row justify-evenly flex-column-m">
                         <p class="text-center">Resistencia Contundente: <span id="res_con" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Resistencia Cortante: <span id="res_cor" class="character-form" data-key="datos_combate">1</span></p>
@@ -234,8 +233,8 @@
 
                 <!-- BOX AMULETO -->
                 <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
-                    <p class="box-border-bottom text-center character-form" data-key="datos_combate" id="Nombre_Amuleto">Amuleto</p>
-                    <span class="p-2" class="character-form" data-key="datos_combate" id="Descripcion_Amuleto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
+                    <p class="box-border-bottom text-center">Amuleto</p>
+                    <span class="p-2" id="amulento" class="character-form" data-key="datos_combate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!</span>
                 </div>
                 <!-- END BOX AMULETO -->
 
@@ -254,6 +253,9 @@
 
     </div>
     <!-- END TABS CONTENT -->
+
+</div>
+
 </div>
 
 <div class="close-modal" id="black-fade"></div>
@@ -656,3 +658,4 @@
     
 </div>
 <!-- END MODAL -->
+
