@@ -1,37 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-character-index',
   imports: [
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatOptionModule,
-    FormsModule,
     CommonModule,
-    ReactiveFormsModule
   ],
   templateUrl: './character-index.component.html',
   styleUrl: './character-index.component.css'
 })
 export class CharacterIndexComponent implements OnInit  {
-  img_placeholder = 'assets/images/placeholder.png';
+  img_placeholder = 'assets/images/imagesChar/placeholder.png';
 
   onTabClick(event: MouseEvent) {
     const tabActive = document.querySelector('.tab-active') as HTMLElement;
@@ -95,21 +76,15 @@ export class CharacterIndexComponent implements OnInit  {
     this.button_init_guardar_personaje();
     this.button_init_nuevo_personaje();
     this.button_init_cargar_personaje();
-
+    this.button_init_roll_dice();
     this.auto_init_edit_momentos_epicos();
     this.auto_init_edit_pasivas();
     this.auto_init_edit_check();
   }
 
   auto_init_page() {
-    let personaje_cache = localStorage.getItem('personaje_cache') as string;
 
-    if (personaje_cache == null) {
-      this.nuevo_json_personaje();
-    } else {
-      console.log('personaje cargado');
-      console.log(JSON.parse(personaje_cache));
-    }
+    this.nuevo_json_personaje();
 
   }
 
@@ -147,7 +122,7 @@ export class CharacterIndexComponent implements OnInit  {
   
         const append = `
           <div class="flex flex-col flex-grow box-content-father w-full h-full px-2 py-4 gap-2">
-            <p class="box-border-bottom text-center character-form" id="pasiva_title_${i}" data-key="pasivas_${i}">Pasiva ${i}</p>
+            <p class="box-border-bottom text-center character-form" id="pasivas_title_${i}" data-key="pasivas_${i}">Pasiva ${i}</p>
             <span class="p-2 character-form" id="pasiva_content_${i}" data-key="pasivas_${i}">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis corporis quaerat soluta autem veniam dolores iusto temporibus perspiciatis. Ea aspernatur tenetur molestias ipsum necessitatibus non, optio corporis tempore ab. Neque, autem. Rem ipsam consequatur perspiciatis ut laboriosam est obcaecati? Earum velit fuga molestiae sapiente obcaecati expedita dolores enim assumenda reiciendis!
             </span>
@@ -189,7 +164,7 @@ export class CharacterIndexComponent implements OnInit  {
     const objetivo2 = document.querySelectorAll('.close-modal');
     const objetivo3 = document.querySelector('#save-input-modal') as HTMLElement;
     const modalblack = document.querySelector('#black-fade') as HTMLDivElement;
-    const modalContainer = document.querySelector('#modal') as HTMLDivElement;
+    const modalContainer = document.querySelector('#modal.modal-1') as HTMLDivElement;
 
     objetivo.addEventListener('click',()=>{
 
@@ -212,6 +187,7 @@ export class CharacterIndexComponent implements OnInit  {
     objetivo3.addEventListener('click',()=>{
 
       let objetoJson = [] as any;
+      let objetoDom = this.obtener_objeto_dom();
       let array = document.querySelectorAll('.character-form-edit');
       
       array.forEach(element => {
@@ -239,52 +215,111 @@ export class CharacterIndexComponent implements OnInit  {
           objetoJson[fatherKey] = [] as any;
         }
 
-        key = key.replace("_Input", "").replace("edit_", "").replace("_input", "").replace("_input", "_edit");
+        key = key.replace("_Input", "").replace("edit_", "").replace("_input", "").replace("_input", "").replace("_edit", "");
 
         objetoJson[fatherKey][key] = content;
 
       });
-
-      console.log(objetoJson);
 
       objetoJson['datos_combate']['dmg'] = 0;
       objetoJson['datos_combate']['res_con'] = 0;
       objetoJson['datos_combate']['res_cor'] = 0;
       objetoJson['datos_combate']['res_per'] = 0;
 
-      objetoJson.forEach((key: string) => { //back
+      if (objetoJson['datos_combate']['LV'] == null || objetoJson['datos_combate']['LV'] == 'null') {
+        objetoJson['datos_combate']['LV'] = 0;
+      }
+      
+      for (const stat in objetoJson['stats']) {
 
-        let fatherKey = objetoJson[key];
+        let novedad = parseInt(objetoJson['stats'][stat]);
+        let antiguo = parseInt(objetoDom['stats'][stat]);
+        
+        
+        if (Number.isNaN(novedad) && Number.isNaN(antiguo)) {
+
+          novedad = 0;
+          objetoJson['stats'][stat] = novedad;
+
+        } else if (!Number.isNaN(novedad) && novedad != antiguo) {
+
+          objetoJson['stats'][stat] = novedad;
+
+        } else if (Number.isNaN(novedad) && !Number.isNaN(antiguo)) {
+
+          objetoJson['stats'][stat] = antiguo;
+
+        }
+
+      };
+      
+      for (const fatherKey in objetoJson) {
+
+        let subObjetivo = objetoJson[fatherKey];
         let result;
 
-        fatherKey.array.forEach((key: string) => {
+        for (const key in subObjetivo) {
           
-          let objetivo = fatherKey[key];
+          let objetivo = subObjetivo[key];
           result = objetivo;
 
-          if (key == 'dmg_maestry') {
+          if (key.includes('maestry')) {
 
-            if (objetivo == "f") {
+            console.log(`Dmg Maestry: ${result}`);
+
+            if (objetivo == "F") {
               result = 0;
-            } else if (objetivo == "e") {
+            } else if (objetivo == "E") {
               result = 1;
-            } else if (objetivo == "d") {
+            } else if (objetivo == "D") {
               result = 2;
-            } else if (objetivo == "c") {
+            } else if (objetivo == "C") {
               result = 3;
-            } else if (objetivo == "b") {
+            } else if (objetivo == "B") {
               result = 4;
-            } else if (objetivo == "a") {
+            } else if (objetivo == "A") {
               result = 5;
-            } else if (objetivo == "6") {
+            } else if (objetivo == "S") {
               result = 6;
+            } else {
+              result = parseInt(objetoDom[fatherKey][key]);
             }
 
-            objetoJson[fatherKey]['dmg'] += result;
+            console.log(`Dmg Final Maestry: ${result}`);
+            console.log(`Dmg: ${objetoJson[fatherKey]['dmg']}`);
 
-          } else if (key == 'dmg_scale') {
-           
-            objetoJson[fatherKey]['dmg'] += objetoJson['stats'][key];
+            if (key.includes('dmg')) {
+              objetoJson[fatherKey]['dmg'] += result;
+            } else if (key.includes('armor')) {
+              objetoJson[fatherKey]['res_per'] += result;
+              objetoJson[fatherKey]['res_con'] += result;
+              objetoJson[fatherKey]['res_cor'] += result;
+            }
+
+          } else if (key.includes('scale')) {
+
+            console.log(`Dmg Scale: ${result}`);
+            
+            if (result == null || result == "null") {
+              
+              result = parseInt(objetoDom[fatherKey][key]);
+              
+            } else {
+              
+              result = parseInt(objetoJson['stats'][result]);
+
+            }
+
+            if (key.includes('dmg')) {
+              objetoJson[fatherKey]['dmg'] += result;
+            } else if (key.includes('armor')) {
+              objetoJson[fatherKey]['res_per'] += result;
+              objetoJson[fatherKey]['res_con'] += result;
+              objetoJson[fatherKey]['res_cor'] += result;
+            }
+
+            console.log(`Dmg Final Scale: ${result}`);
+            console.log(`Dmg: ${objetoJson[fatherKey]['dmg']}`);
 
           } else if (key == 'armor_type') {
 
@@ -312,74 +347,145 @@ export class CharacterIndexComponent implements OnInit  {
               objetoJson[fatherKey]['res_cor'] += 1;
               objetoJson[fatherKey]['res_per'] += -1;
 
-            }
+            } else {
+
+              objetoJson[fatherKey]['res_con'] += objetoDom[fatherKey]['res_con'];
+              objetoJson[fatherKey]['res_cor'] += objetoDom[fatherKey]['res_con'];
+              objetoJson[fatherKey]['res_per'] += objetoDom[fatherKey]['res_con'];
+
+            } 
 
           } else if (key == 'PV') {
 
+            if (objetivo == "") {
+              objetivo = 0;
+            }
+
+            console.log(`PV: ${objetivo}`);
+            
             objetoJson[fatherKey]['PS'] = 10 + parseInt(objetoJson['stats']['CON'])*5 + parseInt(objetivo);
 
           } else if (key == 'Acciones') {
+
+            if (objetivo == "") {
+              objetivo = 0;
+            }
+
+            console.log(`Acciones: ${objetivo}`);
 
             objetoJson[fatherKey]['ACT'] = 1 + Math.floor((parseInt(objetoJson['stats']['INT'])/5)) + parseInt(objetivo);
 
           } else if (key == 'Reacciones') {
 
+            if (objetivo == "") {
+              objetivo = 0;
+            }
+
+            console.log(`Reacciones: ${objetivo}`);
+
             objetoJson[fatherKey]['REC'] = 1 + Math.floor((parseInt(objetoJson['stats']['DES'])/5)) + parseInt(objetivo);
 
           } else if (key == 'Iniciativa') {
+
+            if (objetivo == "") {
+              objetivo = 0;
+            }
+
+            console.log(`Iniciativa: ${objetivo}`);
 
             objetoJson[fatherKey]['INI'] = 0 + Math.floor((parseInt(objetoJson['stats']['SAB'])/2)) + parseInt(objetivo);
 
           } else if (key == 'Oportunidad') {
 
+            if (objetivo == "") {
+              objetivo = 0;
+            }
+
+            console.log(`Oportunidad: ${objetivo}`);
+            console.log(`LV: ${objetoJson['datos_combate']['LV']}`);
+
             objetoJson[fatherKey]['OPT'] = 0 + Math.floor((parseInt(objetoJson['datos_combate']['LV'])/3)) + parseInt(objetivo);
 
-          } else if (key.includes("check_")) {
+          } else if (fatherKey.includes("check_")) {
 
-            let check = objetivo.replace("check_") as string;
+            let check = fatherKey.replace("check_", "") as string;
 
-            objetivo.forEach((clave:string) => {
+            if (key.includes("check_maestria_")) {
 
-              const objetivo2 = objetivo[clave];
+              let res = null;
 
-              if (clave.includes("check_maestria_")) {
-
-                let res = "";
-
-                if (objetivo2 == "f") {
-                  res = "d2";
-                } else if (objetivo2 == "e") {
-                  res = "d4";
-                } else if (objetivo2 == "d") {
-                  res = "d6";
-                } else if (objetivo2 == "c") {
-                  res = "d8";
-                } else if (objetivo2 == "b") {
-                  res = "d10";
-                } else if (objetivo2 == "a") {
-                  res = "d12";
-                } else if (objetivo2 == "6") {
-                  res = "d20";
-                }
-
-                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4300/assets/images/dice/${res}.png`;
-
+              if (objetivo == "F") {
+                res = "d2";
+              } else if (objetivo == "E") {
+                res = "d4";
+              } else if (objetivo == "D") {
+                res = "d6";
+              } else if (objetivo == "C") {
+                res = "d8";
+              } else if (objetivo == "B") {
+                res = "d10";
+              } else if (objetivo == "A") {
+                res = "d12";
+              } else if (objetivo == "S") {
+                res = "d20";
               } else {
-
-                objetoJson[fatherKey][key][`bonus_${check}`] = `+${parseInt(objetoJson['stats'][objetivo2])}`;
-                objetoJson[fatherKey][key][`stat_a_escalar_${check}`] = `+${parseInt(objetoJson['stats'][objetivo2])}`;
-
+                res = null;
               }
 
-            });
+              if (res != null) {
+                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4300/assets/images/dice/${res}.png`;
+              } else {
+                objetoJson[fatherKey][`img_${check}`] = null;
+              }
+
+            } else {
+
+              if (objetivo != null && objetoJson['stats'][objetivo] != undefined) {
+                objetoJson[fatherKey][`bonus_${check}`] = `+${parseInt(objetoJson['stats'][objetivo])}`;
+                objetoJson[fatherKey][`stat_a_escalar_${check}`] = `+${parseInt(objetoJson['stats'][objetivo])}`;
+              } else {
+                objetoJson[fatherKey][`bonus_${check}`] = null;
+                objetoJson[fatherKey][`stat_a_escalar_${check}`] = null;
+              }
+
+            }
 
           }
 
-        });
+        };
 
-      });
+      };
 
+      console.log('Objeto DOM:');
+      console.log(objetoDom);
+      console.log('-----------');
+      console.log('Objeto Json:');
       console.log(objetoJson);
+      
+
+      for (const fatherKey in objetoDom) {
+
+        const subObjetivo = objetoDom[fatherKey];
+
+        for (const key in subObjetivo) {
+
+          let novedad = objetoJson[fatherKey][key];
+
+          if (novedad != null && novedad != "null" && novedad != "") {
+
+            objetoDom[fatherKey][key] = novedad;
+            
+          }
+
+        }
+
+      }
+
+      console.log('-----------');
+      console.log('Objeto Final:');
+      console.log(objetoDom);
+
+      this.cargar_json_personaje(objetoDom);
       
     });
 
@@ -391,38 +497,10 @@ export class CharacterIndexComponent implements OnInit  {
     const objetivo = document.querySelector('#guardar_personaje') as HTMLElement;
 
     objetivo.addEventListener('click',()=>{
-      let objetoJson = {} as any;
-      let array = document.querySelectorAll('.character-form');
-      
-      array.forEach(element => {
-        
-        let key = element.id;
-        let content = element.innerHTML;
-        let father = (element as HTMLElement).dataset;
-        let fatherKey;
 
-        if (key.includes('img')) {
-          content = (element as HTMLImageElement).src;
-        }
-        
-        if (!father.hasOwnProperty("key") || father['key'] == null) {
+      //Declaramos las variables a usar
 
-          console.log(element);
-          
-          return;
-
-        } else {
-          fatherKey = father['key'];
-        }
-
-        if (!objetoJson.hasOwnProperty(fatherKey)) {
-          objetoJson[fatherKey] = {} as any;
-        }
-
-        objetoJson[fatherKey][key] = content;
-
-      });
-
+      let objetoJson = this.obtener_objeto_dom();
       const jsonString = JSON.stringify(objetoJson); // null y 2 para formato legible
       const blob = new Blob([jsonString], { type: 'application/json' });
 
@@ -441,6 +519,7 @@ export class CharacterIndexComponent implements OnInit  {
     objetivo.addEventListener('click',()=>{
 
       this.nuevo_json_personaje();
+
     });
 
   }
@@ -485,8 +564,14 @@ export class CharacterIndexComponent implements OnInit  {
         const clave = objeto[clavePadre];
 
         for (const key in clave) {
-          let objetivo = document.querySelector(`#${key}`) as HTMLElement
-          objetivo.innerHTML = clave[key];
+          let objetivo = document.querySelector(`#${key}`) as HTMLElement;
+          let res = clave[key];
+
+          if (key.includes('img_')) {
+            let objetivo2 = document.querySelector(`#${key}`) as HTMLImageElement;
+            objetivo2.src = res;
+          }
+          objetivo.innerHTML = res;
         }
         
       }
@@ -525,7 +610,7 @@ export class CharacterIndexComponent implements OnInit  {
               <select name="edit_check_maestria_${value}" id="edit_check_maestria_${value}" class="form__field character-form-edit" data-key="check_${value}">
                 <option class="background-color-main" selected value="null" disabled>Maestria de Armadura</option>
                 <option class="background-color-main" value="F">Fatal</option>
-                <option class="background-color-main" value="E ">Entrenado</option>
+                <option class="background-color-main" value="E">Entrenado</option>
                 <option class="background-color-main" value="D">Dominante</option>
                 <option class="background-color-main" value="C">Candente</option>
                 <option class="background-color-main" value="B">Badass</option>
@@ -542,7 +627,7 @@ export class CharacterIndexComponent implements OnInit  {
                 <option class="background-color-main" value="CON">Constitucion</option>
                 <option class="background-color-main" value="SAB">Sabiduria</option>
                 <option class="background-color-main" value="INT">Inteligencia</option>
-                <option class="background-color-main" value="CON">Constitucion</option>
+                <option class="background-color-main" value="ESP">Espiritu</option>
               </select>
             </div>
 
@@ -617,4 +702,90 @@ export class CharacterIndexComponent implements OnInit  {
       }
     }
   }
+
+  obtener_objeto_dom() {
+
+    //Declaramos las variables a usar
+    let objetoJson = [] as any;
+
+    //Recogemos los inputs
+    let array = document.querySelectorAll('.character-form');
+    
+    //Recorremos cada input
+    array.forEach(element => {
+      
+      //Declaramos las variables a usar
+      let key = element.id;
+      let content = element.innerHTML;
+      let father = (element as HTMLElement).dataset;
+      let fatherKey;
+
+      //Añadimos las escepciones necesarias
+      if (key.includes('img')) {
+        content = (element as HTMLImageElement).src;
+      }
+      
+      //Comprobamos que contengan los elementos necesarios, si no lo retornamos
+      if (!father.hasOwnProperty("key") || father['key'] == null) {
+
+        console.log(element);
+        return;
+
+      } else {
+        fatherKey = father['key'];
+      }
+
+      //Si no existe la clave, se crea
+      if (!objetoJson.hasOwnProperty(fatherKey)) {
+        objetoJson[fatherKey] = [] as any;
+      }
+
+      //Se añade el contenido al objeto
+      objetoJson[fatherKey][key] = content;
+
+    });
+
+    return objetoJson;
+  }
+
+  button_init_roll_dice() {
+    if (typeof window === 'undefined') { return; };
+  
+    const objetivo = document.querySelectorAll('.dice');
+    const objetivo2 = document.querySelectorAll('.close-modal');
+    const modalblack = document.querySelector('#black-fade') as HTMLDivElement;
+    const modalContainer = document.querySelector('#modal.modal-2') as HTMLDivElement;
+    const rollContainer = document.querySelector('#rollDice') as HTMLElement;
+
+    objetivo.forEach(elemento => {
+      elemento.addEventListener('click',()=>{
+  
+        modalblack.style.zIndex = '10';
+        modalContainer.style.top = '20px';
+        document.body.style.overflow = 'hidden';
+
+        let objetivo = elemento as HTMLImageElement;
+        let num = parseInt(objetivo.src.replace("http://localhost:4300/assets/images/dice/d", "").replace(".png", ""));
+        rollContainer.style.backgroundImage = `url(http://localhost:4300/assets/images/dice/d${num}.png)`;
+        rollContainer.classList.add('rolling');
+        let intervalo = setInterval(function () {rollContainer.innerHTML = `${Math.floor(Math.random() * num) + 1}`}, 100);
+        setTimeout(function () {
+          clearInterval(intervalo);
+          rollContainer.classList.remove('rolling');
+        }, 1000);
+      });
+    });
+
+    objetivo2.forEach(elemento => {
+      elemento.addEventListener('click',()=>{
+
+        modalblack.style.zIndex = '-10';
+        modalContainer.style.top = '-1000px';
+        document.body.style.overflow = 'auto';
+        
+      });
+    });
+  
+  }
+
 }

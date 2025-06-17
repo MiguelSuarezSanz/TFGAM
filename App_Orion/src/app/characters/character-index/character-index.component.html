@@ -212,6 +212,8 @@
                     <div class="flex flex-row justify-evenly flex-column-m">
                         <p class="text-center">Ataque: <span id="dmg" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Tipo de daño: <span id="dmg_type" class="character-form" data-key="datos_combate">Cortante</span></p>
+                        <p type="hidden" id="dmg_maestry" class="character-form hidden" data-key="datos_combate" value="0">0</p>
+                        <p type="hidden" id="dmg_scale" class="character-form hidden" data-key="datos_combate" value="0">0</p>
                     </div>
                 </div>
                 <!-- END BOX ARMA -->
@@ -224,6 +226,8 @@
                         <p class="text-center">Resistencia Contundente: <span id="res_con" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Resistencia Cortante: <span id="res_cor" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Resistencia Perforante: <span id="res_per" class="character-form" data-key="datos_combate">1</span></p>
+                        <p type="hidden" id="armor_maestry" data-key="datos_combate" value="0" class="character-form hidden">0</p>
+                        <p type="hidden" id="armor_scale" data-key="datos_combate" value="0" class="character-form hidden">0</p>
                     </div>
                 </div>
                 <!-- END BOX ARMADURA -->
@@ -255,19 +259,17 @@
 <div class="close-modal" id="black-fade"></div>
 
 <!-- MODAL -->
-<div id="modal" class="box-content-father ">
+<div id="modal" class="box-content-father modal-1">
 
     <!-- MODAL TITTLE -->
-    <div class="modal-title">
-        <p>Editar Personaje</p>
-        <svg class="fill-current close-modal font-hover-two" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-    </div>
-    <!-- END MODAL TITTLE -->
+    <div class="modal-header flex flex-col">
+        <div class="modal-title">
+            <p>Editar Personaje</p>
+            <svg class="fill-current close-modal font-hover-two" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </div>
 
-    <!-- MODAL CONTENT -->
-    <div class="modal-content flex flex-col">
         <!-- TABS HEADER -->
         <div class="w-full flex flex-row justify-around justify-items-center content-center items-center box-content-tabs flex-column-m m-gap">
             <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab-active2" data-tab="edit-personales">Datos Personales</b>
@@ -278,6 +280,11 @@
             <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-pasivas">Pasivas</b>
         </div>
         <!-- END TABS HEADER -->
+    </div>
+    <!-- END MODAL TITTLE -->
+
+    <!-- MODAL CONTENT -->
+    <div class="modal-content flex flex-col h-full">
 
         <!-- TABS CONTENT PERSONALES -->
         <div class="tab-content2 py-1 px-4 flex flex-col gap-4" id="edit-personales">
@@ -436,7 +443,7 @@
                 <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
 
                     <div class="form__group">
-                        <select name="dmg_type_input" id="dmg_type_input" class="form__field character-form-edit" data-key="datos_combate">
+                        <select name="armor_scale_input" id="armor_maestry_input" class="form__field character-form-edit" data-key="datos_combate">
                             <option class="background-color-main" selected value="null" disabled>Maestria de Armadura</option>
                             <option class="background-color-main" value="F">Fatal</option>
                             <option class="background-color-main" value="E ">Entrenado</option>
@@ -449,7 +456,7 @@
                     </div>
                     
                     <div class="form__group">
-                        <select name="dmg_type_input" id="dmg_type_input" class="form__field character-form-edit" data-key="datos_combate">
+                        <select name="armor_scale_input" id="armor_scale_input" class="form__field character-form-edit" data-key="datos_combate">
                             <option class="background-color-main" selected value="null" disabled>Escalado de Defensa</option>
                             <option class="background-color-main" value="FUE">Fuerza</option>
                             <option class="background-color-main" value="DES">Destreza</option>
@@ -625,5 +632,27 @@
         </button>
     </div>
     <!-- END MODAL BOTTOM -->
+</div>
+<!-- END MODAL -->
+
+<!-- MODAL -->
+<div id="modal" class="box-content-father modal-2">
+
+    <!-- MODAL TITTLE -->
+    <div class="modal-header flex flex-col">
+        <div class="modal-title">
+            <p>Has Roleado</p>
+            <svg class="fill-current close-modal font-hover-two" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- MODAL CONTENT -->
+    <div class="modal-content flex content-center justify-center items-center h-full" style="overflow: hidden;">
+        <div id="rollDice" class="flex content-center justify-center items-center text-9xl h-full w-full" style='max-height: 512px; max-width: 512px; background-image: url("assets/images/dice/d20.png"); background-repeat: no-repeat; background-size: contain; background-position: center center;'>2</div>
+    </div>
+    <!-- END MODAL BOTTOM -->
+    
 </div>
 <!-- END MODAL -->
