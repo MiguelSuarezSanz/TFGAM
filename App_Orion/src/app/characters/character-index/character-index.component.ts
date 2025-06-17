@@ -433,7 +433,7 @@ export class CharacterIndexComponent implements OnInit  {
               }
 
               if (res != null) {
-                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4300/assets/images/dice/${res}.png`;
+                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4200/assets/images/dice/${res}.png`;
               } else {
                 objetoJson[fatherKey][`img_${check}`] = null;
               }
@@ -762,8 +762,8 @@ export class CharacterIndexComponent implements OnInit  {
         document.body.style.overflow = 'hidden';
 
         let objetivo = elemento as HTMLImageElement;
-        let num = parseInt(objetivo.src.replace("http://localhost:4300/assets/images/dice/d", "").replace(".png", ""));
-        rollContainer.style.backgroundImage = `url(http://localhost:4300/assets/images/dice/d${num}.png)`;
+        let num = parseInt(objetivo.src.replace("http://localhost:4200/assets/images/dice/d", "").replace(".png", ""));
+        rollContainer.style.backgroundImage = `url(http://localhost:4200/assets/images/dice/d${num}.png)`;
         rollContainer.classList.add('rolling');
         let intervalo = setInterval(function () {rollContainer.innerHTML = `${Math.floor(Math.random() * num) + 1}`}, 100);
         setTimeout(function () {
