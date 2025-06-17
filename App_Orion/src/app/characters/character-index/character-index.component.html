@@ -211,6 +211,8 @@
                     <div class="flex flex-row justify-evenly flex-column-m">
                         <p class="text-center">Ataque: <span id="dmg" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Tipo de daño: <span id="dmg_type" class="character-form" data-key="datos_combate">Cortante</span></p>
+                        <p type="hidden" id="dmg_maestry" class="character-form hidden" data-key="datos_combate" value="0">0</p>
+                        <p type="hidden" id="dmg_scale" class="character-form hidden" data-key="datos_combate" value="0">0</p>
                     </div>
                 </div>
                 <!-- END BOX ARMA -->
@@ -223,6 +225,8 @@
                         <p class="text-center">Resistencia Contundente: <span id="res_con" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Resistencia Cortante: <span id="res_cor" class="character-form" data-key="datos_combate">1</span></p>
                         <p class="text-center">Resistencia Perforante: <span id="res_per" class="character-form" data-key="datos_combate">1</span></p>
+                        <p type="hidden" id="armor_maestry" data-key="datos_combate" value="0" class="character-form hidden">0</p>
+                        <p type="hidden" id="armor_scale" data-key="datos_combate" value="0" class="character-form hidden">0</p>
                     </div>
                 </div>
                 <!-- END BOX ARMADURA -->
@@ -249,4 +253,409 @@
 
     </div>
     <!-- END TABS CONTENT -->
+
 </div>
+
+</div>
+
+<div class="close-modal" id="black-fade"></div>
+
+<!-- MODAL -->
+<div id="modal" class="box-content-father modal-1">
+
+    <!-- MODAL TITTLE -->
+    <div class="modal-header flex flex-col">
+        <div class="modal-title">
+            <p>Editar Personaje</p>
+            <svg class="fill-current close-modal font-hover-two" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </div>
+
+        <!-- TABS HEADER -->
+        <div class="w-full flex flex-row justify-around justify-items-center content-center items-center box-content-tabs flex-column-m m-gap">
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab-active2" data-tab="edit-personales">Datos Personales</b>
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-stats">Stats</b>
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-combate">Datos de Combate</b>
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-check">Checks</b>
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-epicos">Momentos Epicos</b>
+            <b (click)="onTabClick2($event)" class="px-2 py-1 h-full w-full flex justify-center items-center tab" data-tab="edit-pasivas">Pasivas</b>
+        </div>
+        <!-- END TABS HEADER -->
+    </div>
+    <!-- END MODAL TITTLE -->
+
+    <!-- MODAL CONTENT -->
+    <div class="modal-content flex flex-col h-full">
+
+        <!-- TABS CONTENT PERSONALES -->
+        <div class="tab-content2 py-1 px-4 flex flex-col gap-4" id="edit-personales">
+
+            <div class="flex flex-row gap-10 py-6 px-2 content-center items-center flex-grow flex-column-m">
+
+                <div class="flex flex-col gap-1 content-center items-center flex-grow">
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Nombre" name="Nombre" id="Nombre_input" data-key="datos_personales"/>
+                        <label for="Nombre_input" class="form__label">Nombre</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Edad" name="Edad" id="Edad_input" data-key="datos_personales"/>
+                        <label for="Edad_input" class="form__label">Edad</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Altura" name="Altura" id="Altura_input" data-key="datos_personales"/>
+                        <label for="Altura_input" class="form__label">Altura</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Ciudad" name="Ciudad" id="Ciudad_input" data-key="datos_personales"/>
+                        <label for="Ciudad_input" class="form__label">Ciudad</label>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col gap-1 content-center items-center flex-grow">
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Raza" name="Raza" id="Raza_input" data-key="datos_personales"/>
+                        <label for="Raza_input" class="form__label">Raza</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Genero" name="Genero" id="Genero_input" data-key="datos_personales"/>
+                        <label for="Genero_input" class="form__label">Genero</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Peso" name="Peso" id="Peso_input" data-key="datos_personales"/>
+                        <label for="Peso_input" class="form__label">Peso</label>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="text" class="form__field character-form-edit" placeholder="Poder" name="Poder" id="Poder_input" data-key="datos_personales"/>
+                        <label for="Poder_input" class="form__label">Poder</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flex flex-col gap-1 content-center items-center">
+                <label for="character_image_input">Seleccion una Imagen para tu personaje</label>
+                <input type="file" src="" alt="" id="character_image_input" class="character-form-edit" data-key="datos_personales">
+            </div>
+
+            <div>
+                <div class="form__group mt-6">
+                    <textarea name="character_desc_input" id="character_desc_input" class="form__field character-form-edit" placeholder="Descripcion" required data-key="datos_personales"></textarea>
+                    <label for="character_desc_input" class="form__label">Descripcion</label>
+                </div>
+            </div>
+
+        </div>
+        <!-- END TABS CONTENT PERSONALES -->
+    
+        <!-- TABS CONTENT COMBATE -->
+        <div class="tab-content2 hidden" id="edit-combate">
+
+            <div>
+
+                <h2 class="text-center pt-6 text-2xl">Arma</h2>
+
+                <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                    <div class="flex flex-col gap-1 content-center items-center flex-grow">
+                    
+                        <div class="form__group">
+                            <input type="text" class="form__field character-form-edit" placeholder="Nombre del Arma" name="Nombre_Arma_Input" id="Nombre_Arma_Input" data-key="datos_combate"/>
+                            <label for="Nombre_Arma_Input" class="form__label">Nombre del Arma</label>
+                        </div>
+                    
+                        <div class="form__group">
+                            <select name="dmg_maestry_input" id="dmg_maestry_input" class="form__field character-form-edit" data-key="datos_combate">
+                                <option class="background-color-main" selected value="null" disabled>Maestria de Arma</option>
+                                <option class="background-color-main" value="F">Fatal</option>
+                                <option class="background-color-main" value="E ">Entrenado</option>
+                                <option class="background-color-main" value="D">Dominante</option>
+                                <option class="background-color-main" value="C">Candente</option>
+                                <option class="background-color-main" value="B">Badass</option>
+                                <option class="background-color-main" value="A">Apoteosico</option>
+                                <option class="background-color-main" value="S">Supremo</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="flex flex-col gap-1 content-center items-center flex-grow">
+                    
+                        <div class="form__group">
+                            <select name="dmg_type_input" id="dmg_type_input" class="form__field character-form-edit" data-key="datos_combate">
+                                <option class="background-color-main" selected value="null" disabled>Tipo de Daño</option>
+                                <option class="background-color-main" value="Cortante">Cortante</option>
+                                <option class="background-color-main" value="Perforante">Perforante</option>
+                                <option class="background-color-main" value="Contundente">Contundente</option>
+                            </select>
+                        </div>
+                    
+                        <div class="form__group">
+                            <select name="dmg_scale_input" id="dmg_scale_input" class="form__field character-form-edit" data-key="datos_combate">
+                                <option class="background-color-main" selected value="null" disabled>Escalado de Daño</option>
+                                <option class="background-color-main" value="FUE">Fuerza</option>
+                                <option class="background-color-main" value="DES">Destreza</option>
+                                <option class="background-color-main" value="CON">Constitucion</option>
+                                <option class="background-color-main" value="SAB">Sabiduria</option>
+                                <option class="background-color-main" value="INT">Inteligencia</option>
+                                <option class="background-color-main" value="CON">Constitucion</option>
+                            </select>
+                        </div>
+
+                    </div>
+    
+                </div>
+
+                <div class="form__group">
+                    <textarea name="Descripcion" id="Descripcion_Arma_input" class="form__field character-form-edit" placeholder="Descripcion" required data-key="datos_combate"></textarea>
+                    <label for="Descripcion_Arma_input" class="form__label">Descripcion</label>
+                </div>
+
+            </div>
+
+            <div>
+
+                <h2 class="text-center pt-6 text-2xl">Armadura</h2>
+
+                <div class="form__group">
+                    <input type="text" class="form__field character-form-edit" placeholder="Nombre de la Armadura" name="Nombre_Armadura_Input" id="Nombre_Armadura_Input" data-key="datos_combate"/>
+                    <label for="Nombre_Armadura_Input" class="form__label">Nombre de la Armadura</label>
+                </div>
+                    
+                <div class="form__group">
+                    <select name="armor_type_input" id="armor_type_input" class="form__field character-form-edit" data-key="datos_combate">
+                        <option class="background-color-main" selected value="null" disabled>Tipo de Armadura</option>
+                        <option class="background-color-main" value="Flexible">Flexible</option>
+                        <option class="background-color-main" value="Ligera">Ligera</option>
+                        <option class="background-color-main" value="Mediana">Mediana</option>
+                        <option class="background-color-main" value="Pesada">Pesada</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                    <div class="form__group">
+                        <select name="armor_scale_input" id="armor_maestry_input" class="form__field character-form-edit" data-key="datos_combate">
+                            <option class="background-color-main" selected value="null" disabled>Maestria de Armadura</option>
+                            <option class="background-color-main" value="F">Fatal</option>
+                            <option class="background-color-main" value="E ">Entrenado</option>
+                            <option class="background-color-main" value="D">Dominante</option>
+                            <option class="background-color-main" value="C">Candente</option>
+                            <option class="background-color-main" value="B">Badass</option>
+                            <option class="background-color-main" value="A">Apoteosico</option>
+                            <option class="background-color-main" value="S">Supremo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form__group">
+                        <select name="armor_scale_input" id="armor_scale_input" class="form__field character-form-edit" data-key="datos_combate">
+                            <option class="background-color-main" selected value="null" disabled>Escalado de Defensa</option>
+                            <option class="background-color-main" value="FUE">Fuerza</option>
+                            <option class="background-color-main" value="DES">Destreza</option>
+                            <option class="background-color-main" value="CON">Constitucion</option>
+                            <option class="background-color-main" value="SAB">Sabiduria</option>
+                            <option class="background-color-main" value="INT">Inteligencia</option>
+                            <option class="background-color-main" value="CON">Constitucion</option>
+                        </select>
+                    </div>
+
+    
+                </div>
+
+                <div class="form__group  pt-6">
+                    <textarea name="Descripcion_Armadura_input" id="Descripcion_Armadura_input" class="form__field character-form-edit" placeholder="Descripcion" required data-key="datos_combate"></textarea>
+                    <label for="Descripcion_Armadura_input" class="form__label">Descripcion</label>
+                </div>
+
+            </div>
+
+            <div>
+
+                <h2 class="text-center pt-6 text-2xl">Amuleto</h2>
+
+                <div class="form__group mb-8">
+                    <input type="text" class="form__field character-form-edit" placeholder="Nombre del Amuleto" name="Nombre_Amuleto_Input" id="Nombre_Amuleto_Input" data-key="datos_combate"/>
+                    <label for="Nombre_Amuleto_Input" class="form__label">Nombre del Amuleto</label>
+                </div>
+
+                <div class="form__group">
+                    <textarea name="Descripcion" id="Descripcion_Amuleto_input" class="form__field character-form-edit" placeholder="Descripcion" required data-key="datos_combate"></textarea>
+                    <label for="Descripcion_Amuleto_input" class="form__label">Descripcion</label>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- END TABS CONTENT COMBATE -->
+
+        <!-- TABS CONTENT CHECK -->
+        <div class="tab-content2 hidden" id="edit-stats">
+
+            <div>
+
+                <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                    <div class="form__group">
+                        <select name="LV_Input" id="LV_Input" class="form__field character-form-edit" data-key="datos_combate">
+                            <option class="background-color-main" selected value="null" disabled>Nivel</option>
+                            <option class="background-color-main" value="1">1</option>
+                            <option class="background-color-main" value="2">2</option>
+                            <option class="background-color-main" value="3">3</option>
+                            <option class="background-color-main" value="4">4</option>
+                            <option class="background-color-main" value="5">5</option>
+                            <option class="background-color-main" value="6">6</option>
+                            <option class="background-color-main" value="7">7</option>
+                            <option class="background-color-main" value="8">8</option>
+                            <option class="background-color-main" value="9">9</option>
+                            <option class="background-color-main" value="10">10</option>
+                        </select>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="PX" name="PX_Input" id="PX_Input" data-key="datos_combate"/>
+                        <label for="PX_Input" class="form__label">PX</label>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="PV" name="PV_Input" id="PV_Input" data-key="datos_combate"/>
+                        <label for="PV_Input" class="form__label">PV Adicional</label>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Acciones" name="Acciones_Input" id="Acciones_Input" data-key="datos_combate"/>
+                        <label for="Acciones_Input" class="form__label">Acciones Adiconales</label>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Reacciones" name="Reacciones_Input" id="Reacciones_Input" data-key="datos_combate"/>
+                        <label for="Reacciones_Input" class="form__label">Reacciones Adiconales</label>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Iniciativa" name="Iniciativa_Input" id="Iniciativa_Input" data-key="datos_combate"/>
+                        <label for="Iniciativa_Input" class="form__label">Iniciativa Adiconales</label>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Oportunidad" name="Oportunidad_Input" id="Oportunidad_Input" data-key="datos_combate"/>
+                        <label for="Oportunidad_Input" class="form__label">Oportunidad Adiconales</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flex flex-row gap-6 content-center items-center flex-grow mb-8">
+
+                <div class="flex flex-col gap-1 content-center items-center flex-grow">
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Fuerza" name="FUE_Input" id="FUE_Input" data-key="stats"/>
+                        <label for="FUE_Input" class="form__label">Fuerza</label>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Sabiduria" name="SAB_Input" id="SAB_Input" data-key="stats"/>
+                        <label for="SAB_Input" class="form__label">Sabiduria</label>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col gap-1 content-center items-center flex-grow">
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Destreza" name="DES_Input" id="DES_Input" data-key="stats"/>
+                        <label for="DES_Input" class="form__label">Destreza</label>
+                    </div>
+
+                    <div class="form__group"> 
+                        <input type="number" class="form__field character-form-edit" placeholder="Inteligencia" name="INT_Input" id="INT_Input" data-key="stats"/>
+                        <label for="INT_Input" class="form__label">Inteligencia</label>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col gap-1 content-center items-center flex-grow">
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Constitucion" name="CON_Input" id="CON_Input" data-key="stats"/>
+                        <label for="CON_Input" class="form__label">Constitucion</label>
+                    </div>
+
+                    <div class="form__group">
+                        <input type="number" class="form__field character-form-edit" placeholder="Espiritu" name="ESP_Input" id="ESP_Input" data-key="stats"/>
+                        <label for="ESP_Input" class="form__label">Espiritu</label>
+                    </div>
+
+                </div>
+            
+            </div>
+
+        </div>
+        <!-- END TABS CONTENT CHECK -->
+    
+        <!-- TABS CONTENT CHECK -->
+        <div class="tab-content2 hidden" id="edit-check"></div>
+        <!-- END TABS CONTENT CHECK -->
+    
+        <!-- TABS CONTENT EPICOS -->
+        <div class="tab-content2 hidden" id="edit-epicos"></div>
+        <!-- END TABS CONTENT EPICOS -->
+    
+        <!-- TABS CONTENT PASIVAS -->
+        <div class="tab-content2 hidden" id="edit-pasivas"></div>
+        <!-- END TABS CONTENT PASIVAS -->
+
+    </div>
+    <!-- END MODAL CONTENT -->
+
+    <!-- MODAL BOTTOM -->
+    <div class="modal-bottom">
+        <button class="close-modal cursor-pointer py-2 px-4 background-color-one box-shadow-hover-dark rounded" id="save-input-modal">
+            <p>Guardar</p>
+        </button>
+    </div>
+    <!-- END MODAL BOTTOM -->
+</div>
+<!-- END MODAL -->
+
+<!-- MODAL -->
+<div id="modal" class="box-content-father modal-2">
+
+    <!-- MODAL TITTLE -->
+    <div class="modal-header flex flex-col">
+        <div class="modal-title">
+            <p>Has Roleado</p>
+            <svg class="fill-current close-modal font-hover-two" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- MODAL CONTENT -->
+    <div class="modal-content flex content-center justify-center items-center h-full" style="overflow: hidden;">
+        <div id="rollDice" class="flex content-center justify-center items-center text-9xl h-full w-full" style='max-height: 512px; max-width: 512px; background-image: url("assets/images/dice/d20.png"); background-repeat: no-repeat; background-size: contain; background-position: center center;'>2</div>
+    </div>
+    <!-- END MODAL BOTTOM -->
+    
+</div>
+<!-- END MODAL -->
+
