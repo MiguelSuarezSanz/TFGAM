@@ -1,0 +1,29 @@
+<div class="amistades-container">
+    </div>
+      <div class="search-container">
+        <input [(ngModel)]="searchTerm" placeholder="Buscar por ID o Nombre" />
+      </div>
+    <div class="usuarios-container">
+      <h2>Usuarios</h2>
+      <div *ngFor="let usuario of paginatedUsuarios" class="usuario-item">
+        <p>{{ usuario.Nombre }}</p>
+        <button (click)="enviarSolicitudAmistad(usuario.Id)">Enviar Solicitud de Amistad</button>
+      </div>
+    </div>
+    <div class="pagination-controls">
+      <button (click)="changePageUsuarios(currentPageUsuarios - 1)" [disabled]="currentPageUsuarios === 1">Anterior</button>
+      <span>Página {{ currentPageUsuarios }}</span>
+      <button (click)="changePageUsuarios(currentPageUsuarios + 1)" [disabled]="paginatedUsuarios.length < itemsPerPage">Siguiente</button>
+    </div>
+
+    <div class="mis-amistades-container">
+      <h2>Mis Amistades</h2>
+      <div *ngFor="let amistad of paginatedMisAmistades" class="amistad-item">
+        <p>Amigo: {{ obtenerNombreAmigo(amistad) }} (ID: {{ amistad.usuario_id_1 === 1 ? amistad.usuario_id_2 : amistad.usuario_id_1 }})</p>
+      </div>
+    </div>
+    <div class="pagination-controls">
+      <button (click)="changePageMisAmistades(currentPageMisAmistades - 1)" [disabled]="currentPageMisAmistades === 1">Anterior</button>
+      <span>Página {{ currentPageMisAmistades }}</span>
+      <button (click)="changePageMisAmistades(currentPageMisAmistades + 1)" [disabled]="paginatedMisAmistades.length < itemsPerPage">Siguiente</button>
+    </div>

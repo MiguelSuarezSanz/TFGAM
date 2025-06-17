@@ -30,4 +30,8 @@ export class AmistadesService {
   actualizarEstado(id: number, estado: string): Observable<Amistad> {
     return this.http.put<Amistad>(`${this.apiURL}/${id}`, { estado });
   }
+
+  obtenerAmistadesPorUsuario(userId: number): Observable<Amistad[]> {
+    return this.http.get<Amistad[]>(`${this.apiURL}/${userId}`);
+  }
 }

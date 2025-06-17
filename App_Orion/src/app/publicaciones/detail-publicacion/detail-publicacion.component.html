@@ -1,20 +1,15 @@
 <h1 *ngIf="publicacion" class="publication-title">{{ publicacion.Titulo }}</h1>
 <div *ngIf="publicacion" class="publication-header" style="display: flex; align-items: center; gap: 10px;">
-  <img *ngIf="publicacion.usuario?.FotoPerfil" [src]="publicacion.usuario.FotoPerfil" alt="Foto de perfil" class="profile-picture">
+  <img *ngIf="publicacion.usuario.FotoPerfil" [src]="publicacion.usuario.FotoPerfil" alt="Foto de perfil" class="profile-picture">
   <p class="user-name"><strong>{{ publicacion.usuario.Nombre }}</strong></p>
 </div>
 <p *ngIf="publicacion" class="publication-date"><strong>Fecha:</strong> {{ publicacion.FechaPubl | date:'dd/MM/yyyy' }}</p>
 <p *ngIf="publicacion" class="publication-content">{{ publicacion.Contenido }}</p>
-<img *ngIf="publicacion?.Imagen" [src]="publicacion.Imagen" alt="Imagen de la publicación" class="publication-image">
+<img *ngIf="publicacion.Imagen" [src]="publicacion.Imagen" alt="Imagen de la publicación" class="publication-image">
 
-<div *ngIf="publicacion && (publicacion.usuario?.Id === idUsuarioActual || isAdmin)" class="flex flex-row gap-2 p-2">
-  <button class="form__button" (click)="editarPublicacion(publicacion.Id)">Editar</button>
+<div *ngIf="publicacion && (publicacion.usuario.Id === idUsuarioActual || isAdmin)" class="flex flex-row gap-2 p-2">
   <button class="form__button danger" (click)="borrarPublicacion(publicacion.Id)">Borrar</button>
 </div>
 
 <h2>Comentarios</h2>
 <app-list-comentarios [idPublicacion]="publicacion.Id"></app-list-comentarios>
-
-<div *ngIf="publicacion?.usuario?.Id">
-  <p>Usuario ID: {{ publicacion.usuario.Id }}</p>
-</div>

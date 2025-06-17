@@ -581,11 +581,10 @@ async def get_comentarios_by_publicacion(publicacion_id: int):
         cursor.close()
         conn.close()
 
-# Ensure the Fecha field is parsed as an exact date
+
 @app.post("/comentarios", response_model=ComentarioCreateDTO)
 async def create_comentario(comentario: ComentarioCreateDTO):
     try:
-        # Convert Fecha to an exact date if necessary
         if isinstance(comentario.Fecha, str):
             comentario.Fecha = datetime.strptime(comentario.Fecha, "%Y-%m-%d").date()
     except ValueError:
@@ -688,10 +687,6 @@ class AmistadDTO(BaseModel):
     fecha_solicitud: datetime
     estado: str
 
-class ChatDTO(BaseModel):
-    Id: int
-    Nombre: str
-
 @app.get("/amistades", response_model=List[AmistadDTO])
 async def get_amistades():
     conn = get_db_connection()
@@ -713,57 +708,17 @@ async def create_amistad(amistad: AmistadDTO):
     conn.close()
     return amistad
 
-@app.get("/chats", response_model=List[ChatDTO])
-async def get_chats():
+@app.get("/amistades/{user_id}", response_model=List[AmistadDTO])
+async def get_user_amistades(user_id: int):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Chats")
-    chats = cursor.fetchall()
-    conn.close()
-    return chats
-
-@app.post("/chats", response_model=ChatDTO)
-async def create_chat(chat: ChatDTO):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO Chats (Nombre) VALUES (%s)",
-        (chat.Nombre,)
-    )
-    conn.commit()
-    conn.close()
-    return chat
-
-# Adding WebSocket support for real-time chat functionality
-from typing import List
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
-
-manager = ConnectionManager()
-
-@app.websocket("/ws/chat/{chat_id}")
-async def websocket_endpoint(websocket: WebSocket, chat_id: str):
-    await manager.connect(websocket)
     try:
-        while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(f"Chat {chat_id}: {data}")
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"Chat {chat_id}: A user has disconnected.")
+        with conn.cursor() as cursor:
+            sql = """
+                SELECT * FROM Amistades
+                WHERE usuario_id_1 = %s OR usuario_id_2 = %s
+            """
+            cursor.execute(sql, (user_id, user_id))
+            rows = cursor.fetchall()
+            return [AmistadDTO(**row) for row in rows]
+    finally:
+        conn.close()

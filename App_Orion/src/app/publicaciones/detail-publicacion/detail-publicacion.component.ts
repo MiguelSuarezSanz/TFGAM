@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicacionesService } from '../publicaciones.service';
 import { PublicacionDTO } from '../publicacion';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,8 @@ export class DetailPublicacionComponent implements OnInit {
 
   constructor(
     private publicacionesService: PublicacionesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   // Ensure id is validated before calling the service
@@ -64,13 +65,17 @@ export class DetailPublicacionComponent implements OnInit {
     return true; // Example value
   }
 
-  editarPublicacion(id: number): void {
-    console.log(`Editar publicación con ID: ${id}`);
-    // Add logic for editing the publication
-  }
-
   borrarPublicacion(id: number): void {
-    console.log(`Borrar publicación con ID: ${id}`);
-    // Add logic for deleting the publication
+    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+      this.publicacionesService.eliminar(id).subscribe({
+        next: () => {
+          this.router.navigate(['/publicaciones']);
+        },
+        error: (err) => {
+          console.error('Error al eliminar la publicación:', err);
+          alert('Error al eliminar la publicación.');
+        }
+      });
+    }
   }
 }
