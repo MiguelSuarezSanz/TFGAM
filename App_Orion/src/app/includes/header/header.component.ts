@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { LoginComponent } from "../../users/login/login.component";
 import { RegisterComponent } from "../../users/register/register.component";
 import { UserDTO } from '../../users/user';
@@ -19,6 +19,8 @@ export class HeaderComponent implements OnInit {
   userModal: UserDTO | null = null; // Modal para almacenar la información del usuario
   userName: string | undefined;
   userProfilePicture: string | undefined;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -46,7 +48,7 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
     this.userModal = null;
     localStorage.removeItem('user'); // Eliminar el usuario de localStorage
-    location.reload();
+    this.router.navigate(['/']); // Navigate to home instead of reloading
   }
 
   onLoginSuccess(user: UserDTO) {
@@ -56,6 +58,6 @@ export class HeaderComponent implements OnInit {
     this.userModal = user;
     localStorage.setItem('user', JSON.stringify(user)); // Guardar el usuario en localStorage
     this.showModal = false; // Cerrar el popup
-    location.reload();
+    this.router.navigate(['/']); // Navigate to home instead of reloading
   }
 }

@@ -7,12 +7,10 @@ export class AuthService {
   constructor() {}
 
   isAdmin(): boolean {
-    if (typeof window !== 'undefined' && localStorage) {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        return user.Privilegios === 'Admin';
-      }
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      return user.Privilegios === 'Admin';
     }
     return false;
   }

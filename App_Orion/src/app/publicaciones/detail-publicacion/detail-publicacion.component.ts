@@ -3,25 +3,33 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicacionesService } from '../publicaciones.service';
 import { PublicacionDTO } from '../publicacion';
 import { CommonModule } from '@angular/common';
-import { ComentariosService } from '../../comentarios/comentarios.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ComentarioDTO } from '../../comentarios/comentario';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { ListComentariosComponent } from '../../comentarios/list-comentarios/list-comentarios.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { getCurrentUser } from '../../utilidades/utilidades';
 
 @Component({
   selector: 'app-detail-publicacion',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, MatCardModule, MatButtonModule, ListComentariosComponent],
   templateUrl: './detail-publicacion.component.html',
-  styleUrls: ['./detail-publicacion.component.css']
+  styleUrls: ['./detail-publicacion.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DetailPublicacionComponent implements OnInit {
   publicacion!: PublicacionDTO;
   comentarios: ComentarioDTO[] = [];
   errors: string[] = [];
 
+  // Added properties for current user ID and admin status
+  idUsuarioActual: number = 0; // Replace with actual logic to fetch current user ID
+  isAdmin: boolean = false; // Replace with actual logic to determine admin status
+
   constructor(
     private publicacionesService: PublicacionesService,
-    private comentariosService: ComentariosService,
     private route: ActivatedRoute
   ) {}
 
@@ -34,23 +42,35 @@ export class DetailPublicacionComponent implements OnInit {
         return;
     }
 
-    this.publicacionesService.obtenerPorId(id).subscribe({
+    this.publicacionesService.getPublicacionConComentarios(id).subscribe({
       next: (data) => {
         this.publicacion = data;
+        this.comentarios = data.comentarios || []; // Fetch comments directly from publication details
       },
       error: (err) => {
         console.error('Error al cargar publicación:', err);
+        this.errors = ['Error al cargar la publicación.'];
       }
     });
 
-    this.comentariosService.obtenerPorPublicacionId(id).subscribe({
-      next: (data) => {
-        this.comentarios = data;
-      },
-      error: (err) => {
-        console.error('Error al cargar comentarios:', err);
-        this.errors = ['Error al cargar los comentarios.'];
-      }
-    });
+    // Initialize user ID and admin status
+    const currentUser = getCurrentUser();
+    this.idUsuarioActual = currentUser?.Id || 0; // Safely handle null values
+    this.isAdmin = this.verificarAdmin();
+  }
+
+  private verificarAdmin(): boolean {
+    // Replace with actual logic to determine admin status
+    return true; // Example value
+  }
+
+  editarPublicacion(id: number): void {
+    console.log(`Editar publicación con ID: ${id}`);
+    // Add logic for editing the publication
+  }
+
+  borrarPublicacion(id: number): void {
+    console.log(`Borrar publicación con ID: ${id}`);
+    // Add logic for deleting the publication
   }
 }

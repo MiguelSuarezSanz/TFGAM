@@ -55,48 +55,80 @@ export class FormUserComponent implements OnInit, OnChanges{
 
   ngOnInit(): void{
     this.isAdmin = this.authService.isAdmin();
-    this.form = this.formBuilder.group({
-      Nombre: ['', { validators: [Validators.required] }],
-      Email: ['', { validators: [Validators.required, Validators.email] }],
-      FechaNacimiento: ['', { validators: [Validators.required] }],
-      Password: ['', { validators: [Validators.required] }],
-      Privilegios: [{ value: 'Usuario', disabled: !this.isAdmin }, { validators: [Validators.required] }],
-      Bloqueado: [{ value: false, disabled: !this.isAdmin }],
-      Perfil: ['']
-    });
+    try {
+        this.form = this.formBuilder.group({
+            Nombre: ['', [Validators.required]],
+            Email: ['', [Validators.required, Validators.email]],
+            FechaNacimiento: ['', [Validators.required]],
+            Password: ['', [Validators.required]],
+            Privilegios: [{ value: 'Usuario', disabled: !this.isAdmin }, [Validators.required]],
+            Bloqueado: [{ value: false, disabled: !this.isAdmin }],
+            Perfil: [DEFAULT_PROFILE_IMAGE]
+        });
 
-    if(this.model){
-      console.log(this.model);
-      this.form.patchValue(this.model);
-    };
+        if (this.model) {
+            this.form.patchValue(this.model);
+            // Ensure FechaNacimiento is formatted correctly
+            const fechaNacimiento = this.model.FechaNacimiento;
+            if (fechaNacimiento instanceof Date) {
+                this.form.get('FechaNacimiento')?.setValue(fechaNacimiento.toISOString().split('T')[0]);
+            } else if (typeof fechaNacimiento === 'string') {
+                this.form.get('FechaNacimiento')?.setValue(fechaNacimiento);
+            }
+        }
 
+        // Ensure default values for missing fields
+        if (!this.form.get('Perfil')?.value) {
+            this.form.get('Perfil')?.setValue(DEFAULT_PROFILE_IMAGE);
+        }
+    } catch (error) {
+        console.error('Error initializing form:', error);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['model'] && this.model && this.form) {
-      this.form.patchValue(this.model);
-    }
-  }
+    try {
+        if (changes['model'] && this.model && this.form) {
+            console.log('Model changes detected:', changes['model']);
+            this.form.patchValue(this.model);
 
-  imageSelected(file: any){
-    this.imageChange = true;
-    this.form.get('perfil')?.setValue(file);
-  }
+            const fechaNacimiento = this.model.FechaNacimiento;
+            if (fechaNacimiento instanceof Date) {
+                this.form.get('FechaNacimiento')?.setValue(fechaNacimiento.toISOString().split('T')[0]);
+            } else if (typeof fechaNacimiento === 'string') {
+                this.form.get('FechaNacimiento')?.setValue(fechaNacimiento);
+            }
+        }
+    } catch (error) {
+        console.error('Error in ngOnChanges:', error);
+    }
+}
+
+  imageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+        this.imageChange = true;
+        this.form.get('Perfil')?.setValue(input.files[0]);
+    }
+}
 
   onSubmit() {
     if (!this.form) {
-      console.error('El formulario no está inicializado correctamente.');
-      return;
+        console.error('El formulario no está inicializado correctamente.');
+        return;
     }
 
     if (this.form.valid) {
-      if (!this.form.get('Perfil')?.value) {
-        this.form.get('Perfil')?.setValue(DEFAULT_PROFILE_IMAGE);
-      }
-      console.log("Datos del formulario enviados:", this.form.value);  // Log para depuración
-      this.OnSubmit.emit(this.form.value);
+        const formValue = this.form.value;
+        // Format FechaNacimiento as a date
+        if (formValue.FechaNacimiento instanceof Date) {
+            formValue.FechaNacimiento = formValue.FechaNacimiento.toISOString().split('T')[0];
+        }
+
+        console.log("Datos del formulario enviados:", formValue);  // Log para depuración
+        this.OnSubmit.emit(formValue);
     } else {
-      console.error("Formulario inválido:", this.form.errors);  // Log de errores
+        console.error("Formulario inválido:", this.form.errors);  // Log de errores
     }
   }
 

@@ -1,45 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { PublicacionCreateDTO } from '../publicacion';
-import { PublicacionesService } from '../publicaciones.service';
-import { parseErrorsApi } from '../../utilidades/utilidades';
-import { FormPublicacionComponent } from '../form-publicacion/form-publicacion.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { PublicacionCreateDTO } from '../publicacion';
 
 @Component({
   selector: 'app-create-publicacion',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormPublicacionComponent],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './create-publicacion.component.html',
-  styleUrls: ['./create-publicacion.component.css']
+  styleUrls: ['./create-publicacion.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CreatePublicacionComponent implements OnInit {
-  constructor(private publicacionesService: PublicacionesService, private router: Router) {}
+  publicacion: PublicacionCreateDTO = {
+    Titulo: '',
+    Contenido: '',
+    Imagen: '',
+    FechaPubl: new Date(),
+    Id_Usuario: 0
+  };
 
-  errors: string[] = [];
+  // Ensure OnSubmit emits the correct type
+  @Output() OnSubmit = new EventEmitter<PublicacionCreateDTO>();
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
-
-  saveChange(publicacion: PublicacionCreateDTO) {
-    this.publicacionesService.crear(publicacion).subscribe({
-      next: (id: number) => {
-        console.log("Publicación creada con éxito, ID:", id);
-        this.router.navigate(['publicaciones/' + id]);
-      },
-      error: (err: any) => {
-        console.error("Error al crear publicación:", err);
-        if (err.status === 422) {
-          this.errors = err.error.detail;
-        } else {
-          this.errors = ['Error inesperado al crear la publicación.'];
-        }
-      }
-    });
-  }
 
   // Added the 'cancel' method to handle the cancel action
   cancel() {
     this.router.navigate(['/publicaciones']);
+  }
+
+  // Add missing properties
+  saveChange(): void {
+    this.OnSubmit.emit(this.publicacion);
   }
 }

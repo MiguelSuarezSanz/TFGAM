@@ -1,8 +1,9 @@
 <div class="comments-section">
     <div class="add-comment">
-        <textarea [(ngModel)]="newComment" placeholder="Escribe tu comentario aquí..."></textarea>
-        <button (click)="addComment()">Comentar</button>
+        <textarea [(ngModel)]="newComment" placeholder="Escribe tu comentario aquí..." class="form-control"></textarea>
+        <button (click)="addComment()" class="btn btn-primary mt-2">Comentar</button>
     </div>
+
     <app-create-comentario 
         [idPublicacion]="idPublicacion"
         [idUsuario]="idUsuarioActual">
@@ -14,26 +15,24 @@
         </ul>
     </div>
 
-    <div class="comments-list mt-4">
-        <h4>Comentarios</h4>
-        <div *ngIf="comentarios.length === 0" class="text-muted">
-            No hay comentarios aún. ¡Sé el primero en comentar!
-        </div>
-
-        <div *ngFor="let comentario of comentarios" class="comment-item card mb-3">
-            <div class="card-body">
-                <p class="comment-content">{{comentario.contenido}}</p>
-                <div class="comment-metadata">
-                    <small class="text-muted">
-                        Comentado el {{comentario.fecha | date:'dd/MM/yyyy HH:mm'}}
-                    </small>
-                    <button *ngIf="comentario.idUsuario === idUsuarioActual" 
-                            (click)="eliminarComentario(comentario.id)"
-                            class="btn btn-danger btn-sm ms-2">
-                        Eliminar
-                    </button>
-                </div>
-            </div>
+    <div class="comentarios-list">
+        <div *ngFor="let comentario of comentarios" class="comentario-item">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        <img [src]="comentario.Usuario?.FotoPerfil" alt="Foto de perfil" class="profile-pic">
+                        {{ comentario.Usuario?.Nombre }}
+                    </mat-card-title>
+                    <mat-card-subtitle>{{ comentario.Fecha | date:'dd/MM/yyyy' }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ comentario.Contenido }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button *ngIf="comentario.Usuario?.Id === idUsuarioActual || isAdmin" (click)="editarComentario(comentario.Id)">Editar</button>
+                    <button mat-button color="warn" *ngIf="comentario.Usuario?.Id === idUsuarioActual || isAdmin" (click)="borrarComentario(comentario.Id)">Borrar</button>
+                </mat-card-actions>
+            </mat-card>
         </div>
     </div>
 </div>

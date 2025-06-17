@@ -6,37 +6,41 @@ import { parseErrorsApi } from '../../utilidades/utilidades';
 import { FormPublicacionComponent } from '../form-publicacion/form-publicacion.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-edit-publicacion',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormPublicacionComponent],
+  imports: [CommonModule, HttpClientModule, FormPublicacionComponent, FormsModule, MatCardModule, MatButtonModule],
   templateUrl: './edit-publicacion.component.html',
-  styleUrls: ['./edit-publicacion.component.css']
+  styleUrls: ['./edit-publicacion.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EditPublicacionComponent implements OnInit {
+  publicacion!: PublicacionCreateDTO;
+  errors: string[] = [];
+
   constructor(
     private publicacionesService: PublicacionesService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
-  publicacion: PublicacionDTO = {
-    Id: 0, // Replace with appropriate default values
-    Titulo: '',
-    Contenido: '',
-    Imagen: '',
-    FechaPubl: new Date().toISOString(), // Default to the current date as ISO string
-    Id_Usuario: 0, // Default value for user ID
-    Usuario_Nombre: '' // Default value for user name
-  };
-  errors: string[] = [];
-
   ngOnInit(): void {
+    this.cargarPublicacion();
+  }
+
+  cargarPublicacion(): void {
     const id = this.activatedRoute.snapshot.params['id'];
     this.publicacionesService.obtenerPorId(id).subscribe({
       next: (publicacion: PublicacionDTO) => {
-        this.publicacion = publicacion;
+        this.publicacion = {
+          ...publicacion,
+          Id_Usuario: publicacion.usuario.Id
+        };
       },
       error: (err: any) => {
         console.error("Error al cargar publicación:", err);
@@ -44,11 +48,10 @@ export class EditPublicacionComponent implements OnInit {
     });
   }
 
-  saveChange(publicacion: PublicacionCreateDTO) {
+  guardarCambios(): void {
     const id = this.activatedRoute.snapshot.params['id'];
-    this.publicacionesService.editar(id, publicacion).subscribe({
+    this.publicacionesService.editar(id, this.publicacion).subscribe({
       next: () => {
-        console.log("Publicación editada con éxito");
         this.router.navigate(['publicaciones/' + id]);
       },
       error: (err: any) => {
@@ -60,5 +63,15 @@ export class EditPublicacionComponent implements OnInit {
         }
       }
     });
+  }
+
+  cancelar(): void {
+    const id = this.activatedRoute.snapshot.params['id'];
+    this.router.navigate(['publicaciones/' + id]);
+  }
+
+  // Add missing properties
+  saveChange(event: PublicacionCreateDTO): void {
+    console.log('Save change:', event);
   }
 }

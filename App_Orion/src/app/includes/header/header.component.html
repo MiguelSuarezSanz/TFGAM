@@ -1,15 +1,17 @@
 <header class="background-color-main">
-    <img [src]="logo_orion" alt="Orion-logo.png">
-    <h2 class="font-shadow-hover-tree font-shadow-dark font-family-tittle">Orion Game System</h2>
-    <div class="auth-buttons">
+    <div class="flex flex-row w-max gap-5">
+        <img [src]="logo_orion" alt="Orion-logo.png">
+        <h2 class="font-shadow-hover-tree font-shadow-dark font-family-tittle">Orion Game System</h2>
+    </div>
+    <div class="auth-buttons flex flex-row gap-4">
         <ng-container *ngIf="!isLoggedIn">
             <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="openModal('login')">Login</button>
             <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="openModal('register')">Registro</button>
         </ng-container>
         <ng-container *ngIf="isLoggedIn">
-            <img [src]="userModal?.Perfil ? userModal?.Perfil : '../Assets/FotoPreterminada.png'" alt="Foto de perfil" class="profile-picture">
-            <span class="user-name">{{ userModal?.Nombre }}</span>
-            <button class="flex-grow w-max font-shadow-hover-one font-hover-one cursor-pointer" (click)="logout()">Logout</button>
+            <img [src]="userModal?.Perfil || 'assets/images/placeholder.png'" alt="Foto de perfil" class="profile-picture">
+            <span class="user-name">{{ userModal?.Nombre || 'Usuario' }}</span>
+            <button class="flex-grow w-max font-hover-two font-shadow-hover-two font-hover-one cursor-pointer" (click)="logout()">Logout</button>
         </ng-container>
     </div>
 </header>
@@ -17,16 +19,17 @@
     <a href="/" class="background-hover-one font-shadow-dark font-family-subtittle">Inicio</a>
     <a href="/Characters" class="background-hover-one font-shadow-dark font-family-subtittle">Personajes</a>
     <a href="/publicaciones" class="background-hover-one font-shadow-dark font-family-subtittle">Publicaciones</a>
-    <a href="/" class="background-hover-one font-shadow-dark font-family-subtittle">Ejemplo 4</a>
     <a *ngIf="userModal?.Privilegios === 'Admin'" href="/users" class="background-hover-one font-shadow-dark font-family-subtittle">Administrar Usuarios</a>
 </nav>
 <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-        <ng-container *ngIf="modalType === 'login'">
-            <app-login (OnSubmit)="onLoginSuccess($event)" (OnCancel)="closeModal()"></app-login>
-        </ng-container>
-        <ng-container *ngIf="modalType === 'register'">
-            <app-register (OnCancel)="closeModal()"></app-register>
-        </ng-container>
+    <div class="modal-content modal-MHK" (click)="$event.stopPropagation()">
+        <div>
+            <ng-container *ngIf="modalType === 'login'">
+                <app-login (OnSubmit)="onLoginSuccess($event)" (OnCancel)="closeModal()"></app-login>
+            </ng-container>
+            <ng-container *ngIf="modalType === 'register'">
+                <app-register (OnCancel)="closeModal()"></app-register>
+            </ng-container>
+        </div>
     </div>
 </div>

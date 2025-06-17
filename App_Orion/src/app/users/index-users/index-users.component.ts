@@ -34,10 +34,10 @@ export class IndexUsersComponent implements OnInit{
 
   cargarRegistros(){
     this.usersService.getAll()
-      .subscribe((res: HttpResponse<UserDTO[]>) => {
-        this.users = res.body || []; 
+      .subscribe((users: UserDTO[]) => {
+      this.users = users || [];
       }, error => {
-        console.error('Error loading users:', error);
+      console.error('Error loading users:', error);
       });
   }
   borrar(id: number){

@@ -1,17 +1,18 @@
-<form (submit)="onSubmit()" [formGroup]="form">
-    <mat-form-field >
+<form (submit)="onSubmit()" [formGroup]="form" class="flex flex-col gap-2">
+    <mat-form-field class="flex-grow flex flex-col">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="Email" autocomplete="off">
         <mat-error></mat-error>
-    </mat-form-field><br>
-    <mat-form-field >
+    </mat-form-field>
+    
+    <mat-form-field  class="flex-grow flex flex-col">
         <mat-label>Password</mat-label>
         <input type="password" matInput formControlName="Password" autocomplete="off">
         <mat-error></mat-error>
-    </mat-form-field><br>
+    </mat-form-field>
 
-    <div class="box-content-father">
-        <button class="font-shadow-hover-one font-hover-one cursor-pointer" mat-button [disabled]="form.invalid">Iniciar Sesión</button>
-        <a class="font-shadow-hover-one font-hover-one cursor-pointer" mat-button (click)="cancel()">Cancelar</a>
+    <div class="flex-grow flex flex-row justify-around">
+        <button class="form__button" mat-button [disabled]="form.invalid">Iniciar Sesión</button>
+        <a class="form__button danger" mat-button (click)="cancel()">Cancelar</a>
     </div>
 </form>

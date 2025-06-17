@@ -1,66 +1,71 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { PublicacionCreateDTO } from '../publicacion';
 
 @Component({
   selector: 'app-form-publicacion',
   standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    CommonModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './form-publicacion.component.html',
   styleUrls: ['./form-publicacion.component.css']
 })
-export class FormPublicacionComponent implements OnInit, OnChanges {
-  constructor(private formBuilder: FormBuilder) {}
+export class FormPublicacionComponent implements OnInit {
+  @Input() publicacion!: PublicacionCreateDTO;
+  @Output() OnSubmit = new EventEmitter<PublicacionCreateDTO>();
+  @Output() OnCancel = new EventEmitter<void>();
 
-  form!: FormGroup;
+  // Ensure formGroup is properly defined
+  form: FormGroup;
 
-  @Input()
-  model!: PublicacionCreateDTO;
-
-  @Input()
-  errors: string[] = [];
-
-  @Output()
-  OnSubmit: EventEmitter<PublicacionCreateDTO> = new EventEmitter<PublicacionCreateDTO>();
-
-  @Output()
-  OnCancel: EventEmitter<void> = new EventEmitter<void>();
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      Titulo: ['', Validators.required],
+      Contenido: ['', Validators.required],
+      Imagen: ['']
+    });
+  }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      titulo: ['', { validators: [Validators.required] }],
-      contenido: ['', { validators: [Validators.required] }],
-      imagen: ['']
-    });
-
-    if (this.model) {
-      this.form.patchValue(this.model);
-    }
+    // Initialize component
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['model'] && this.model && this.form) {
-      this.form.patchValue(this.model);
-    }
-  }
-
-  onSubmit() {
+  guardarCambios(): void {
     if (this.form.valid) {
-      this.OnSubmit.emit(this.form.value);
+      this.OnSubmit.emit(this.form.value as PublicacionCreateDTO);
+    } else {
+      console.error('Form is invalid');
     }
   }
 
-  onCancel() {
+  cancelar(): void {
     this.OnCancel.emit();
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      const formValues = this.form.value;
+      const publicacion: PublicacionCreateDTO = {
+        Titulo: formValues.Titulo,
+        Contenido: formValues.Contenido,
+        Imagen: formValues.Imagen || '',
+        FechaPubl: new Date(),
+        Id_Usuario: this.publicacion.Id_Usuario
+      };
+      this.OnSubmit.emit(publicacion);
+    }
+  }
+
+  onCancel(): void {
+    console.log('Form cancelled');
+  }
+
+  // Add missing onFileSelected method
+  onFileSelected(event: Event): void {
+    console.log('File selected:', event);
   }
 }

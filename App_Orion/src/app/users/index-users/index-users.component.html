@@ -1,57 +1,52 @@
-<h2>Usuarios</h2>
-
-<button mat-flat-button routerLink="/users/create">Crear Usario</button>
-
-<app-listado-generico [listado]="users">
-    <ng-container contenido>
-        <ng-container *ngIf="!users; else dataLoaded">
-            <p>Cargando...</p>
-          </ng-container>
-          
-          <!-- Main content -->
-          <ng-template #dataLoaded>
-            <ng-container *ngIf="users.length === 0; else tableContent">
-              <p>No hay usuarios para mostrar</p>
+<div class="flex flex-col gap-4 p-4">
+  <h2 class="w-max text-center">Usuarios</h2>
+  
+  <button mat-flat-button routerLink="/users/create" class="form__button">Crear Usario</button>
+  
+  <app-listado-generico [listado]="users" class="box-content-father">
+      <ng-container contenido>
+          <ng-container *ngIf="!users; else dataLoaded">
+              <p>Cargando...</p>
             </ng-container>
-          
-            <ng-template #tableContent>
-              <table mat-table [dataSource]="users" class="mat-elevation-z8">
-                <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef> ID </th>
-                  <td mat-cell *matCellDef="let user"> {{ user.Id }} </td>
-                </ng-container>
-          
-                <ng-container matColumnDef="nombre">
-                  <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                  <td mat-cell *matCellDef="let user"> {{ user.Nombre }} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef> Email </th>
-                    <td mat-cell *matCellDef="let user"> {{ user.Email }} </td>
+            
+            <!-- Main content -->
+            <ng-template #dataLoaded>
+              <ng-container *ngIf="users.length === 0; else tableContent">
+                <p>No hay usuarios para mostrar</p>
+              </ng-container>
+            
+              <ng-template #tableContent>
+                <table mat-table [dataSource]="users" class="mat-elevation-z8">
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let user"> {{ user.Id }} </td>
                   </ng-container>
-          
-                <ng-container matColumnDef="imagen">
-                    <th mat-header-cell *matHeaderCellDef> Imagen </th>
+            
+                  <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let user"> {{ user.Nombre }} </td>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="email">
+                      <th mat-header-cell *matHeaderCellDef> Email </th>
+                      <td mat-cell *matCellDef="let user"> {{ user.Email }} </td>
+                    </ng-container>
+            
+                  <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
                     <td mat-cell *matCellDef="let user">
-                      <img [src]="user.image ? user.image : '../Assets/FotoPreterminada.png'" alt="User Image" width="50" height="50">
+                      <div class="flex flex-row gap-2 p-2">
+                        <a routerLink="/users/edit/{{user.Id}}" class="form__button">Editar Usuario</a>
+                        <button (click)="openDialog(user.Id)" class="form__button danger">Eliminar Usuario</button>
+                      </div>
                     </td>
                   </ng-container>
-          
-                <ng-container matColumnDef="acciones">
-                  <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                  <td mat-cell *matCellDef="let user">
-                    <div class="box-content-father">
-                      <a routerLink="/users/edit/{{user.Id}}" class="font-shadow-hover-one font-hover-one cursor-pointer">Editar Usuario</a>
-                      <button (click)="openDialog(user.Id)" class="font-shadow-hover-one font-hover-one cursor-pointer">Eliminar Usuario</button>
-                    </div>
-                  </td>
-                </ng-container>
-          
-                <tr mat-header-row *matHeaderRowDef="columnasAMostrar"></tr>
-                <tr mat-row *matRowDef="let row; columns: columnasAMostrar"></tr>
-              </table>
+            
+                  <tr mat-header-row *matHeaderRowDef="columnasAMostrar"></tr>
+                  <tr mat-row *matRowDef="let row; columns: columnasAMostrar"></tr>
+                </table>
+              </ng-template>
             </ng-template>
-          </ng-template>
-    </ng-container>
-</app-listado-generico>
+      </ng-container>
+  </app-listado-generico>
+</div>

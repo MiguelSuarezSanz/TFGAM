@@ -42,6 +42,8 @@ export const routes: Routes = [
     {path: 'publicaciones',component: ListPublicacionesComponent},
     {path: 'publicaciones/:id',component: DetailPublicacionComponent},
     {path: 'comentarios',component: ListComentariosComponent},
+    {path: 'comentarios/:id',component: ListComentariosComponent},
+    {path: 'comentarios/publicacion/:id', component: ListComentariosComponent},
 
     {path: '', component:IndexUsersComponent},
     {path: '**', redirectTo: ''}

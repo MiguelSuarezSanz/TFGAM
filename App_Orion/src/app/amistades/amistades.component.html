@@ -1,0 +1,18 @@
+<div class="amistades-container">
+  <h1>Amistades</h1>
+  <div class="amistades-list">
+    <div *ngFor="let amistad of amistades" class="amistad-item">
+      <p>Usuario 1: {{ amistad.usuario_id_1 }}</p>
+      <p>Usuario 2: {{ amistad.usuario_id_2 }}</p>
+      <p>Estado: {{ amistad.estado }}</p>
+      <button *ngIf="amistad.estado === 'pendiente'" (click)="aceptarAmistad(amistad.id)">Aceptar</button>
+      <button *ngIf="amistad.estado === 'pendiente'" (click)="rechazarAmistad(amistad.id)">Rechazar</button>
+    </div>
+  </div>
+  <div class="amistades-form">
+    <h2>Crear Amistad</h2>
+    <input [(ngModel)]="nuevaAmistad.usuario_id_1" placeholder="ID Usuario 1" />
+    <input [(ngModel)]="nuevaAmistad.usuario_id_2" placeholder="ID Usuario 2" />
+    <button (click)="crearAmistad()">Crear</button>
+  </div>
+</div>
