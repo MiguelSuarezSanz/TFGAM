@@ -11,7 +11,7 @@
             <app-form-comentario 
                 [modelo]="modeloInicial"
                 [isDisabled]="isSubmitting"
-                (onSubmit)="guardarCambios($event)"
+                (onSubmit)="saveChange(modeloInicial)"
                 (onCancel)="cancelar()">
             </app-form-comentario>
 

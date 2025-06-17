@@ -27,13 +27,13 @@
 
     <div class="form-control flex flex-col gap-1">
         <label for="perfil" class="w-max text-center">Imagen Perfil</label>
-        <input type="file" formControlName="Perfil">
+        <input type="file" formControlName="Perfil" (change)="imageSelected($event)">
     </div>
 
       <mat-form-field *ngIf="isAdmin"  class="flex flex-col gap-1">
         <mat-label>Privilegios</mat-label>
         <mat-select formControlName="Privilegios">
-          <mat-option *ngFor="let p of privilegios" [value]="p">
+          <mat-option class="mat-datepicker-content" *ngFor="let p of privilegios" [value]="p">
             {{ p }}
           </mat-option>
         </mat-select>

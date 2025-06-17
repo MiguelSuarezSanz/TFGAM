@@ -1,24 +1,23 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="titulo">Título</label>
-    <input id="titulo" formControlName="titulo" type="text" />
-    <div *ngIf="form.get('titulo')?.invalid && form.get('titulo')?.touched">
-      El título es obligatorio.
+<form (submit)="onSubmit()" [formGroup]="form" class="flex flex-col gap-2 p-2">
+    <mat-form-field class="flex flex-col gap-1">
+        <mat-label>Título</mat-label>
+        <input type="text" matInput formControlName="Titulo">
+        <mat-error *ngIf="form.get('Titulo')?.invalid && form.get('Titulo')?.touched">El título es obligatorio.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="flex flex-col gap-1">
+        <mat-label>Contenido</mat-label>
+        <textarea matInput formControlName="Contenido"></textarea>
+        <mat-error *ngIf="form.get('Contenido')?.invalid && form.get('Contenido')?.touched">El contenido es obligatorio.</mat-error>
+    </mat-form-field>
+
+    <div class="flex flex-col gap-1">
+        <label>Imagen (opcional)</label>
+        <input type="file" formControlName="Imagen" (change)="onFileSelected($event)">
     </div>
-  </div>
 
-  <div>
-    <label for="contenido">Contenido</label>
-    <textarea id="contenido" formControlName="contenido"></textarea>
-    <div *ngIf="form.get('contenido')?.invalid && form.get('contenido')?.touched">
-      El contenido es obligatorio.
+    <div class="flex-grow flex flex-row justify-around">
+        <button mat-button [disabled]="form.invalid" class="form__button">Guardar</button>
+        <button mat-button (click)="onCancel()" class="form__button">Cancelar</button>
     </div>
-  </div>
-
-  <div>
-    <label for="imagen">Imagen (opcional)</label>
-    <input id="imagen" formControlName="imagen" type="text" />
-  </div>
-
-  <button type="submit" [disabled]="form.invalid">Guardar</button>
 </form>

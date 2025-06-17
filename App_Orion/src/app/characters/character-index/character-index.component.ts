@@ -68,7 +68,7 @@ export class CharacterIndexComponent implements OnInit  {
   constructor(private http: HttpClient) {}
   
   ngOnInit(): void {
-    //this.auto_init_page();
+    this.auto_init_page();
     this.auto_init_momentos_epicos();
     this.auto_init_pasivas();
     this.auto_init_check();
@@ -515,9 +515,8 @@ export class CharacterIndexComponent implements OnInit  {
     if (typeof window === 'undefined') { return; };
 
     const objetivo = document.querySelector('#nuevo_personaje') as HTMLElement;
-    
-    objetivo.addEventListener('click',()=>{
 
+    objetivo.addEventListener('click',()=>{
       this.nuevo_json_personaje();
 
     });
@@ -576,11 +575,9 @@ export class CharacterIndexComponent implements OnInit  {
         
       }
     }
-
   }
 
   nuevo_json_personaje() {
-
     this.http.get('assets/personaje_Character.json').subscribe(data => {
     
       this.cargar_json_personaje(data);

@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="guardarCambios()" class="comentario-form">
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field>
         <mat-label>Comentario</mat-label>
         <textarea matInput
             formControlName="contenido"
@@ -7,10 +7,10 @@
             placeholder="Escribe tu comentario aquí..."
             [disabled]="isDisabled">
         </textarea>
-        <mat-error *ngIf="f['contenido'].errors?.['required']">
+        <mat-error *ngIf="form.controls['contenido'].errors?.['required']">
             El contenido es requerido
         </mat-error>
-        <mat-error *ngIf="f['contenido'].errors?.['minlength']">
+        <mat-error *ngIf="form.controls['contenido'].errors?.['minlength']">
             El comentario debe tener al menos 1 caracter
         </mat-error>
     </mat-form-field>
