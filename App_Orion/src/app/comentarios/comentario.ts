@@ -2,7 +2,7 @@ export interface ComentarioCreateDTO {
   Id_Usuario: number;
   Id_Publicacion: number;
   Contenido: string;
-  Fecha: Date;
+  Fecha: string;
 }
 
 export interface ComentarioDTO {
@@ -10,7 +10,7 @@ export interface ComentarioDTO {
   Id_Usuario: number;
   Id_Publicacion: number;
   Contenido: string;
-  Fecha: Date;
+  Fecha: string;
   Usuario?: {
     Id: number;
     Nombre: string;

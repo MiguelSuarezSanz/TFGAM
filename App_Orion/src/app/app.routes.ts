@@ -7,7 +7,7 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
 import { DetailUserComponent } from './users/detail-user/detail-user.component';
 
 
-import { CharacterIndexComponent } from './characters/character-index/character-index.component';
+// import { CharacterIndexComponent } from './characters/character-index/character-index.component';
 import { IndexUsersComponent } from './users/index-users/index-users.component';
 import { LoginComponent } from './users/login/login.component';
 import { RegisterComponent } from './users/register/register.component';
@@ -33,7 +33,7 @@ export const routes: Routes = [
     {path: 'users/register', component: RegisterComponent},
 
     // Routing Characters
-    {path: 'Characters', component: CharacterIndexComponent},
+ //   {path: 'Characters', component: CharacterIndexComponent},
 
     // Routing Publicaciones
     {path: 'publicaciones/create', component: CreatePublicacionComponent, canActivate: [AuthGuard]},

@@ -1,13 +1,9 @@
 <div class="comments-section">
+
     <div class="add-comment">
         <textarea [(ngModel)]="newComment" placeholder="Escribe tu comentario aquí..." class="form-control"></textarea>
         <button (click)="addComment()" class="btn btn-primary mt-2">Comentar</button>
     </div>
-
-    <app-create-comentario 
-        [idPublicacion]="idPublicacion"
-        [idUsuario]="idUsuarioActual">
-    </app-create-comentario>
 
     <div *ngIf="errors.length > 0" class="alert alert-danger mt-3">
         <ul>
@@ -23,14 +19,13 @@
                         <img [src]="comentario.Usuario?.FotoPerfil" alt="Foto de perfil" class="profile-pic">
                         {{ comentario.Usuario?.Nombre }}
                     </mat-card-title>
-                    <mat-card-subtitle>{{ comentario.Fecha | date:'dd/MM/yyyy' }}</mat-card-subtitle>
+                    <mat-card-subtitle>{{ comentario.Fecha }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <p>{{ comentario.Contenido }}</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-button *ngIf="comentario.Usuario?.Id === idUsuarioActual || isAdmin" (click)="editarComentario(comentario.Id)">Editar</button>
-                    <button mat-button color="warn" *ngIf="comentario.Usuario?.Id === idUsuarioActual || isAdmin" (click)="borrarComentario(comentario.Id)">Borrar</button>
+                    <button mat-button *ngIf="comentario.Usuario?.Id === idUsuarioActual || isAdmin" (click)="eliminarComentario(comentario.Id)">Borrar</button>
                 </mat-card-actions>
             </mat-card>
         </div>

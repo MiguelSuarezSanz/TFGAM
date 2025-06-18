@@ -16,15 +16,10 @@ export class ComentariosService {
   }
 
   crear(comentario: ComentarioCreateDTO): Observable<ComentarioDTO> {
-    // Automatically set the current date as an exact date
-    comentario.Fecha = new Date();
-
-    // Ensure the logged-in user's ID is included
-    comentario.Id_Usuario = this.getCurrentUserId();
-
-    // Ensure the publication ID is included
-    comentario.Id_Publicacion = this.getCurrentPublicationId();
-
+    const now = new Date();
+    // Formatear la fecha como YYYY-MM-DD
+    comentario.Fecha = now.toISOString().split('T')[0];
+    // No sobreescribir Id_Usuario ni Id_Publicacion, se pasan correctamente desde el componente
     return this.http.post<ComentarioDTO>(this.apiURL, comentario);
   }
 
@@ -36,13 +31,26 @@ export class ComentariosService {
     return this.http.delete<void>(`${this.apiURL}/${id}`);
   }
 
+  obtenerPorId(id: number): Observable<ComentarioDTO> {
+    return this.http.get<ComentarioDTO>(`${this.apiURL}/${id}`);
+  }
+
   private getCurrentPublicationId(): number {
-    // Replace with actual logic to fetch the current publication ID
-    return 1; // Example publication ID
+    const url = window.location.href;
+    const match = url.match(/publicacion\/(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
   }
 
   private getCurrentUserId(): number {
-    // Replace with actual logic to fetch the logged-in user's ID
-    return 1; // Example user ID
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        return parsedUser.id || 0;
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+      }
+    }
+    return 0;
   }
 }

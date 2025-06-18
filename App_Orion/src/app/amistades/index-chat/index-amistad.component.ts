@@ -4,6 +4,7 @@ import { AmistadesService, Amistad } from '../amistades.service';
 import { FormsModule } from '@angular/forms';
 import { UsersService } from '../../users/users.service';
 import { UserDTO } from '../../users/user';
+import { AuthUtilsService } from '../../utilidades/auth-utils.service';
 
 @Component({
   selector: 'app-index-amistad',
@@ -16,13 +17,21 @@ export class IndexAsmistadComponent implements OnInit {
   nuevaAmistad: Amistad = { id: 0, usuario_id_1: 0, usuario_id_2: 0, fecha_solicitud: '', estado: 'pendiente' };
   usuarios: UserDTO[] = [];
   searchTerm: string = '';
+  searchTermMisAmistades: string = '';
   misAmistades: Amistad[] = [];
   currentPageAmistades: number = 1;
   currentPageUsuarios: number = 1;
   currentPageMisAmistades: number = 1;
   itemsPerPage: number = 10;
+  public currentUserId: number;
 
-  constructor(private amistadesService: AmistadesService, private usersService: UsersService) {}
+  constructor(
+    private amistadesService: AmistadesService,
+    private usersService: UsersService,
+    private authUtils: AuthUtilsService
+  ) {
+    this.currentUserId = this.authUtils.getCurrentUserId();
+  }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -114,11 +123,15 @@ export class IndexAsmistadComponent implements OnInit {
   }
 
   enviarSolicitudAmistad(usuarioId: number): void {
+    const userId = this.authUtils.getCurrentUserId();
+    const now = new Date();
+    const fechaSolicitud = now.toISOString().split('T')[0]; // Formato ISO YYYY-MM-DD
+
     const nuevaAmistad: Amistad = {
       id: 0,
-      usuario_id_1: 0, // Reemplazar con el ID del usuario actual
+      usuario_id_1: userId,
       usuario_id_2: usuarioId,
-      fecha_solicitud: new Date().toISOString(),
+      fecha_solicitud: fechaSolicitud,
       estado: 'pendiente'
     };
 
@@ -175,6 +188,29 @@ export class IndexAsmistadComponent implements OnInit {
   get paginatedMisAmistades(): Amistad[] {
     const start = (this.currentPageMisAmistades - 1) * this.itemsPerPage;
     return this.misAmistades.slice(start, start + this.itemsPerPage);
+  }
+
+  get paginatedMisAmistadesFiltered(): Amistad[] {
+    let filtradas = this.misAmistades;
+    if (this.searchTermMisAmistades && this.searchTermMisAmistades.trim() !== '') {
+      filtradas = this.misAmistades.filter(amistad => {
+        const amigoId = amistad.usuario_id_1 === this.currentUserId ? amistad.usuario_id_2 : amistad.usuario_id_1;
+        const amigo = this.usuarios.find(usuario => usuario.Id === amigoId);
+        const nombre = amigo ? amigo.Nombre.toLowerCase() : '';
+        return (
+          nombre.includes(this.searchTermMisAmistades.toLowerCase()) ||
+          amigoId.toString().includes(this.searchTermMisAmistades)
+        );
+      });
+    }
+    const start = (this.currentPageMisAmistades - 1) * this.itemsPerPage;
+    return filtradas.slice(start, start + this.itemsPerPage);
+  }
+
+  get solicitudesPendientes(): Amistad[] {
+    return this.amistades.filter(
+      a => a.usuario_id_2 === this.currentUserId && a.estado === 'pendiente'
+    );
   }
 
   changePageAmistades(page: number): void {

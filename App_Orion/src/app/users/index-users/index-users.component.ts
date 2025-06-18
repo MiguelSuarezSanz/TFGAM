@@ -7,6 +7,7 @@ import { CommonModule} from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../utilidades/dialogo-confirmacion/dialogo-confirmacion.component';
 import { RouterLink } from '@angular/router';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { ListadoGenericoComponent } from '../../utilidades/listado-generico/listado-generico.component';
 import { AuthService } from '../auth/auth.service';
@@ -14,7 +15,7 @@ import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-index-users',
   standalone: true,
-  imports: [CommonModule, ListadoGenericoComponent,MatTableModule, RouterLink, MatDialogModule],
+  imports: [CommonModule, ListadoGenericoComponent, MatTableModule, RouterLink, MatDialogModule, MatPaginatorModule],
   templateUrl: './index-users.component.html',
   styleUrls: ['./index-users.component.css']
 })
@@ -29,17 +30,34 @@ export class IndexUsersComponent implements OnInit{
     this.cargarRegistros();
   }
 
-  users: UserDTO[] = []
+  users: UserDTO[] = [];
+  paginatedUsers: UserDTO[] = [];
+  pageSize: number = 10;
+  currentPage: number = 0;
   columnasAMostrar: string[] = ['id', 'nombre','email', 'acciones'];
 
   cargarRegistros(){
     this.usersService.getAll()
       .subscribe((users: UserDTO[]) => {
       this.users = users || [];
+      this.updatePaginatedUsers();
       }, error => {
       console.error('Error loading users:', error);
       });
   }
+
+  updatePaginatedUsers(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: any): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedUsers();
+  }
+
   borrar(id: number){
     this.usersService.borrar(id)
     .subscribe(() => {

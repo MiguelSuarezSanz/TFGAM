@@ -1,61 +1,59 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComentariosService } from '../comentarios.service';
-import { ComentarioCreateDTO, ComentarioDTO } from '../comentario';
+import { ComentarioDTO, ComentarioCreateDTO } from '../comentario';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { FormComentarioComponent } from '../form-comentario/form-comentario.component';
 
 @Component({
   selector: 'app-edit-comentario',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, FormComentarioComponent],
   templateUrl: './edit-comentario.component.html',
   styleUrls: ['./edit-comentario.component.css']
 })
 export class EditComentarioComponent implements OnInit {
-  comentario!: ComentarioCreateDTO;
+  comentarioId!: number;
+  comentario!: ComentarioDTO;
 
   constructor(
-    private comentariosService: ComentariosService,
+    private route: ActivatedRoute,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private comentariosService: ComentariosService
   ) {}
 
   ngOnInit(): void {
-    this.cargarComentario();
+    this.comentarioId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadComentario();
   }
 
-  cargarComentario(): void {
-    const id = this.activatedRoute.snapshot.params['id'];
-    this.comentariosService.obtenerPorPublicacion(id).subscribe({
-      next: (comentarios: ComentarioDTO[]) => {
-        if (comentarios.length > 0) {
-          this.comentario = comentarios[0];
-        } else {
-          console.error('No se encontraron comentarios para la publicación.');
-        }
+  loadComentario(): void {
+    this.comentariosService.obtenerPorId(this.comentarioId).subscribe({
+      next: (comentario: ComentarioDTO) => {
+        this.comentario = comentario;
       },
       error: (err: any) => {
-        console.error('Error al cargar comentario:', err);
+        console.error('Error loading comentario:', err);
       }
     });
   }
 
-  guardarCambios(): void {
-    const id = this.activatedRoute.snapshot.params['id'];
-    this.comentariosService.editar(id, this.comentario).subscribe({
+  saveChanges(updatedComentario: ComentarioCreateDTO): void {
+    this.comentariosService.editar(this.comentarioId, updatedComentario).subscribe({
       next: () => {
+        console.log('Comentario updated successfully');
         this.router.navigate(['/comentarios']);
       },
       error: (err) => {
-        console.error('Error al guardar cambios:', err);
+        console.error('Error updating comentario:', err);
       }
     });
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.router.navigate(['/comentarios']);
   }
 }
