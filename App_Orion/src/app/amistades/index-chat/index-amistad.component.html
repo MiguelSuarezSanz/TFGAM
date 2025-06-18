@@ -19,7 +19,7 @@
     </div>
 
     <!-- Buscar Usuarios y Enviar Solicitud -->
-    <div class="flex-1 usuarios-container">
+    <div class="flex-1 gap-1 usuarios-container">
       <h2>Buscar Usuarios</h2>
       <div class="search-container mb-2">
         <input [(ngModel)]="searchTerm" placeholder="Buscar por ID o Nombre" />
@@ -30,7 +30,7 @@
           <button (click)="enviarSolicitudAmistad(usuario.Id)">Enviar Solicitud de Amistad</button>
         </div>
       </div>
-      <div class="pagination-controls">
+      <div class="pagination-controls" style="padding-top: 1rem;">
         <button (click)="changePageUsuarios(currentPageUsuarios - 1)" [disabled]="currentPageUsuarios === 1">Anterior</button>
         <span>Página {{ currentPageUsuarios }}</span>
         <button (click)="changePageUsuarios(currentPageUsuarios + 1)" [disabled]="paginatedUsuarios.length < itemsPerPage">Siguiente</button>
