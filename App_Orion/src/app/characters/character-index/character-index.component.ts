@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
-
-
-@Component({
-  selector: 'app-character-index',
-  imports: [],
-
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,7 +8,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
   ],
-
   templateUrl: './character-index.component.html',
   styleUrl: './character-index.component.css'
 })
@@ -47,40 +40,53 @@ export class CharacterIndexComponent implements OnInit  {
     
   }
 
+  onTabClick2(event: MouseEvent) {
+    const tabActive = document.querySelector('.tab-active2') as HTMLElement;
+    let classBase = 'px-2 py-1 h-full w-full flex justify-center items-center tab' as string;
+
+    tabActive.className = classBase;
+
+    const targetElement = event.target as HTMLElement;
+    targetElement.className += '-active2';
+
+    const targetElementValue = event.target as HTMLElement;
+    const datasetTab = targetElementValue.dataset['tab'];
+    
+
+    const tabContents = document.querySelectorAll('.tab-content2') as NodeListOf<HTMLButtonElement>;
+    classBase = 'tab-content2 py-1 px-4 flex flex-col gap-4' as string;
+    tabContents.forEach(tabContent => {
+      
+      tabContent.className = classBase;
+      if (tabContent.id != datasetTab) {
+        tabContent.className += ' hidden';
+      }
+      
+    });
+  }
+
   constructor(private http: HttpClient) {}
   
   ngOnInit(): void {
-    this.auto_init_page();
     this.auto_init_momentos_epicos();
     this.auto_init_pasivas();
     this.auto_init_check();
     this.button_init_editar_personaje();
     this.button_init_guardar_personaje();
-
-  }
-
-  auto_init_page() {
-    /* let personaje_cache = localStorage.getItem('personaje_cache') as string;
-
-    if (personaje_cache == null) {
-      this.nuevo_json_personaje();
-    } else {
-      console.log('personaje cargado');
-      console.log(JSON.parse(personaje_cache));
-    } */
-
     this.button_init_nuevo_personaje();
     this.button_init_cargar_personaje();
     this.button_init_roll_dice();
     this.auto_init_edit_momentos_epicos();
     this.auto_init_edit_pasivas();
     this.auto_init_edit_check();
+
+    setTimeout(()=>{
+      this.auto_init_page();},100);
   }
 
   auto_init_page() {
 
     this.nuevo_json_personaje();
-
 
   }
 
@@ -157,12 +163,6 @@ export class CharacterIndexComponent implements OnInit  {
     if (typeof window === 'undefined') { return; };
   
     const objetivo = document.querySelector('#editar_personaje') as HTMLElement;
-
-
-    objetivo.addEventListener('click',()=>{
-
-      console.log(document.querySelectorAll('.character-form'));
-
     const objetivo2 = document.querySelectorAll('.close-modal');
     const objetivo3 = document.querySelector('#save-input-modal') as HTMLElement;
     const modalblack = document.querySelector('#black-fade') as HTMLDivElement;
@@ -291,11 +291,11 @@ export class CharacterIndexComponent implements OnInit  {
             console.log(`Dmg: ${objetoJson[fatherKey]['dmg']}`);
 
             if (key.includes('dmg')) {
-              objetoJson[fatherKey]['dmg'] += result;
+              objetoJson[fatherKey]['dmg'] = parseInt(objetoJson[fatherKey]['dmg']) + result;
             } else if (key.includes('armor')) {
-              objetoJson[fatherKey]['res_per'] += result;
-              objetoJson[fatherKey]['res_con'] += result;
-              objetoJson[fatherKey]['res_cor'] += result;
+              objetoJson[fatherKey]['res_per'] = parseInt(objetoJson[fatherKey]['res_per']) +  result;
+              objetoJson[fatherKey]['res_con'] = parseInt(objetoJson[fatherKey]['res_con']) +  result;
+              objetoJson[fatherKey]['res_cor'] = parseInt(objetoJson[fatherKey]['res_cor']) +  result;
             }
 
           } else if (key.includes('scale')) {
@@ -313,11 +313,11 @@ export class CharacterIndexComponent implements OnInit  {
             }
 
             if (key.includes('dmg')) {
-              objetoJson[fatherKey]['dmg'] += result;
+              objetoJson[fatherKey]['dmg'] = parseInt(objetoJson[fatherKey]['dmg']) + result;
             } else if (key.includes('armor')) {
-              objetoJson[fatherKey]['res_per'] += result;
-              objetoJson[fatherKey]['res_con'] += result;
-              objetoJson[fatherKey]['res_cor'] += result;
+              objetoJson[fatherKey]['res_per'] = parseInt(objetoJson[fatherKey]['res_per']) + result;
+              objetoJson[fatherKey]['res_con'] = parseInt(objetoJson[fatherKey]['res_con']) + result;
+              objetoJson[fatherKey]['res_cor'] = parseInt(objetoJson[fatherKey]['res_cor']) + result;
             }
 
             console.log(`Dmg Final Scale: ${result}`);
@@ -351,9 +351,9 @@ export class CharacterIndexComponent implements OnInit  {
 
             } else {
 
-              objetoJson[fatherKey]['res_con'] += objetoDom[fatherKey]['res_con'];
-              objetoJson[fatherKey]['res_cor'] += objetoDom[fatherKey]['res_con'];
-              objetoJson[fatherKey]['res_per'] += objetoDom[fatherKey]['res_con'];
+              objetoJson[fatherKey]['res_con'] += parseInt(objetoDom[fatherKey]['res_con']);
+              objetoJson[fatherKey]['res_cor'] += parseInt(objetoDom[fatherKey]['res_cor']);
+              objetoJson[fatherKey]['res_per'] += parseInt(objetoDom[fatherKey]['res_per']);
 
             } 
 
@@ -435,7 +435,7 @@ export class CharacterIndexComponent implements OnInit  {
               }
 
               if (res != null) {
-                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4300/assets/images/dice/${res}.png`;
+                objetoJson[fatherKey][`img_${check}`] = `http://localhost:4200/assets/images/dice/${res}.png`;
               } else {
                 objetoJson[fatherKey][`img_${check}`] = null;
               }
@@ -463,7 +463,6 @@ export class CharacterIndexComponent implements OnInit  {
       console.log('-----------');
       console.log('Objeto Json:');
       console.log(objetoJson);
-
       
 
       for (const fatherKey in objetoDom) {
@@ -502,14 +501,15 @@ export class CharacterIndexComponent implements OnInit  {
     objetivo.addEventListener('click',()=>{
 
       //Declaramos las variables a usar
-
       let objetoJson = this.obtener_objeto_dom();
-      const jsonString = JSON.stringify(objetoJson); // null y 2 para formato legible
+      console.log(objetoJson);
+      
+      const jsonString = this.parse_object(objetoJson);
+      console.log(jsonString);
+      
       const blob = new Blob([jsonString], { type: 'application/json' });
 
       saveAs(blob, `personaje_${objetoJson['datos_personales']['Nombre']}.json`);
-      localStorage.setItem('personaje_cache', jsonString);
-
       
     });
   }
@@ -518,7 +518,6 @@ export class CharacterIndexComponent implements OnInit  {
     if (typeof window === 'undefined') { return; };
 
     const objetivo = document.querySelector('#nuevo_personaje') as HTMLElement;
-
     
     objetivo.addEventListener('click',()=>{
 
@@ -531,16 +530,38 @@ export class CharacterIndexComponent implements OnInit  {
   button_init_cargar_personaje() {
     if (typeof window === 'undefined') { return; };
 
-
+    const objetivo = document.querySelector('#cargar_personaje') as HTMLElement;
+    
     objetivo.addEventListener('click',()=>{
-      this.nuevo_json_personaje();
+      
+      let subObjetivo = document.querySelector('#Cargar_Personaje_Hidden') as HTMLElement;
+      subObjetivo.click();
+
+      subObjetivo.addEventListener('change', (event) => {
+        const archivo = event.target as HTMLInputElement;
+        if (archivo.files && archivo.files.length > 0) {
+
+          const archivoLeido = archivo.files[0];
+
+          const lector = new FileReader();
+          lector.onload = (evento) => {
+            const contenido = evento.target?.result as string;
+            let contenidoText = JSON.parse(contenido) as object;
+            this.cargar_json_personaje(contenidoText);
+            console.log(contenidoText);
+            
+          };
+          lector.readAsText(archivoLeido);
+
+        }
+      });
+
     });
 
   }
 
   cargar_json_personaje(objeto: any) {
-
-    if (objeto) {
+    if (typeof window === 'undefined') { return; };
 
     for (const clavePadre in objeto) {
       if (Object.prototype.hasOwnProperty.call(objeto, clavePadre)) {
@@ -558,17 +579,18 @@ export class CharacterIndexComponent implements OnInit  {
         }
         
       }
-
     }
+
   }
 
   nuevo_json_personaje() {
+
     this.http.get('assets/personaje_Character.json').subscribe(data => {
-      console.log('personaje cargado');
-      console.log(JSON.parse(data as string));
+    
+      this.cargar_json_personaje(data);
+
     });
   }
-
 
   auto_init_edit_check() {
     if (typeof window === 'undefined') { return; };
@@ -590,7 +612,7 @@ export class CharacterIndexComponent implements OnInit  {
 
             <div class="form__group">
               <select name="edit_check_maestria_${value}" id="edit_check_maestria_${value}" class="form__field character-form-edit" data-key="check_${value}">
-                <option class="background-color-main" selected value="null" disabled>Maestria de Armadura</option>
+                <option class="background-color-main" selected value="null" disabled>Maestria de ${value}</option>
                 <option class="background-color-main" value="F">Fatal</option>
                 <option class="background-color-main" value="E">Entrenado</option>
                 <option class="background-color-main" value="D">Dominante</option>
@@ -603,7 +625,7 @@ export class CharacterIndexComponent implements OnInit  {
                     
             <div class="form__group">
               <select name="edit_stat_a_escalar_${value}" id="edit_stat_a_escalar_${value}" class="form__field character-form-edit" data-key="check_${value}">
-                <option class="background-color-main" selected value="null" disabled>Escalado de Defensa</option>
+                <option class="background-color-main" selected value="null" disabled>Escalado de Check</option>
                 <option class="background-color-main" value="FUE">Fuerza</option>
                 <option class="background-color-main" value="DES">Destreza</option>
                 <option class="background-color-main" value="CON">Constitucion</option>
@@ -747,8 +769,8 @@ export class CharacterIndexComponent implements OnInit  {
         document.body.style.overflow = 'hidden';
 
         let objetivo = elemento as HTMLImageElement;
-        let num = parseInt(objetivo.src.replace("http://localhost:4300/assets/images/dice/d", "").replace(".png", ""));
-        rollContainer.style.backgroundImage = `url(http://localhost:4300/assets/images/dice/d${num}.png)`;
+        let num = parseInt(objetivo.src.replace("http://localhost:4200/assets/images/dice/d", "").replace(".png", ""));
+        rollContainer.style.backgroundImage = `url(http://localhost:4200/assets/images/dice/d${num}.png)`;
         rollContainer.classList.add('rolling');
         let intervalo = setInterval(function () {rollContainer.innerHTML = `${Math.floor(Math.random() * num) + 1}`}, 100);
         setTimeout(function () {
@@ -768,6 +790,32 @@ export class CharacterIndexComponent implements OnInit  {
       });
     });
   
+  }
+  
+  parse_object(object: { [key: string]: { [key: string]: any } }): string {
+    const processedObject: { [key: string]: { [key: string]: string } } = {};
+  
+    for (const key in object) {
+      if (Object.prototype.hasOwnProperty.call(object, key)) { 
+        processedObject[key] = {};
+        const objetivo = object[key];
+  
+        for (const clave in objetivo) {
+          if (Object.prototype.hasOwnProperty.call(objetivo, clave)) {
+            processedObject[key][clave] = String(objetivo[clave]).replace(/\n/g, "").trim();
+          }
+        }
+      }
+    }
+  
+    const res = JSON.stringify(processedObject);
+    console.log(res);
+    console.log(JSON.parse(res));
+    return res;
+  }
+  
+  get_lenght(object: any): number {
+    return Object.keys(object).length;
   }
 
 }
