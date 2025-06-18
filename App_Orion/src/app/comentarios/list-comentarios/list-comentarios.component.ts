@@ -6,26 +6,35 @@ import { ComentariosService } from '../comentarios.service';
 import { CreateComentarioComponent } from '../create-comentario/create-comentario.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthUtilsService } from '../../utilidades/auth-utils.service';
 
 @Component({
   selector: 'app-list-comentarios',
   standalone: true,
-  imports: [CommonModule, CreateComentarioComponent, FormsModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCardModule],
   templateUrl: './list-comentarios.component.html',
   styleUrls: ['./list-comentarios.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ListComentariosComponent implements OnInit {
-  @Input() idPublicacion: number = 0; // Ensure idPublicacion is properly defined
+  @Input() idPublicacion: number = 0; 
   @Input() comentarios: ComentarioDTO[] = [];
 
   errors: string[] = [];
   newComment: string = '';
 
-  idUsuarioActual: number = 0; // Replace with actual logic to fetch current user ID
-  isAdmin: boolean = false; // Replace with actual logic to determine admin status
-
-  constructor(private comentariosService: ComentariosService) {}
+  idUsuarioActual: number;
+  isAdmin: boolean;
+  
+  constructor(
+    private comentariosService: ComentariosService, 
+    private dialog: MatDialog,
+    private authUtils: AuthUtilsService
+  ) {
+    this.idUsuarioActual = this.authUtils.getCurrentUserId();
+    this.isAdmin = this.authUtils.isAdmin();
+  }
 
   ngOnInit(): void {
     this.cargarComentarios();
@@ -71,11 +80,13 @@ export class ListComentariosComponent implements OnInit {
     }
 
     const now = new Date();
+ 
+    const fechaFormateada = now.toISOString().split('T')[0];
     const comentario: ComentarioCreateDTO = {
       Contenido: this.newComment,
       Id_Publicacion: this.idPublicacion,
       Id_Usuario: this.idUsuarioActual,
-      Fecha: new Date(`${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`), // Convert string to Date
+      Fecha: fechaFormateada
     };
 
     this.comentariosService.crear(comentario).subscribe({
@@ -87,14 +98,6 @@ export class ListComentariosComponent implements OnInit {
         console.error('Error al añadir comentario:', err);
         this.errors = ['Error al añadir el comentario.'];
       }
-    });
-  }
-
-  editarComentario(id: number): void {
-    console.log('Editar comentario con ID:', id);
-  }
-
-  borrarComentario(id: number): void {
-    console.log('Borrar comentario con ID:', id);
+    })
   }
 }

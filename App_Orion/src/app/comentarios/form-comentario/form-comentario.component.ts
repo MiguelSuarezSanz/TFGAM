@@ -30,22 +30,30 @@ export class FormComentarioComponent implements OnInit {
     const now = new Date();
     this.form = this.fb.group({
       Contenido: ['', [Validators.required, Validators.minLength(5)]],
-      Fecha: [new Date(`${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`), Validators.required],
+      Fecha: [`${new Date().getDate().toString().padStart(2, '0')}/${(new Date().getMonth() + 1).toString().padStart(2, '0')}/${new Date().getFullYear()}`, Validators.required],
       IdPublicacion: [this.getCurrentPublicationId(), Validators.required],
       IdUsuario: [this.getCurrentUserId(), Validators.required]
     });
   }
 
   private getCurrentPublicationId(): number {
-    // Replace with actual logic to fetch the current publication ID
-    return 1; // Example publication ID
+    const url = window.location.href;
+    const match = url.match(/publicacion\/(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
   }
 
   private getCurrentUserId(): number {
-    // Replace with actual logic to fetch the logged-in user's ID
-    return 1; // Example user ID
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        return parsedUser.id || 0;
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+      }
+    }
+    return 0;
   }
-
   guardarCambios(): void {
 
     console.log('Guardando cambios:', this.comentario);

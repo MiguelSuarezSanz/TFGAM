@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from enum import Enum
@@ -503,7 +503,7 @@ class ComentarioCreateDTO(BaseModel):
     Id_Usuario: int
     Id_Publicacion: int
     Contenido: str
-    Fecha: date
+    Fecha: str
 
 @app.get("/comentarios", response_model=List[Comentario])
 async def get_comentarios():
@@ -590,29 +590,33 @@ async def create_comentario(comentario: ComentarioCreateDTO):
     except ValueError:
         raise HTTPException(status_code=422, detail="Fecha debe ser una fecha válida en formato YYYY-MM-DD.")
 
+    print("Creating comentario:", comentario)
+
     conn = get_db_connection()
     try:
         with conn.cursor() as cursor:
-            # Validate publication ID
+          
+            # Verificar que la publicación y el usuario existen
+
             sql_check_publicacion = "SELECT Id FROM Publicaciones WHERE Id = %s"
-            cursor.execute(sql_check_publicacion, (comentario.IdPublicacion,))
+            cursor.execute(sql_check_publicacion, (comentario.Id_Publicacion,))
             if not cursor.fetchone():
                 raise HTTPException(status_code=404, detail="Publicación no encontrada")
 
-            # Validate user ID
+          
             sql_check_usuario = "SELECT Id FROM Usuarios WHERE Id = %s"
-            cursor.execute(sql_check_usuario, (comentario.IdUsuario,))
+            cursor.execute(sql_check_usuario, (comentario.Id_Usuario,))
             if not cursor.fetchone():
                 raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-            # Insert comment
+          
             sql_insert_comentario = """
                 INSERT INTO Comentarios (Id_Usuario, Id_Publicacion, Contenido, Fecha)
                 VALUES (%s, %s, %s, %s)
             """
             cursor.execute(sql_insert_comentario, (
-                comentario.IdUsuario,
-                comentario.IdPublicacion,
+                comentario.Id_Usuario,
+                comentario.Id_Publicacion,
                 comentario.Contenido,
                 comentario.Fecha
             ))
@@ -678,10 +682,9 @@ async def delete_comentario(comentario_id: int):
     finally:
         conn.close()
 
-# -------------------- Amistades y Chats --------------------
+# -------------------- Amistades  --------------------
 
 class AmistadDTO(BaseModel):
-    id: int
     usuario_id_1: int
     usuario_id_2: int
     fecha_solicitud: datetime
@@ -698,6 +701,9 @@ async def get_amistades():
 
 @app.post("/amistades", response_model=AmistadDTO)
 async def create_amistad(amistad: AmistadDTO):
+
+    print("Creating amistad:", amistad)
+
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
